@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5c1dffc31f5f44708c0091f5d8ac6b07" Name="Diagram1">
+        <EntityTypeShape EntityType="Dom1Model.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.CuaHang" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.DanhGia" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.KhuyenMai" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.NguoiDung" Width="1.5" PointX="5.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.QuanTriVien" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.QuanTriVien1" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.SanPhamKhuyenMai" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.SanPhamKhuyenMai1" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.BanTinMoiNgay" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Dom1Model.TichDiem" Width="1.5" PointX="8" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="Dom1Model.FK__CuaHang__adminID__0B91BA14" ManuallyRouted="false" />
+        <AssociationConnector Association="Dom1Model.FK__DanhGia__maKH__14270015" ManuallyRouted="false" />
+        <AssociationConnector Association="Dom1Model.FK__KhuyenMai__masan__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="Dom1Model.FK__TichDiem__maKH__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="Dom1Model.FK__BanTinMoi__admin__160F4887" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

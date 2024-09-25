@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Welcome to DomDom</title>  
+    <link rel="stylesheet" href="~/Content/trangchu.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">  
+</head>  
+<body>  
+    <div class="welcome-container">  
+        <h1 class="cute-text">Welcome to<br>DomDom!</h1>  
+        
+        <div id="menu" class="hidden">
+            <button class="btn btn-login" onclick="window.location.href='@Url.Action("Login", "Account")'">Đăng nhập</button>
+            <button class="btn btn-register" onclick="window.location.href='@Url.Action("Register", "Account")'">Đăng ký</button>
+        </div>  
+        
+        <div class="container">
+            <img src="https://sieucontent.com/wp-content/uploads/2020/12/24Artboard-2-2000x1125.webp" alt="Beautiful Image" class="beautiful-image">
+            <img class="mySlides fade" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYFIaO-auJ4yDdjcStQecSH9s0thNa55LjDg&s" alt="Image 2">
+
+        </div>  
+    </div>  
+    
+    <script src="~/Content/trangchu.js"></script>  
+</body>  
+</html>
