@@ -498,7 +498,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\qldanhgiaController.cs" />
+    <Compile Include="Controllers\QLUserController.cs" />
+    <Compile Include="Controllers\TrangChuAdminController.cs" />
     <Compile Include="Controllers\TrangChuController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -537,6 +541,8 @@
     <Compile Include="Models\NguoiDung.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\qldanhgia.cs" />
+    <Compile Include="Models\QLUserViewModel.cs" />
     <Compile Include="Models\QuanTriVien.cs">
       <DependentUpon>db.tt</DependentUpon>
     </Compile>
@@ -556,6 +562,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin.css" />
+    <Content Include="Content\Admin.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -572,8 +580,17 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\dangki.css" />
+    <Content Include="Content\dangki.js" />
+    <Content Include="Content\editUser.js" />
+    <Content Include="Content\HomeUser.css" />
+    <Content Include="Content\HomeUser.js" />
+    <Content Include="Content\layoutad.css" />
+    <Content Include="Content\layoutad.js" />
     <Content Include="Content\login.css" />
     <Content Include="Content\login.js" />
+    <Content Include="Content\qlnguoidung.css" />
+    <Content Include="Content\qlnguoidung.js" />
     <Content Include="Content\trangchu.css" />
     <Content Include="Content\trangchu.js" />
     <Content Include="favicon.ico" />
@@ -631,6 +648,19 @@
     <Content Include="Views\TrangChu\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\QLUser\Edit.cshtml" />
+    <Content Include="Views\QLUser\Create.cshtml" />
+    <Content Include="Views\qldanhgia\Delete.cshtml" />
+    <Content Include="Views\qldanhgia\Index.cshtml" />
+    <Content Include="Views\qldanhgia\Reply.cshtml" />
+    <Content Include="Views\TrangChuAdmin\Index.cshtml" />
+    <Content Include="Views\QLUser\UserManagement.cshtml" />
+    <Content Include="Views\qldanhgia\_DanhGiaPartial.cshtml" />
+    <Content Include="Views\Shared\_ValidationSummary.cshtml" />
+    <Content Include="Views\QLUser\Delete.cshtml" />
+    <Content Include="Views\Shared\LayoutUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

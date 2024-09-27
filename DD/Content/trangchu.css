@@ -105,8 +105,8 @@
     text-align: center;
 }
 .beautiful-image {  
-    max-width: 75%;  
-    max-height: 150%;  
+    max-width: 50%;  
+    max-height: 50%;  
     border-radius: 15px; /* Bo góc hình ảnh */  
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Đổ bóng cho hình ảnh */  
     transition: transform 0.5s; /* Hiệu ứng zoom */  
@@ -123,3 +123,4 @@
 hr {  
     display: none; /* Ẩn thẻ <hr> */  
 }
+/* Định dạng cơ bản cho nút */

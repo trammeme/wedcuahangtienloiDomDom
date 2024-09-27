@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/css/layoutad.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <h4 class="sidebar-heading">Admin Menu</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <button id="btnShowUserManagement" class="btn btn-primary">Quản lý người dùng</button>
+                    </li>
+                    <li class="nav-item">
+                        <button id="btnShowPromotions" class="btn btn-primary">Quản lí khuyến mại</button>
+                    </li>
+                    <li class="nav-item">
+                        <button id="btnShowPointManagement" class="btn btn-primary">Quản lý tích điểm</button>
+                    </li>
+                    <li class="nav-item">
+                        <button id="btnShowReviews" class="btn btn-primary">Quản lý đánh giá</button>
+                    </li>
+                    <li class="nav-item">
+                        <button id="btnLogout" class="btn btn-danger">Đăng xuất</button>
+                    </li>
+                </ul>
+                <div class="logo">
+                    <h1>DOMDOM</h1>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="container" id="main-content">
+                    @RenderBody() 
+                  
+                    <div id="user-management-partial" style="display: none;">
+                       @Html.Action("UserManagement", "QLUser")
+                    </div>
+
+                    <div id="danh-gia-partial" style="display: none;">
+                        @Html.Action("Index", "QLDanhGia") 
+                    </div>
+                </div>
+        </div>
+        </main>
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnShowUserManagement').click(function () {
+            $('#user-management-partial').toggle();
+            $('#danh-gia-partial').hide(); 
+        });
+
+    $('#btnShowPromotions').click(function () {
+        alert("Quản lý khuyến mại đang được phát triển!");
+        });
+
+    $('#btnShowPointManagement').click(function () {
+        alert("Quản lý tích điểm đang được phát triển!");
+        });
+
+    $('#btnShowReviews').click(function () {
+        $('#danh-gia-partial').toggle();
+    $('#user-management-partial').hide(); 
+        });
+
+    $('#btnLogout').click(function () {
+        window.location.href = '@Url.Action("Logout", "Admin")';
+        });
+    });
+    </script>
+
+
+</body>
+</html>

@@ -68,30 +68,3 @@
         });
     }
 };// Lập trình lướt xuống  
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        targetElement.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
-
-// Slideshow tự động  
-let slideIndex = 0;
-showSlides();
-
-function showSlides() {
-    let i;
-    const slides = document.getElementsByClassName("mySlides");
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";  // Ẩn tất cả các hình ảnh  
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) { slideIndex = 1 }    // Làm cho chỉ số vòng lại  
-    slides[slideIndex - 1].style.display = "block";  // Hiển thị hình ảnh hiện tại  
-    setTimeout(showSlides, 3000); // Thay đổi hình ảnh mỗi 3 giây  
-}

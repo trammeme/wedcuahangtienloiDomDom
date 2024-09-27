@@ -1,32 +1,122 @@
-﻿.custom-input {
-    width: 100%; /* Chiều rộng đầy đủ */
-    padding: 0.5rem; /* Khoảng đệm bên trong */
-    border: 1px solid #ccc; /* Màu viền */
-    border-radius: 0.25rem; /* Bo góc */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi */
+﻿body {
+    background-color: #001f3f; /* Màu nền xanh đậm */
+    font-family: 'Pacifico', cursive; /* Font chữ dễ thương */
+    color: #FFFFFF; /* Màu chữ trắng */
 }
 
-    .custom-input:focus {
-        border-color: #007bff; /* Màu viền khi focus */
-        outline: none; /* Xóa viền ngoài */
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Tạo bóng khi focus */
-        background-color: #f8f9fa; /* Thay đổi màu nền khi focus */
-    }
-
-    .custom-input::placeholder {
-        color: #aaa; /* Màu chữ cho placeholder */
-        opacity: 1; /* Đảm bảo opacity là 1 để chữ hiển thị rõ ràng */
-        transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho placeholder */
-    }
-
-    .custom-input:focus::placeholder {
-        color: #333; /* Thay đổi màu chữ cho placeholder khi focus */
-    }
-/* Thêm các kiểu tùy chỉnh khác nếu cần */
-.navbar {
-    display: none; /* Ẩn thanh điều hướng */
+.card {
+    background-color: #FFFFFF; /* Màu nền của card - trắng */
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Bóng mờ rõ ràng hơn */
 }
 
-hr {
-    display: none; /* Ẩn thẻ <hr> */
+.card-header {
+    background-color: #007bff; /* Màu nền cho card-header */
+    color: #FFFFFF; /* Màu chữ cho card-header */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
+
+    .card-header h3 {
+        font-size: 1.5rem; /* Kích thước font tiêu đề nhỏ hơn */
+        margin: 0; /* Loại bỏ margin mặc định */
+    }
+
+.form-group label {
+    font-size: 0.9rem; /* Kích thước font cho label nhỏ hơn */
+    color: #001f3f; /* Màu chữ cho label */
+}
+
+.form-group input {
+    height: 40px; /* Chiều cao trường nhập liệu */
+    font-size: 0.9rem; /* Kích thước font cho input */
+    color: #001f3f; /* Màu chữ cho input */
+}
+.star {
+    position: absolute;
+    width: 50px; /* Kích thước của ngôi sao */
+    height: 50px;
+    background-color: transparent;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    background-color: gold; /* Màu ngôi sao */
+    animation: twinkle 1.5s infinite alternate, move 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+    /* Di chuyển lên */
+    100% {
+        transform: translateY(0);
+    }
+    /* Quay lại vị trí ban đầu */
+}
+
+/* Đặt vị trí của ngôi sao */
+.star1 {
+    top: 20px;
+    left: 20px;
+    animation-delay: 0s; /* Thời gian bắt đầu khác nhau cho mỗi ngôi sao */
+}
+
+.star2 {
+    top: 70px;
+    right: 30px;
+    animation-delay: 0.5s;
+}
+
+.star3 {
+    bottom: 30px;
+    left: 40px;
+    animation-delay: 1s;
+}
+.snowflake {
+    position: absolute;
+    top: -10%;
+    color: #ffffff;
+    font-size: 24px; /* Kích thước tuyết */
+    opacity: 0.8;
+    pointer-events: none; /* Ngăn chặn tương tác */
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+.container {
+    position: relative; /* Đặt vị trí cho container */
+}
+
+/* Thay đổi màu sắc cho các yếu tố khác */
+.btn-primary {
+    background-color: #ff0000; /* Đỏ Giáng Sinh */
+    border: none;
+    transition: background-color 0.3s;
+}
+
+    .btn-primary:hover {
+        background-color: #d60000; /* Đỏ đậm khi hover */
+    }

@@ -1,0 +1,51 @@
+﻿body {
+    background-color:#808080 ; /* Màu nền xanh đậm */
+    font-family: 'Pacifico', cursive;
+    margin: 0;
+    overflow: hidden;
+}
+
+.main-screen {
+    width: 100vw;
+    height: 100vh;
+    background-color:#001f3f ; /* Màu nền xanh đậm */
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.firefly {
+    position: absolute;
+    width: 15px; /* Kích thước đom đóm */
+    height: 15px; /* Kích thước đom đóm */
+    background-color: yellow;
+    border-radius: 50%;
+    animation: fly-down 3s forwards; /* Thời gian bay xuống */
+}
+
+@keyframes fly-down {
+    0% {
+        transform: translateY(-100px); /* Bắt đầu từ trên */
+        opacity: 1;
+    }
+
+    70% {
+        transform: translateY(60vh); /* Giữa màn hình */
+    }
+
+    100% {
+        transform: translateY(90vh); /* Đến gần cuối màn hình */
+        opacity: 1; /* Có thể điều chỉnh độ mờ */
+    }
+}

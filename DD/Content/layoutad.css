@@ -1,0 +1,92 @@
+﻿
+
+/* Thiết lập cho sidebar */
+.sidebar {
+    background-color: #f4f4f4; /* Màu gradient cho sidebar */
+    padding: 20px;
+}
+
+/* Định dạng tiêu đề của sidebar */
+.sidebar-heading {
+    margin-bottom: 15px;
+    font-size: 24px; /* Kích thước chữ lớn hơn */
+    font-weight: bold;
+    color: #ffcc00; /* Màu chữ vàng sáng */
+}
+
+/* Định dạng cho các liên kết trong menu */
+.nav-link {
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: #f9f9f9; /* Màu chữ sáng */
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    font-weight: 600; /* Đặt trọng lượng chữ cho các nút */
+}
+
+    /* Hiệu ứng hover cho các liên kết */
+    .nav-link:hover {
+        background-color: #ff5733; /* Màu nền cam khi hover */
+        color: #fff; /* Màu chữ trắng khi hover */
+        transform: translateY(-3px); /* Hiệu ứng nâng lên khi hover */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Thêm bóng */
+    }
+
+    /* Màu nền cho nút đang hoạt động */
+    .nav-link.active {
+        background-color: #28a745; /* Màu nền xanh cho nút đang hoạt động */
+        color: #fff; /* Màu chữ cho nút đang hoạt động */
+    }
+
+/* Định dạng cho logo */
+/* Định dạng cho logo */
+.logo {
+    position: fixed; /* Giữ logo cố định bên trái */
+    top: 50%; /* Đưa logo vào giữa chiều dọc */
+    left: 0; /* Căn trái màn hình */
+    transform: translateY(-50%); /* Căn chỉnh giữa chiều dọc */
+    background-color: #0f0f1a; /* Màu nền cho logo */
+    padding: 20px; /* Khoảng cách cho logo */
+    z-index: 1000; /* Đưa logo lên trên các phần tử khác */
+}
+
+    .logo h1 {
+        font-family: 'Poppins', sans-serif; /* Sử dụng phông chữ Poppins */
+        font-size: 48px; /* Kích thước chữ lớn */
+        color: orange; /* Màu chữ cam */
+        margin: 0; /* Bỏ margin */
+        writing-mode: vertical-rl; /* Định dạng chữ theo chiều dọc */
+        text-align: center; /* Căn giữa chữ */
+        transform: rotate(180deg); /* Xoay chữ 180 độ */
+    }
+
+    /* Hiệu ứng khi di chuột qua logo */
+    .logo:hover h1 {
+        transform: scale(1.2); /* Phóng to chữ khi di chuột */
+        transition: transform 0.3s; /* Thời gian chuyển đổi */
+    }
+
+/* Định nghĩa hiệu ứng lắc lư */
+@keyframes shake {
+    0% {
+        transform: translate(0);
+    }
+
+    25% {
+        transform: translate(-5px, 0);
+    }
+
+    50% {
+        transform: translate(5px, 0);
+    }
+
+    75% {
+        transform: translate(-5px, 0);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
