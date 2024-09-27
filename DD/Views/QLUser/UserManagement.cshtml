@@ -1,0 +1,126 @@
+﻿@model IEnumerable<DD.Models.QLUserViewModel>
+
+@{
+    ViewBag.Title = "Quản Lý Người Dùng";
+}
+
+<h2>Quản Lý Người Dùng</h2>
+<link rel="stylesheet" href="~/Content/qlnguoidung.css" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên Khách Hàng</th>
+            <th>Email</th>
+            <th>Giới Tính</th>
+            <th>Tháng Sinh</th>
+            <th>Địa Chỉ</th>
+            <th>Số Điện Thoại</th>
+            <th>Tên Đăng Nhập</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.TenKH</td>
+                <td>@user.Email</td>
+                <td>@user.GioiTinh</td>
+                <td>@user.ThangSinh</td>
+                <td>@user.DiaChi</td>
+                <td>@user.SoDienThoai</td>
+                <td>@user.TenDangNhap</td>
+                <td>
+                    <button class="btn btn-primary" onclick="showEditModal('@user.MaKH')">Sửa</button>
+                    <button class="btn btn-danger" onclick="deleteUser('@user.MaKH')">Xóa</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div id="editUserModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Sửa Người Dùng</h2>
+        @using (Html.BeginForm("Edit", "QLUser", FormMethod.Post, new { id = "editUserForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("MaKH", "", new { id = "editMaKH" })
+
+            <div class="form-group">
+                @Html.Label("Tên Khách Hàng")
+                @Html.TextBox("TenKH", "", new { @class = "form-control", id = "editTenKH" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Email")
+                @Html.TextBox("Email", "", new { @class = "form-control", id = "editEmail" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Giới Tính")
+                @Html.TextBox("GioiTinh", "", new { @class = "form-control", id = "editGioiTinh" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Tháng Sinh")
+                @Html.TextBox("ThangSinh", "", new { @class = "form-control", id = "editThangSinh" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Địa Chỉ")
+                @Html.TextBox("DiaChi", "", new { @class = "form-control", id = "editDiaChi" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Số Điện Thoại")
+                @Html.TextBox("SoDienThoai", "", new { @class = "form-control", id = "editSoDienThoai" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Tên Đăng Nhập")
+                @Html.TextBox("TenDangNhap", "", new { @class = "form-control", id = "editTenDangNhap" })
+            </div>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        }
+    </div>
+</div>
+
+<script src="~/Content/qlnguoidung.js"></script>
+<script>
+    function showEditModal(maKH) {
+        $.get('@Url.Action("Edit", "QLUser")', { maKH: maKH }, function (data) {
+            $('#editMaKH').val(data.MaKH);
+            $('#editTenKH').val(data.TenKH);
+            $('#editEmail').val(data.Email);
+            $('#editGioiTinh').val(data.GioiTinh);
+            $('#editThangSinh').val(data.ThangSinh);
+            $('#editDiaChi').val(data.DiaChi);
+            $('#editSoDienThoai').val(data.SoDienThoai);
+            $('#editTenDangNhap').val(data.TenDangNhap);
+            $('#editUserModal').show();
+        });
+    }
+
+    function closeModal() {
+        $('#editUserModal').hide();
+    }
+    function deleteUser(maKH) {
+    if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+        $.ajax({
+            url: '@Url.Action("Delete", "QLUser")',
+            type: 'POST',
+            data: { maKH: maKH },
+            success: function (response) {
+                if (response.success) {
+                    alert('Người dùng đã được xóa thành công!');
+                    location.reload(); 
+                } else {
+                    alert('Lỗi: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Có lỗi xảy ra trong quá trình xóa người dùng.');
+            }
+        });
+    }
+}
+
+</script>

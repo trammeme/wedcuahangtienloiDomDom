@@ -6,13 +6,16 @@ using System.Web.Mvc;
 
 namespace DD.Controllers
 {
-    public class TrangChuController : Controller
+    public class TrangChuAdminController : Controller
     {
-        // GET: TrangChu
+        // GET: TrangChuAdmin
         public ActionResult Index()
         {
             return View();
         }
+        public ActionResult UserManagemetnPartial()
+        {
+            return PartialView("_UserManagementPartial");
+        }
     }
-
 }

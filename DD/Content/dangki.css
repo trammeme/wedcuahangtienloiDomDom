@@ -1,0 +1,59 @@
+﻿body {
+    background-color: #001f3f; /* Màu nền xanh đậm */
+    font-family: 'Pacifico', cursive;
+  
+    color: #ff6347;
+}
+
+
+.form-control {
+    transition: border-color 0.3s ease-in-out;
+    border: 1px solid #ced4da; /* Màu viền */
+    font-size: 1em; /* Kích thước chữ trong textbox nhỏ hơn */
+    padding: 5px; /* Khoảng cách bên trong nhỏ hơn */
+    width: 25%; /* Chiều rộng textbox */
+    margin: 0 auto; /* Canh giữa */
+}
+
+    .form-control:focus {
+        border-color: #007bff; /* Màu viền khi focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+.btn-primary {
+    background-color: #FFDC00; /* Màu nút vàng nhạt */
+    color: #001f3f; /* Màu chữ trên nút */
+    font-size: 1.5em; /* Kích thước chữ trên nút */
+    padding: 10px 30px; /* Khoảng cách bên trong nút */
+    border: none; /* Bỏ viền */
+    border-radius: 5px; /* Bo góc nút */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng chuyển đổi */
+    margin-top: 20px; /* Khoảng cách trên nút */
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Màu khi hover */
+        transform: scale(1.05); /* Tăng kích thước nút khi hover */
+    }
+
+/* Canh giữa nút */
+.text-center .btn-primary {
+    display: inline-block; /* Để canh giữa */
+}
+.text-danger {
+    color: #dc3545; /* Màu cho thông báo lỗi */
+}
+
+.text-center {
+    text-align: center; /* Canh giữa */
+}
+
+.label-custom {
+    font-size: 1.8em; /* Kích thước chữ cho nhãn */
+    color: #007bff; /* Màu chữ */
+    font-weight: bold; /* Đậm */
+    margin-bottom: 10px;
+}
+.form-group {
+    margin-bottom: 20px; /* Khoảng cách giữa các textbox */
+}

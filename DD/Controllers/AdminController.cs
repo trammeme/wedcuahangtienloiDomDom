@@ -6,13 +6,15 @@ using System.Web.Mvc;
 
 namespace DD.Controllers
 {
-    public class TrangChuController : Controller
+    public class AdminController : Controller
     {
-        // GET: TrangChu
+        // GET: Admin
         public ActionResult Index()
         {
             return View();
         }
     }
+
+    // Tương tự cho các action khác...
 
 }
