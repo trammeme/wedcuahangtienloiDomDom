@@ -49,6 +49,7 @@ warning 6002: The table/view 'Dom1.dbo.BanTinMoiNgay' does not have a primary ke
           <Property Name="noidung" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="sosao" Type="int" />
           <Property Name="ngayDanhGia" Type="datetime" />
+          <Property Name="IsApproved" Type="bit" />
         </EntityType>
         <EntityType Name="KhuyenMai">
           <Key>
@@ -56,7 +57,7 @@ warning 6002: The table/view 'Dom1.dbo.BanTinMoiNgay' does not have a primary ke
           </Key>
           <Property Name="makhuyenmai" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="mota" Type="nvarchar" MaxLength="100" />
-          <Property Name="thoigianhieuluc" Type="int" Nullable="false" />
+          <Property Name="thoigianhieuluc" Type="datetime" Nullable="false" />
           <Property Name="masanphamKM" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="NguoiDung">
@@ -140,18 +141,6 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DanhGia__maKH__14270015">
-          <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="0..1" />
-          <End Role="DanhGia" Type="Self.DanhGia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NguoiDung">
-              <PropertyRef Name="maKH" />
-            </Principal>
-            <Dependent Role="DanhGia">
-              <PropertyRef Name="maKH" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__KhuyenMai__masan__1AD3FDA4">
           <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="0..1" />
           <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="*" />
@@ -172,6 +161,20 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
               <PropertyRef Name="maKH" />
             </Principal>
             <Dependent Role="TichDiem">
+              <PropertyRef Name="maKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DanhGia_NguoiDung">
+          <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DanhGia" Type="Self.DanhGia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NguoiDung">
+              <PropertyRef Name="maKH" />
+            </Principal>
+            <Dependent Role="DanhGia">
               <PropertyRef Name="maKH" />
             </Dependent>
           </ReferentialConstraint>
@@ -209,10 +212,6 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
             <End Role="QuanTriVien" EntitySet="QuanTriVien" />
             <End Role="CuaHang" EntitySet="CuaHang" />
           </AssociationSet>
-          <AssociationSet Name="FK__DanhGia__maKH__14270015" Association="Self.FK__DanhGia__maKH__14270015">
-            <End Role="NguoiDung" EntitySet="NguoiDung" />
-            <End Role="DanhGia" EntitySet="DanhGia" />
-          </AssociationSet>
           <AssociationSet Name="FK__KhuyenMai__masan__1AD3FDA4" Association="Self.FK__KhuyenMai__masan__1AD3FDA4">
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMai" />
             <End Role="KhuyenMai" EntitySet="KhuyenMai" />
@@ -220,6 +219,10 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
           <AssociationSet Name="FK__TichDiem__maKH__1CBC4616" Association="Self.FK__TichDiem__maKH__1CBC4616">
             <End Role="NguoiDung" EntitySet="NguoiDung" />
             <End Role="TichDiem" EntitySet="TichDiem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DanhGia_NguoiDung" Association="Self.FK_DanhGia_NguoiDung">
+            <End Role="NguoiDung" EntitySet="NguoiDung" />
+            <End Role="DanhGia" EntitySet="DanhGia" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -257,7 +260,8 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
           <Property Name="noidung" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="sosao" Type="Int32" />
           <Property Name="ngayDanhGia" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__DanhGia__maKH__14270015" FromRole="DanhGia" ToRole="NguoiDung" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <NavigationProperty Name="NguoiDung" Relationship="Self.FK_DanhGia_NguoiDung" FromRole="DanhGia" ToRole="NguoiDung" />
         </EntityType>
         <EntityType Name="KhuyenMai">
           <Key>
@@ -265,7 +269,7 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
           </Key>
           <Property Name="makhuyenmai" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="mota" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="thoigianhieuluc" Type="Int32" Nullable="false" />
+          <Property Name="thoigianhieuluc" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="masanphamKM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="SanPhamKhuyenMai" Relationship="Self.FK__KhuyenMai__masan__1AD3FDA4" FromRole="KhuyenMai" ToRole="SanPhamKhuyenMai" />
         </EntityType>
@@ -282,7 +286,7 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
           <Property Name="sodienthoai" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="tendangnhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="matkhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="DanhGias" Relationship="Self.FK__DanhGia__maKH__14270015" FromRole="NguoiDung" ToRole="DanhGia" />
+          <NavigationProperty Name="DanhGias" Relationship="Self.FK_DanhGia_NguoiDung" FromRole="NguoiDung" ToRole="DanhGia" />
           <NavigationProperty Name="TichDiems" Relationship="Self.FK__TichDiem__maKH__1CBC4616" FromRole="NguoiDung" ToRole="TichDiem" />
         </EntityType>
         <EntityType Name="QuanTriVien">
@@ -356,8 +360,10 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DanhGia__maKH__14270015">
-          <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="0..1" />
+        <Association Name="FK_DanhGia_NguoiDung">
+          <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="DanhGia" Type="Self.DanhGia" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="NguoiDung">
@@ -404,7 +410,7 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Dom1Entities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Dom1Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="CuaHangs" EntityType="Self.CuaHang" />
           <EntitySet Name="DanhGias" EntityType="Self.DanhGia" />
@@ -420,7 +426,7 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
             <End Role="QuanTriVien" EntitySet="QuanTriViens" />
             <End Role="CuaHang" EntitySet="CuaHangs" />
           </AssociationSet>
-          <AssociationSet Name="FK__DanhGia__maKH__14270015" Association="Self.FK__DanhGia__maKH__14270015">
+          <AssociationSet Name="FK_DanhGia_NguoiDung" Association="Self.FK_DanhGia_NguoiDung">
             <End Role="NguoiDung" EntitySet="NguoiDungs" />
             <End Role="DanhGia" EntitySet="DanhGias" />
           </AssociationSet>
@@ -442,7 +448,7 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Dom1ModelStoreContainer" CdmEntityContainer="Dom1Entities">
+        <EntityContainerMapping StorageEntityContainer="Dom1ModelStoreContainer" CdmEntityContainer="Dom1Entities1">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="Dom1Model.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -471,6 +477,7 @@ warning 6002: The table/view 'Dom1.dbo.TichDiem' does not have a primary key def
                 <ScalarProperty Name="noidung" ColumnName="noidung" />
                 <ScalarProperty Name="sosao" ColumnName="sosao" />
                 <ScalarProperty Name="ngayDanhGia" ColumnName="ngayDanhGia" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

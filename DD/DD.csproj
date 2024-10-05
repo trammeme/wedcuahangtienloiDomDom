@@ -499,66 +499,71 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\DanhgiaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\qldanhgiaController.cs" />
+    <Compile Include="Controllers\QLTichDiemController.cs" />
     <Compile Include="Controllers\QLUserController.cs" />
     <Compile Include="Controllers\TrangChuAdminController.cs" />
     <Compile Include="Controllers\TrangChuController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\BanTinMoiNgay.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CuaHang.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DanhGia.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>db.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\db.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>db.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\db.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>db.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\DGnguoidung.cs" />
     <Compile Include="Models\KhuyenMai.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\NguoiDung.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\qldanhgia.cs" />
     <Compile Include="Models\QLUserViewModel.cs" />
     <Compile Include="Models\QuanTriVien.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QuanTriVien1.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SanPhamKhuyenMai.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SanPhamKhuyenMai1.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TichDiem.cs">
-      <DependentUpon>db.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TichDiemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +585,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\chitietdanhgia.js" />
     <Content Include="Content\dangki.css" />
     <Content Include="Content\dangki.js" />
     <Content Include="Content\editUser.js" />
@@ -596,15 +602,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\db.Context.tt">
+    <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>db.Context.cs</LastGenOutput>
-      <DependentUpon>db.edmx</DependentUpon>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\db.tt">
+    <Content Include="Models\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>db.edmx</DependentUpon>
-      <LastGenOutput>db.cs</LastGenOutput>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -612,14 +618,14 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\db.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>db.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\db.edmx.diagram">
-      <DependentUpon>db.edmx</DependentUpon>
-    </Content>
     <Content Include="Images\khuyen-mai-giang-sinh-1.webp" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -661,6 +667,15 @@
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
     <Content Include="Views\QLUser\Delete.cshtml" />
     <Content Include="Views\Shared\LayoutUser.cshtml" />
+    <Content Include="Views\QLUser\IndexQLND.cshtml" />
+    <Content Include="Views\Home\HomeUser.cshtml" />
+    <Content Include="Views\Danhgia.cshtml" />
+    <Content Include="Views\Danhgia\Index.cshtml" />
+    <Content Include="Views\QLUser\Index.cshtml" />
+    <Content Include="Views\QLTichDiem\Create.cshtml" />
+    <Content Include="Views\QLTichDiem\Edit.cshtml" />
+    <Content Include="Views\QLTichDiem\Delete.cshtml" />
+    <Content Include="Views\QLTichDiem\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

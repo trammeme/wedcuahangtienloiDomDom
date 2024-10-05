@@ -1,21 +1,189 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giáng Sinh Vui Vẻ</title>
+    <title>Màn hình chào đón</title>
     <link rel="stylesheet" href="~/Content/HomeUser.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <div id="screen" class="main-screen">
-        <div id="firefly" class="firefly"></div>
-        <div class="snow"></div> <!-- Tuyết rơi -->
-        <div class="christmas-tree"></div> <!-- Cây thông Giáng sinh -->
+    <div class="main-screen" id="screen">
+        <h1 class="domdom-text" id="domdomText">DOMDOM</h1>
     </div>
-    <div id="content" class="content" style="display: none;">
-        <h1>Chúc Mừng Giáng Sinh!</h1>
-        <!-- Nội dung chính ở đây -->
-    </div>
-    <script src="~/Content/HomeUser.js"></script>
+    <div class="content" id="content" style="display: none;">
+        <div class="menu">
+            <div class="menu-item">Tích điểm</div>
+            <div class="menu-item">Đánh giá</div>
+            <div class="menu-item">Khuyến mãi</div>
+            <div class="menu-item">Sản phẩm</div>
+
+            <input type="text" class="search-bar" placeholder="Tìm kiếm khuyến mãi...">
+
+        </div>
+        <div class="carousel" id="imageCarousel">
+            <div><img src="https://www.ministop.vn/img/campaign/slide/63073fb63c75f_8ab5b84f9bb9860354805d573a1ac0b4.jpg" alt="Hình 1"></div>
+            <div><img src="https://www.ministop.vn/img/campaign/slide/62b2a1a30cdf6_c7fb636227183df8aa0f070545e8d55a.jpg" alt="Hình 2"></div>
+            <div><img src="https://www.ministop.vn/img/campaign/slide/62021c7c753ad_712174330f8cac61c6b10c1daedab8e2.jpg" alt="Hình 3"></div>
+            <div><img src="https://www.ministop.vn/img/campaign/slide/66f1234bc1712_e21f9ece31f1c10fae1c8a3db820399d.jpg" alt="Hình 4"></div>
+        </div>
+        <div class="promo-section" id="khuyenmai">
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/66a317a4dafba_ff81460ed6d971f09a10a63b2c3b6994.jpg" alt="Khuyến mãi 1" />
+                <h3>Nước ép xoài</h3>
+                <p>25.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/66f127a6245c6_c435079ff58a9db89404554896db1d8c.jpg" alt="Khuyến mãi 2" />
+                <h3>Táo xanh just</h3>
+                <p>28.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/66ab13e1bc2e6_69760697d2b2f8d0a69382b1eb5c7da3.jpg" alt="Khuyến mãi 3" />
+                <h3>Xiên gà nướng</h3>
+                <p>18.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/66a3142f4054f_9c1a9858d676591d80c7363c75166652.jpg" alt="Khuyến mãi 4" />
+                <h3>Kem dâu tây</h3>
+                <p>25.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/5c1c8f0f3118f_01e64ec15a927a4b4b8b8142b612798d.jpg" alt="Khuyến mãi 5" />
+                <h3>Combo ShuShi</h3>
+                <p>35.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/5c413bc9933f6_0fa30e7fa65b02666a8cd044c8dd84dd.jpg" alt="Khuyến mãi 5" />
+                <h3>Bánh kẹp phô mai</h3>
+                <p>15.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div> <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/66a312003d141_25f286762d0031ddc418b29254dd44fc.jpg" alt="Khuyến mãi 5" />
+                <h3>Chả cá hàn quốc</h3>
+                <p>18.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div> <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/5f6ac520e41e5_89a840feaa573d576566bf2af58b43ea.jpg" alt="Khuyến mãi 5" />
+                <h3>Gàn rán</h3>
+                <p>15.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div> <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/6666b2db7fdd2_2df68810f39495f03b1a64196bfec0d5.jpg" alt="Khuyến mãi 5" />
+                <h3>Sinh tố xoài</h3>
+                <p>35.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/65fbf56e3a01e_d6fb727dc389cdbfa355d0a1e4d97cbe.jpg" alt="Khuyến mãi 5" />
+                <h3>Bánh cá </h3>
+                <p>23.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/65b77673cff66_939dbe076bea54bb33f977f478b9b60b.jpg" alt="Khuyến mãi 5" />
+                <h3>Da cá lắc phô mai</h3>
+                <p>25.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+            <div class="promo-item">
+                <img src="https://www.ministop.vn/img/product/6464af53623c1_1faa830623eeddea43deee06a8b68e5b.jpg" alt="Khuyến mãi 5" />
+                <h3>Salad nhiệt đới</h3>
+                <p>45.000đ</p>
+                <button class="btn-rating">Đánh giá sản phẩm</button>
+
+            </div>
+
+        </div>
+        <div class="promotion-section" id="cackhuyenmai" style="display: none;">
+            <div class="promotion-container">
+                <div class="promotion-item">
+
+                    <img src="" alt="Giảm giá 10% cho đơn hàng đầu tiên" />
+                    <h3>Giảm giá 10% cho đơn hàng đầu tiên</h3>
+                    <p>Áp dụng cho tất cả sản phẩm!</p>
+                </div>
+
+                <div class="promotion-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTErrvw6H9h9Qt-D-uUM9DQ0qdFUaHtiHOH0w&s" alt="Mua 2 tặng 1 cho nước uống" />
+                    <h3>Mua 2 tặng 1 cho nước uống</h3>
+                    <p>Chỉ áp dụng thứ 5 hàng tuần!</p>
+                </div>
+
+                <div class="promotion-item">
+                    <img src="" alt="Khuyến mãi sinh tố" />
+                    <h3>Giảm 15% cho sinh tố trái cây</h3>
+                    <p>Chỉ áp dụng cho ngày cuối tuần!</p>
+                </div>
+
+                <div class="promotion-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTELOTbWUsHbY3KQI3eQABJ9Ugw7dDYaUhNivAKMc1Ib2MAE8OJmnXePxtZOoDKJ3MbqXo&usqp=CAU" alt="Khuyến mãi bánh ngọt" />
+                    <h3>Mua 1 tặng 1 cho bánh ngọt</h3>
+                    <p>Chỉ áp dụng cho các sản phẩm bánh!</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="qr-modal">
+            <div class="modal-content">
+                <span class="close-button">×</span>
+                <h2>Mã QR của bạn</h2>
+                <div class="qr-code" id="qr-code"></div>
+            </div>
+        </div>
+        <div class="modal" id="rating-modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close-button">×</span>
+                <h2>Đánh giá sản phẩm</h2>
+                <textarea id="rating-text" placeholder="Nhập đánh giá của bạn..."></textarea>
+                <button id="submit-rating">Gửi đánh giá</button>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                // Hành động khi nhấn nút đánh giá
+                $('.btn-rating').on('click', function () {
+                    $('#rating-modal').css('display', 'block');
+                });
+
+                // Hành động khi nhấn nút đóng modal
+                $('.close-button').on('click', function () {
+                    $('#rating-modal').css('display', 'none');
+                });
+
+                // Hành động khi người dùng gửi đánh giá
+                $('#submit-rating').on('click', function () {
+                    var ratingText = $('#rating-text').val();
+                    if (ratingText) {
+                        alert('Cảm ơn bạn đã gửi đánh giá: ' + ratingText);
+                        $('#rating-text').val(''); // Xóa nội dung đã nhập
+                        $('#rating-modal').css('display', 'none'); // Đóng modal
+                    } else {
+                        alert('Vui lòng nhập đánh giá!');
+                    }
+                });
+            });
+        </script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+        <script src="~/Content/HomeUser.js"></script>
 </body>
 </html>

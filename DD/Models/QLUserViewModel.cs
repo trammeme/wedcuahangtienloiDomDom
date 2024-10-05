@@ -6,15 +6,15 @@ using System.Web;
 namespace DD.Models
 {
     public class QLUserViewModel
-    { 
-            public string MaKH { get; set; }
-            public string TenKH { get; set; }
-            public string Email { get; set; }
-            public string GioiTinh { get; set; }
-            public int ThangSinh { get; set; }
-            public string DiaChi { get; set; }
-            public string SoDienThoai { get; set; }
-            public string TenDangNhap { get; set; }
-            public string MatKhau { get; set; }
-        }
+    {
+        public string MaKH { get; set; }
+        public string TenKH { get; set; }
+        public string Email { get; set; }
+        public string GioiTinh { get; set; }
+        public int? ThangSinh { get; set; } // Sử dụng int? để cho phép giá trị null
+        public string DiaChi { get; set; }
+        public string SoDienThoai { get; set; }
+        public string TenDangNhap { get; set; }
+        public string MatKhau { get; set; }
     }
+}

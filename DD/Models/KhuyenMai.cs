@@ -16,7 +16,7 @@ namespace DD.Models
     {
         public string makhuyenmai { get; set; }
         public string mota { get; set; }
-        public int thoigianhieuluc { get; set; }
+        public System.DateTime thoigianhieuluc { get; set; }
         public string masanphamKM { get; set; }
     
         public virtual SanPhamKhuyenMai SanPhamKhuyenMai { get; set; }

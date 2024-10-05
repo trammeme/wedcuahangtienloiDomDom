@@ -1,155 +1,135 @@
-﻿using System;
+﻿using DD.Models; // Đảm bảo rằng đường dẫn này chính xác
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Web.Mvc;
-using DD.Models;
 
-namespace DD.Controllers
+public class QLUserController : Controller
 {
-    public class QLUserController : Controller
+    private readonly string connectionString = "Data Source=MINU\\SQLEXPRESS;Initial Catalog=Dom1;Integrated Security=True;";
+
+    public ActionResult Index()
     {
-        private readonly string connectionString = "Data Source=MINU\\SQLEXPRESS;Initial Catalog=csdlDom;Integrated Security=True;";
+        List<QLUserViewModel> users = new List<QLUserViewModel>();
 
-        public ActionResult UserManagement()
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            List<QLUserViewModel> users = new List<QLUserViewModel>();
+            connection.Open();
+            string query = "SELECT * FROM NguoiDung"; // Thay đổi truy vấn theo nhu cầu  
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                try
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    conn.Open();
-                    string query = "SELECT * FROM NguoiDung";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    while (reader.Read())
                     {
-                        SqlDataReader reader = cmd.ExecuteReader();
-
-                        while (reader.Read())
+                        QLUserViewModel user = new QLUserViewModel
                         {
-                            users.Add(new QLUserViewModel
-                            {
-                                MaKH = reader["maKH"].ToString(),
-                                TenKH = reader["tenKH"].ToString(),
-                                Email = reader["email"].ToString(),
-                                GioiTinh = reader["gioiTinh"].ToString(),
-                                ThangSinh = reader["thangSinh"] != DBNull.Value ? (int)reader["thangSinh"] : 0,
-                                DiaChi = reader["diaChi"].ToString(),
-                                SoDienThoai = reader["soDienThoai"].ToString(),
-                                TenDangNhap = reader["tenDangNhap"].ToString()
-                            });
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Có lỗi xảy ra: " + ex.Message);
-                    return new HttpStatusCodeResult(500, "Lỗi kết nối cơ sở dữ liệu");
-                }
-            }
+                            MaKH = reader["MaKH"].ToString(),
+                            TenKH = reader["TenKH"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            GioiTinh = reader["GioiTinh"].ToString(),
+                            ThangSinh = reader.IsDBNull(reader.GetOrdinal("ThangSinh")) ? (int?)null : (int)reader["ThangSinh"],
+                            DiaChi = reader["DiaChi"].ToString(),
+                            SoDienThoai = reader["SoDienThoai"].ToString(),
+                            TenDangNhap = reader["TenDangNhap"].ToString(),
+                            MatKhau = reader["MatKhau"].ToString()
+                        };
 
-            return View(users);
-        }
-
-        public ActionResult Edit(string maKH)
-        {
-            QLUserViewModel user = null;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                string query = "SELECT * FROM NguoiDung WHERE maKH = @MaKH";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@MaKH", maKH);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    user = new QLUserViewModel
-                    {
-                        MaKH = maKH,
-                        TenKH = reader["tenKH"].ToString(),
-                        Email = reader["email"].ToString(),
-                        GioiTinh = reader["gioiTinh"].ToString(),
-                        ThangSinh = reader["thangSinh"] != DBNull.Value ? (int)reader["thangSinh"] : 0,
-                        DiaChi = reader["diaChi"].ToString(),
-                        SoDienThoai = reader["soDienThoai"].ToString(),
-                        TenDangNhap = reader["tenDangNhap"].ToString()
-                    };
-                }
-            }
-
-            if (user == null)
-            {
-                return HttpNotFound(); 
-            }
-
-            return Json(user, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(QLUserViewModel user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
-            }
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "UPDATE NguoiDung SET tenKH = @TenKH, email = @Email, gioiTinh = @GioiTinh, thangSinh = @ThangSinh, diaChi = @DiaChi, soDienThoai = @SoDienThoai, tenDangNhap = @TenDangNhap WHERE maKH = @MaKH";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@MaKH", user.MaKH);
-                    cmd.Parameters.AddWithValue("@TenKH", user.TenKH);
-                    cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@GioiTinh", user.GioiTinh);
-                    cmd.Parameters.AddWithValue("@ThangSinh", user.ThangSinh);
-                    cmd.Parameters.AddWithValue("@DiaChi", user.DiaChi);
-                    cmd.Parameters.AddWithValue("@SoDienThoai", user.SoDienThoai);
-                    cmd.Parameters.AddWithValue("@TenDangNhap", user.TenDangNhap);
-                    cmd.ExecuteNonQuery();
-                }
-
-                return Json(new { success = true });
-            }
-            catch (SqlException sqlEx)
-            {
-                return Json(new { success = false, message = sqlEx.Message });
-            }
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(string maKH)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "DELETE FROM NguoiDung WHERE maKH = @MaKH";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@MaKH", maKH);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        return Json(new { success = true, message = "Người dùng đã được xóa thành công!" });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "Không tìm thấy người dùng để xóa." });
+                        users.Add(user);
                     }
                 }
             }
-            catch (SqlException sqlEx)
+        }
+
+        return PartialView("Index", users);  // Chú ý, trả về một partial view với tên `_DanhGiaPartial`
+    }
+    // Phương thức sửa
+    public ActionResult Edit(string id)
+    {
+        if (string.IsNullOrEmpty(id)) // Kiểm tra xem id có giá trị không  
+        {
+            return HttpNotFound(); // Nếu không có ID, trả về lỗi 404  
+        }
+
+        QLUserViewModel user = null;
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT * FROM NguoiDung WHERE MaKH = @MaKH";
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                return Json(new { success = false, message = "Có lỗi xảy ra: " + sqlEx.Message });
+                command.Parameters.AddWithValue("@MaKH", id); // Thêm tham số  
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        user = new QLUserViewModel
+                        {
+                            MaKH = reader["MaKH"].ToString(),
+                            TenKH = reader["TenKH"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            GioiTinh = reader["GioiTinh"].ToString(),
+                            ThangSinh = reader.IsDBNull(reader.GetOrdinal("ThangSinh")) ? (int?)null : (int)reader["ThangSinh"],
+                            DiaChi = reader["DiaChi"].ToString(),
+                            SoDienThoai = reader["SoDienThoai"].ToString(),
+                            TenDangNhap = reader["TenDangNhap"].ToString(),
+                            MatKhau = reader["MatKhau"].ToString()
+                        };
+                    }
+                }
             }
         }
 
+        return View(user);
+    }
+    [HttpPost]
+    public ActionResult Edit(QLUserViewModel user)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "UPDATE NguoiDung SET TenKH = @TenKH, Email = @Email, GioiTinh = @GioiTinh, ThangSinh = @ThangSinh, DiaChi = @DiaChi, SoDienThoai = @SoDienThoai, TenDangNhap = @TenDangNhap, MatKhau = @MatKhau WHERE MaKH = @MaKH";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@MaKH", user.MaKH);
+                command.Parameters.AddWithValue("@TenKH", user.TenKH);
+                command.Parameters.AddWithValue("@Email", user.Email);
+                command.Parameters.AddWithValue("@GioiTinh", user.GioiTinh);
+                command.Parameters.AddWithValue("@ThangSinh", (object)user.ThangSinh ?? DBNull.Value); // Xử lý giá trị null
+                command.Parameters.AddWithValue("@DiaChi", user.DiaChi);
+                command.Parameters.AddWithValue("@SoDienThoai", user.SoDienThoai);
+                command.Parameters.AddWithValue("@TenDangNhap", user.TenDangNhap);
+                command.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+
+                command.ExecuteNonQuery();
+            }
+        }
+        return RedirectToAction("Index");
+    }
+
+    // Phương thức xóa
+    // Phương thức xóa người dùng
+    public ActionResult Delete(string maKH) // Đổi id thành maKH  
+    {
+        if (string.IsNullOrEmpty(maKH))
+        {
+            return HttpNotFound(); // Nếu không có ID, trả về lỗi 404  
+        }
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            string query = "DELETE FROM NguoiDung WHERE MaKH = @MaKH";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@MaKH", maKH); // Gán giá trị cho tham số  
+
+                command.ExecuteNonQuery(); // Thực thi câu lệnh xóa  
+            }
+        }
+
+        return RedirectToAction("Index"); // Quay lại trang danh sách người dùng  
     }
 }
