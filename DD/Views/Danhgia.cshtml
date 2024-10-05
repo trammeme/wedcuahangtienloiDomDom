@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đánh Giá Sao</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .rating {
+            display: flex;
+            direction: row-reverse;
+            justify-content: center;
+            margin-bottom: 20px;
+            display: none; /* Ẩn phần đánh giá ban đầu */
+        }
+
+        .star {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+            .star:hover,
+            .star.selected {
+                color: gold;
+            }
+
+        #ratingMessage {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Đánh Giá Sản Phẩm</h1>
+    <button id="openRating">Đánh Giá</button> <!-- Nút đánh giá -->
+
+    <div class="rating" id="ratingContainer">
+        <span class="star" data-value="5">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="1">&#9733;</span>
+    </div>
+    <div id="ratingMessage"></div>
+
+    <script>
+
+        const openRatingBtn = document.getElementById('openRating');
+        const ratingContainer = document.getElementById('ratingContainer');
+        const stars = document.querySelectorAll('.star');
+        const ratingMessage = document.getElementById('ratingMessage');
+        let selectedRating = 0;
+
+        // Mở phần đánh giá khi nhấn nút
+        openRatingBtn.addEventListener('click', () => {
+            ratingContainer.style.display = 'flex'; // Hiện phần đánh giá
+        });
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = star.dataset.value;
+                updateStars();
+                ratingMessage.textContent = `Cảm ơn bạn đã đánh giá ${selectedRating} sao!`;
+            });
+
+            star.addEventListener('mouseover', () => {
+                resetStars();
+                const hoverValue = star.dataset.value;
+                fillStars(hoverValue);
+            });
+
+            star.addEventListener('mouseout', () => {
+                resetStars();
+                if (selectedRating) {
+                    fillStars(selectedRating);
+                }
+            });
+        });
+
+        const fillStars = (value) => {
+            stars.forEach(star => {
+                if (star.dataset.value <= value) {
+                    star.classList.add('selected');
+                }
+            });
+        };
+
+        const resetStars = () => {
+            stars.forEach(star => {
+                star.classList.remove('selected');
+            });
+        };
+
+        const updateStars = () => {
+            fillStars(selectedRating);
+        };
+    </script>
+</body>
+</html>

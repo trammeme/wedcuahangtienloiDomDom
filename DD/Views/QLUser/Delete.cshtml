@@ -1,13 +1,11 @@
-﻿@foreach (var user in Model)
-{
-    <tr>
-        <td>@user.MaKH</td>
-        <td>@user.TenKH</td>
-        <td>@user.Email</td>
-        <td>
-            <button class="btn btn-danger" onclick="deleteUser('@user.MaKH')">Xóa</button>
-            <a href="@Url.Action("Edit", new { maKH = user.MaKH })" class="btn btn-warning">Sửa</a>
-        </td>
-    </tr>
-}
+﻿@model string
 
+<h2>Xóa Người Dùng</h2>
+<p>Bạn có chắc chắn muốn xóa người dùng với mã: @Model?</p>
+
+@using (Html.BeginForm("Delete", "QLUser", FormMethod.Post))
+{
+    @Html.Hidden("id", Model)
+    <input type="submit" value="Xóa" />
+    <a href="@Url.Action("Index")">Hủy</a>
+}

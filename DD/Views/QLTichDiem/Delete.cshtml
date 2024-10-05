@@ -1,0 +1,33 @@
+﻿@model DD.Models.TichDiem
+
+@{
+    ViewBag.Title = "Xóa Người Dùng";
+}
+
+<div class="container text-center">
+    <h2 style="color: #dc3545;">Xác Nhận Xóa Người Dùng</h2>
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Cảnh báo!</strong> Bạn sắp xóa người dùng này. Hành động này không thể hoàn tác.
+    </div>
+
+    <div class="card" style="margin: auto; width: 60%; padding: 20px;">
+        <div class="card-body">
+            <h5 class="card-title">Thông Tin Người Dùng</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>ID:</strong> @Model.ID</li>
+                <li class="list-group-item"><strong>Mã Khách Hàng:</strong> @Model.maKH</li>
+                <li class="list-group-item"><strong>Tên Khách Hàng:</strong> @Model.tenKH</li>
+                <li class="list-group-item"><strong>Điểm:</strong> @Model.diem</li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        @using (Html.BeginForm())
+        {
+            <button type="submit" class="btn btn-danger" style="margin-right: 10px;">Xóa</button>
+            @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+        }
+    </div>
+</div>

@@ -1,6 +1,6 @@
 ﻿body {
     font-family: 'Poppins', sans-serif; /* Sử dụng phông chữ Poppins */
-    background-color: #1e1e2f; /* Màu nền tối cho trang */
+    background-color: #aaa; /* Màu nền tối cho trang */
 }
 .modal {
     display: none; /* Ẩn mặc định */

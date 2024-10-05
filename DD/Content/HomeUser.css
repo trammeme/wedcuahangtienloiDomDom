@@ -1,51 +1,202 @@
 ﻿body {
-    background-color:#808080 ; /* Màu nền xanh đậm */
+    background-color: #2c3e50;
     font-family: 'Pacifico', cursive;
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .main-screen {
-    width: 100vw;
-    height: 100vh;
-    background-color:#001f3f ; /* Màu nền xanh đậm */
-    color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+    color: #24af44;
+}
+
+.domdom-text {
+    font-size: 5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-.firefly {
-    position: absolute;
-    width: 15px; /* Kích thước đom đóm */
-    height: 15px; /* Kích thước đom đóm */
-    background-color: yellow;
-    border-radius: 50%;
-    animation: fly-down 3s forwards; /* Thời gian bay xuống */
+    justify-content: flex-start;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background-color: #ecf0f1;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin: 20px;
 }
 
-@keyframes fly-down {
-    0% {
-        transform: translateY(-100px); /* Bắt đầu từ trên */
-        opacity: 1;
+
+
+header {
+    background-color: #2c3e50; /* Màu nền tối */
+    padding: 10px 20px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-item {
+    color: white;
+    margin: 0 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.3s;
+    color:#b31e1e;
+}
+
+    .menu-item:hover {
+        color: #1abc9c; /* Màu khi hover */
     }
 
-    70% {
-        transform: translateY(60vh); /* Giữa màn hình */
-    }
+.search-bar {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+}
 
-    100% {
-        transform: translateY(90vh); /* Đến gần cuối màn hình */
-        opacity: 1; /* Có thể điều chỉnh độ mờ */
+/* Modal Styling */
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px; /* Chiều rộng tối đa của modal */
+    text-align: center;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }  
+.carousel {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+    .carousel img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+.promo-item {
+    flex: 1 1 calc(25% - 20px); /* Điều chỉnh để có 4 ô trên mỗi hàng */
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    overflow: hidden;
+    width: 300px; /* Có thể thay đổi tùy theo kích thước mong muốn */
+    height: 450px; /* Tăng chiều cao khung promo item */
+    font-family: Arial;
+    color: #ff6a00;
+    text-align: center; /* Căn giữa văn bản */
+}
+
+.promo-section {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các sản phẩm di chuyển xuống hàng mới */
+    justify-content: space-between; /* Căn giữa các ô sản phẩm */
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.promo-item:hover {
+    transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+    .promo-item {
+        flex: 1 1 calc(50% - 20px); /* Hai sản phẩm trên mỗi hàng khi màn hình nhỏ */
+        margin: 10px; /* Cập nhật khoảng cách giữa các ô */
     }
 }
+
+@media (max-width: 480px) {
+    .promo-item {
+        flex: 1 1 100%; /* Một sản phẩm trên mỗi hàng khi màn hình rất nhỏ */
+        margin: 10px; /* Cập nhật khoảng cách giữa các ô */
+    }
+}
+.promotion-container {
+    display: flex; /* Sử dụng Flexbox để xếp hàng */
+    flex-wrap: wrap; /* Cho phép các mục xuống hàng nếu không đủ chỗ */
+    justify-content: space-between; /* Căn chỉnh đều các mục */
+}
+
+.promotion-item {
+    flex: 0 0 31%; /* Mỗi mục chiếm khoảng 31% chiều rộng */
+    box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước tổng thể */
+    margin-bottom: 20px; /* Khoảng cách giữa các hàng */
+}
+
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px; /* Chiều rộng tối đa của modal */
+    text-align: center;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }

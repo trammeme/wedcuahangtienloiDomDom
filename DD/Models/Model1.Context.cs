@@ -13,10 +13,10 @@ namespace DD.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Dom1Entities : DbContext
+    public partial class Dom1Entities1 : DbContext
     {
-        public Dom1Entities()
-            : base("name=Dom1Entities")
+        public Dom1Entities1()
+            : base("name=Dom1Entities1")
         {
         }
     

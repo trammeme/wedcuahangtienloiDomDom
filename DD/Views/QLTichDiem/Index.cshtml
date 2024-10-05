@@ -1,0 +1,38 @@
+﻿@model IEnumerable<DD.Models.TichDiem>
+
+@{
+    ViewBag.Title = "Danh Sách Người Dùng";
+}
+
+<h2 class="text-center" style="color: #007bff;">Danh Sách Người Dùng</h2>
+
+<table class="table table-striped" style="width: 80%; margin: auto;">
+    <thead class="table-dark">
+        <tr class="text-center">
+            <th>ID</th>
+            <th>Mã Khách Hàng</th>
+            <th>Tên Khách Hàng</th>
+            <th>Điểm</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td style="text-align: center;">@user.ID</td>
+                <td style="text-align: center;">@user.maKH</td>
+                <td style="text-align: center;">@user.tenKH</td>
+                <td style="text-align: center;">@user.diem</td>
+                <td style="text-align: center;">
+                    @Html.ActionLink("Sửa", "Edit", new { id = user.ID }, new { @class = "btn btn-warning btn-sm" }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = user.ID }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    @Html.ActionLink("Thêm Người Dùng", "Create", null, new { @class = "btn btn-primary" })
+</div>

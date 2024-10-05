@@ -8,11 +8,7 @@
     <link rel="stylesheet" href="~/Content/css/layoutad.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
     <div class="container-fluid">
@@ -21,19 +17,16 @@
                 <h4 class="sidebar-heading">Admin Menu</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <button id="btnShowUserManagement" class="btn btn-primary">Quản lý người dùng</button>
+                        <button class="btn btn-primary show-section" data-target="#user-management-partial">Quản lý người dùng</button>
                     </li>
                     <li class="nav-item">
-                        <button id="btnShowPromotions" class="btn btn-primary">Quản lí khuyến mại</button>
+                        <button class="btn btn-primary show-section" data-target="#danh-gia-partial">Quản lý đánh giá</button>
                     </li>
                     <li class="nav-item">
-                        <button id="btnShowPointManagement" class="btn btn-primary">Quản lý tích điểm</button>
+                        <button class="btn btn-primary show-section" data-target="#tich-diem-partial">Quản lý tích điểm</button>
                     </li>
                     <li class="nav-item">
-                        <button id="btnShowReviews" class="btn btn-primary">Quản lý đánh giá</button>
-                    </li>
-                    <li class="nav-item">
-                        <button id="btnLogout" class="btn btn-danger">Đăng xuất</button>
+                        <button class="btn btn-primary show-section" data-target="#khuyen-mai-partial">Quản lý khuyến mãi</button>
                     </li>
                 </ul>
                 <div class="logo">
@@ -43,50 +36,79 @@
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="container" id="main-content">
-                    @RenderBody() 
-                  
+                    @RenderBody()
+
                     <div id="user-management-partial" style="display: none;">
-                       @Html.Action("UserManagement", "QLUser")
+                        @Html.Action("Index", "QLUser")
                     </div>
 
                     <div id="danh-gia-partial" style="display: none;">
-                        @Html.Action("Index", "QLDanhGia") 
+                        @Html.Action("Index", "QLDanhGia")
+                    </div>
+
+                    <div id="tich-diem-partial" style="display: none;">
+                        @Html.Action("Index", "QLTichDiem")
+                    </div>
+
+                    <div id="khuyen-mai-partial" style="display: none;">
+                        <!-- Nội dung quản lý khuyến mãi -->
                     </div>
                 </div>
+            </main>
         </div>
-        </main>
-    </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
+    <script>
+        $(document).ready(function () {
+            // Khi nhấn vào nút, hiển thị phần tương ứng và ẩn các phần còn lại
+            $('.show-section').click(function () {
+                var target = $(this).data('target');
+
+                // Ẩn tất cả các phần
+                $('#user-management-partial, #danh-gia-partial, #tich-diem-partial, #khuyen-mai-partial').hide();
+
+                // Hiện phần tương ứng
+                $(target).show();
+            });
+        });
+    </script>
+</body>
+</html>
+<script type="text/javascript">
     $(document).ready(function () {
         $('#btnShowUserManagement').click(function () {
+            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
             $('#user-management-partial').toggle();
-            $('#danh-gia-partial').hide(); 
+            $('#danh-gia-partial').hide();
+            $('#tich-diem-partial').hide();
+            $('#khuyen-mai-partial').hide();
         });
 
-    $('#btnShowPromotions').click(function () {
-        alert("Quản lý khuyến mại đang được phát triển!");
+        $('#btnShowReviews').click(function () {
+            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
+            $('#danh-gia-partial').toggle();
+            $('#user-management-partial').hide();
+            $('#tich-diem-partial').hide();
+            $('#khuyen-mai-partial').hide();
         });
 
-    $('#btnShowPointManagement').click(function () {
-        alert("Quản lý tích điểm đang được phát triển!");
+        $('#btnShowPointManagement').click(function () {
+            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
+            $('#tich-diem-partial').toggle();
+            $('#user-management-partial').hide();
+            $('#danh-gia-partial').hide();
+            $('#khuyen-mai-partial').hide();
         });
 
-    $('#btnShowReviews').click(function () {
-        $('#danh-gia-partial').toggle();
-    $('#user-management-partial').hide(); 
-        });
-
-    $('#btnLogout').click(function () {
-        window.location.href = '@Url.Action("Logout", "Admin")';
+        $('#btnShowPromotions').click(function () {
+            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
+            $('#khuyen-mai-partial').toggle();
+            $('#user-management-partial').hide();
+            $('#danh-gia-partial').hide();
+            $('#tich-diem-partial').hide();
         });
     });
-    </script>
 
-
+</script>
 </body>
 </html>

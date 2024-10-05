@@ -19,6 +19,7 @@ namespace DD.Models
         public string noidung { get; set; }
         public Nullable<int> sosao { get; set; }
         public Nullable<System.DateTime> ngayDanhGia { get; set; }
+        public Nullable<bool> IsApproved { get; set; }
     
         public virtual NguoiDung NguoiDung { get; set; }
     }

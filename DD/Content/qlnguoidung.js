@@ -28,3 +28,23 @@ $('#editUserForm').on('submit', function (e) {
         }
     });
 });
+function deleteUser(maKH) {
+    if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+        $.ajax({
+            url: '@Url.Action("Delete", "QLUser")',
+            type: 'POST',
+            data: { maKH: maKH },
+            success: function (response) {
+                if (response.success) {
+                    alert('Người dùng đã được xóa thành công!');
+                    location.reload();
+                } else {
+                    alert('Lỗi: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Có lỗi xảy ra trong quá trình xóa người dùng.');
+            }
+        });
+    }
+}

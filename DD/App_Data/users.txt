@@ -1,0 +1,9 @@
+1,KH1,Nguyen Van A,100
+2,KH2,Tran Thi B,250
+3,KH3,Duong Van Hai,150
+4,KH4,Phan Thi Thu Van,50
+5,KH5,Nguyen Phuong Thao,24
+6,KH6,Nguyen Tuan Anh,35
+7,KH7,Vo Tan Nghia,8
+8,KH8,Thuy Vy,12
+9,KH9,Quynh Nhu,7
