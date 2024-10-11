@@ -1,0 +1,57 @@
+﻿@model DD.Models.SanPhamKhuyenMai
+
+@{
+    ViewBag.Title = "Thêm Sản Phẩm Khuyến Mãi";
+}
+
+<h2>Thêm Sản Phẩm Khuyến Mãi</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Sản Phẩm Khuyến Mãi</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.masanphamKM, "Mã Sản Phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.masanphamKM, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.masanphamKM, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.tensanpham, "Tên Sản Phẩm", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tensanpham, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.tensanpham, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.motaKhuyenMai, "Mô tả ", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.motaKhuyenMai, new { @class = "form-control", rows = 3 })
+                @Html.ValidationMessageFor(model => model.motaKhuyenMai, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.hinhAnh, "Hình Ảnh", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.hinhAnh, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.hinhAnh, "", new { @class = "text-danger" })
+                <p class="help-block">Vui lòng nhập tên file hình ảnh (ví dụ: SPKM01.jpg)</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Thêm Sản Phẩm" class="btn btn-success" />
+                @Html.ActionLink("Quay Lại", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

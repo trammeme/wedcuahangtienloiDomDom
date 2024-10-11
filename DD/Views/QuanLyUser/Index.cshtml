@@ -1,0 +1,91 @@
+﻿@model IEnumerable<DD.Models.NguoiDung>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                MÃ KHÁCH HÀNG
+            </th>
+            <th>
+                TÊN KHÁCH HÀNG
+            </th>
+            <th>
+                EMAIL
+            </th>
+            <th>
+                GIỚI TÍNH
+            </th>
+            <th>
+                THÁNG SINH
+            </th>
+            <th>
+                ĐỊA CHỈ
+            </th>
+            <th>
+                SỐ ĐIẸN THOẠI
+            </th>
+            <th>
+                TÊN ĐĂNG NHẬP
+            </th>
+            <th>
+                MẬT KHẨU
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaKH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenKH)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GioiTinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThangSinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiaChi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoDienThoai)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenDangNhap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatKhau)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "QuanLyUser", new { id = item.MaKH })">Sửa Người Dùng</a>
+
+                    <a href="@Url.Action("Detail", "QuanLyUser", new { id = item.MaKH })">Xem Chi Tiết</a>
+                    <a href="@Url.Action("Delete", "QuanLyUser", new { id = item.MaKH })">Xóa Người Dùng</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

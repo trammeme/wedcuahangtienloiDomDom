@@ -18,7 +18,6 @@ namespace DD.Models
         public QuanTriVien()
         {
             this.CuaHangs = new HashSet<CuaHang>();
-            this.BanTinMoiNgays = new HashSet<BanTinMoiNgay>();
         }
     
         public int adminID { get; set; }
@@ -27,7 +26,5 @@ namespace DD.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CuaHang> CuaHangs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BanTinMoiNgay> BanTinMoiNgays { get; set; }
     }
 }

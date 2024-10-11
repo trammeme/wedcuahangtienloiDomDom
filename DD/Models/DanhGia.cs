@@ -15,10 +15,11 @@ namespace DD.Models
     public partial class DanhGia
     {
         public string madanggia { get; set; }
-        public string maKH { get; set; }
+        public int maKH { get; set; }
         public string noidung { get; set; }
         public Nullable<int> sosao { get; set; }
         public Nullable<System.DateTime> ngayDanhGia { get; set; }
+        public string PhanHoi { get; set; }
         public Nullable<bool> IsApproved { get; set; }
     
         public virtual NguoiDung NguoiDung { get; set; }

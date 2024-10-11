@@ -12,15 +12,11 @@ namespace DD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class KhuyenMai
+    public partial class SanPham
     {
-        public string makhuyenmai { get; set; }
+        public string masanpham { get; set; }
+        public string tensanpham { get; set; }
         public string mota { get; set; }
-        public System.DateTime ngayBatDau { get; set; }
-        public System.DateTime ngayKetThuc { get; set; }
-        public string masanphamKM { get; set; }
-        public string hinhAnh { get; set; }
-    
-        public virtual SanPhamKhuyenMai SanPhamKhuyenMai { get; set; }
+        public decimal gia { get; set; }
     }
 }

@@ -1,0 +1,28 @@
+﻿@model DD.Models.CuaHang
+
+<h2>Thêm Cửa Hàng</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.macuahang)
+        @Html.TextBoxFor(m => m.macuahang, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.macuahang)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.makhuyenmai)
+        @Html.TextBoxFor(m => m.makhuyenmai, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.makhuyenmai)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.diachi)
+        @Html.TextBoxFor(m => m.diachi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.diachi)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+}
