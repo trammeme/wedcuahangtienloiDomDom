@@ -1,0 +1,106 @@
+﻿@model IEnumerable<DD.Models.DanhGia>
+
+<h2>Quản Lý Đánh Giá</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Đánh Giá</th>
+            <th>Mã Khách Hàng</th>
+            <th>Nội Dung</th>
+            <th>Số Sao</th>
+            <th>Ngày Đánh Giá</th>
+            <th>Phản Hồi</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var danhGia in Model)
+        {
+            <tr>
+                <td>@danhGia.madanggia</td>
+                <td>@danhGia.maKH</td>
+                <td>
+                    <input type="text" value="@danhGia.noidung" id="noidung_@danhGia.madanggia" />
+                </td>
+                <td>
+                    <input type="number" value="@danhGia.sosao" min="1" max="5" id="sosao_@danhGia.madanggia" />
+                </td>
+                <td>@danhGia.ngayDanhGia</td>
+                <td>
+                    <input type="text" value="@danhGia.PhanHoi" id="phanHoi_@danhGia.madanggia" />
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="updateDanhGia('@danhGia.madanggia')">Sửa</button>
+                    <button class="btn btn-danger" onclick="deleteDanhGia('@danhGia.madanggia')">Xóa</button>
+                    <button class="btn btn-info" onclick="replyToDanhGia('@danhGia.madanggia')">Phản Hồi</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function updateDanhGia(madanggia) {
+        var noidung = $('#noidung_' + madanggia).val();
+        var sosao = $('#sosao_' + madanggia).val();
+
+        $.ajax({
+            url: '@Url.Action("UpdateDanhGia", "QuanLyDanhGia")',
+            type: 'POST',
+            data: { madanggia: madanggia, noidung: noidung, sosao: sosao },
+            success: function (response) {
+                if (response.success) {
+                    alert('Cập nhật đánh giá thành công!');
+                } else {
+                    alert('Cập nhật đánh giá không thành công.');
+                }
+            },
+            error: function () {
+                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+            }
+        });
+    }
+
+    function deleteDanhGia(madanggia) {
+        if (confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) {
+            $.ajax({
+                url: '@Url.Action("DeleteDanhGia", "QuanLyDanhGia")',
+                type: 'POST',
+                data: { madanggia: madanggia },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Xóa đánh giá thành công!');
+                        location.reload(); // Tải lại trang để cập nhật danh sách
+                    } else {
+                        alert('Xóa đánh giá không thành công.');
+                    }
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+                }
+            });
+        }
+    }
+
+    function replyToDanhGia(madanggia) {
+        var phanHoi = $('#phanHoi_' + madanggia).val();
+
+        $.ajax({
+            url: '@Url.Action("ReplyToDanhGia", "QuanLyDanhGia")',
+            type: 'POST',
+            data: { madanggia: madanggia, phanHoi: phanHoi },
+            success: function (response) {
+                if (response.success) {
+                    alert('Phản hồi thành công!');
+                } else {
+                    alert('Phản hồi không thành công.');
+                }
+            },
+            error: function () {
+                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+            }
+        });
+    }
+</script>

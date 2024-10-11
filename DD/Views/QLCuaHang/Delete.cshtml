@@ -1,0 +1,41 @@
+﻿@model DD.Models.CuaHang
+
+<h2>Xóa Cửa Hàng</h2>
+
+<p>Bạn có chắc chắn muốn xóa cửa hàng này?</p>
+<div>
+    <h4>Cửa Hàng</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.macuahang)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.macuahang)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.makhuyenmai)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.makhuyenmai)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.diachi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.diachi)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "QLCuaHang", FormMethod.Post)) // Đảm bảo action là Delete thay vì DeleteConfirmed
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.macuahang)
+        @Html.HiddenFor(model => model.makhuyenmai) <!-- hidden value để truyền đi -->
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+</div>

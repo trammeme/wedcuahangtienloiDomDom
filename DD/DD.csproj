@@ -499,11 +499,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\DanhgiaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\qldanhgiaController.cs" />
-    <Compile Include="Controllers\QLTichDiemController.cs" />
-    <Compile Include="Controllers\QLUserController.cs" />
+    <Compile Include="Controllers\QLCuaHangController.cs" />
+    <Compile Include="Controllers\QLKhuyenMaiController.cs" />
+    <Compile Include="Controllers\QuanLyDanhGiaController.cs" />
+    <Compile Include="Controllers\QuanLyTichDiemController.cs" />
+    <Compile Include="Controllers\QuanLyUserController.cs" />
+    <Compile Include="Controllers\SanPhamKhuyenMaiController.cs" />
     <Compile Include="Controllers\TrangChuAdminController.cs" />
     <Compile Include="Controllers\TrangChuController.cs" />
     <Compile Include="Global.asax.cs">
@@ -511,59 +513,70 @@
     </Compile>
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\BanTinMoiNgay.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>dbdomlamlai.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CuaHang.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DanhGia.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbdomlamlai.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbdomlamlai.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbdomlamlai.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbdomlamlai.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbdomlamlai.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\DGnguoidung.cs" />
     <Compile Include="Models\KhuyenMai.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\Model1.Context.cs">
+    <Compile Include="Models\luck.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
+      <DependentUpon>luck.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.cs">
+    <Compile Include="Models\luck.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
+    <Compile Include="Models\luck.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>luck.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\NguoiDung.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\qldanhgia.cs" />
     <Compile Include="Models\QLUserViewModel.cs" />
     <Compile Include="Models\QuanTriVien.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\QuanTriVien1.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RegisterViewModel.cs" />
+    <Compile Include="Models\SanPham.cs">
+      <DependentUpon>luck.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SanPhamKhuyenMai.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SanPhamKhuyenMai1.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\SanPhamKhuyenMaiViewModel.cs" />
     <Compile Include="Models\TichDiem.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>luck.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TichDiemViewModel.cs" />
+    <Compile Include="Models\UserPointViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -602,15 +615,46 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Model1.Context.tt">
+    <Content Include="Images\caphe.jpg" />
+    <Content Include="Images\doanbanhbao.jpg" />
+    <Content Include="Images\doanbanhca.jpg" />
+    <Content Include="Images\doanchaca.jpg" />
+    <Content Include="Images\doankhoaitay.jpg" />
+    <Content Include="Images\khuyenmai\khuyenmai1.png" />
+    <Content Include="Images\khuyenmai\khuyenmai2.jpg" />
+    <Content Include="Images\khuyenmai\khuyenmai3.jpeg" />
+    <Content Include="Images\migasot.jpg" />
+    <Content Include="Images\nuocuongsuachuaxoai.jpg" />
+    <Content Include="Images\nuocuongxoai.jpg" />
+    <Content Include="Images\nuuongtrasen.jpg" />
+    <Content Include="Images\SanphamKhuyenMai\SPKM01.jpg" />
+    <Content Include="Images\SanphamKhuyenMai\SPKM2.jpg" />
+    <Content Include="Images\SanphamKhuyenMai\SPKM3.jpg" />
+    <Content Include="Images\SanphamKhuyenMai\SPKM4.jpg" />
+    <Content Include="Images\SanphamKhuyenMai\SPKM5.jpg" />
+    <Content Include="Images\SanphamKhuyenMai\SPKM6.jpg" />
+    <Content Include="Images\slider\dagachien.png" />
+    <Content Include="Images\slider\taoxanhtra.jpg" />
+    <Content Include="Images\slider\trasuanuong.jpg" />
+    <Content Include="Models\dbdomlamlai.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
+      <LastGenOutput>dbdomlamlai.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Model1.tt">
+    <Content Include="Models\dbdomlamlai.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
+      <LastGenOutput>dbdomlamlai.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\luck.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>luck.edmx</DependentUpon>
+      <LastGenOutput>luck.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\luck.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>luck.edmx</DependentUpon>
+      <LastGenOutput>luck.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -619,12 +663,19 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Images\khuyen-mai-giang-sinh-1.webp" />
-    <EntityDeploy Include="Models\Model1.edmx">
+    <EntityDeploy Include="Models\dbdomlamlai.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>dbdomlamlai.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
+    <Content Include="Models\dbdomlamlai.edmx.diagram">
+      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\luck.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>luck.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\luck.edmx.diagram">
+      <DependentUpon>luck.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -656,26 +707,30 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
-    <Content Include="Views\QLUser\Edit.cshtml" />
-    <Content Include="Views\QLUser\Create.cshtml" />
-    <Content Include="Views\qldanhgia\Delete.cshtml" />
-    <Content Include="Views\qldanhgia\Index.cshtml" />
-    <Content Include="Views\qldanhgia\Reply.cshtml" />
     <Content Include="Views\TrangChuAdmin\Index.cshtml" />
-    <Content Include="Views\QLUser\UserManagement.cshtml" />
-    <Content Include="Views\qldanhgia\_DanhGiaPartial.cshtml" />
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
-    <Content Include="Views\QLUser\Delete.cshtml" />
     <Content Include="Views\Shared\LayoutUser.cshtml" />
-    <Content Include="Views\QLUser\IndexQLND.cshtml" />
     <Content Include="Views\Home\HomeUser.cshtml" />
     <Content Include="Views\Danhgia.cshtml" />
     <Content Include="Views\Danhgia\Index.cshtml" />
-    <Content Include="Views\QLUser\Index.cshtml" />
-    <Content Include="Views\QLTichDiem\Create.cshtml" />
-    <Content Include="Views\QLTichDiem\Edit.cshtml" />
-    <Content Include="Views\QLTichDiem\Delete.cshtml" />
-    <Content Include="Views\QLTichDiem\Index.cshtml" />
+    <Content Include="Views\QLCuaHang\Create.cshtml" />
+    <Content Include="Views\QLCuaHang\Delete.cshtml" />
+    <Content Include="Views\QLCuaHang\Edit.cshtml" />
+    <Content Include="Views\QLCuaHang\Index.cshtml" />
+    <Content Include="Views\QLKhuyenMai\Create.cshtml" />
+    <Content Include="Views\QLKhuyenMai\Edit.cshtml" />
+    <Content Include="Views\QLKhuyenMai\Index.cshtml" />
+    <Content Include="Views\QLKhuyenMai\Delete.cshtml" />
+    <Content Include="Views\QuanLyUser\Index.cshtml" />
+    <Content Include="Views\QuanLyUser\Edit.cshtml" />
+    <Content Include="Views\QuanLyUser\Detail.cshtml" />
+    <Content Include="Views\QuanLyUser\Delete.cshtml" />
+    <Content Include="Views\QuanLyDanhGia\Index.cshtml" />
+    <Content Include="Views\SanPhamKhuyenMai\Create.cshtml" />
+    <Content Include="Views\SanPhamKhuyenMai\Delete.cshtml" />
+    <Content Include="Views\SanPhamKhuyenMai\Edit.cshtml" />
+    <Content Include="Views\QuanLyTichDiem\Index.cshtml" />
+    <Content Include="Views\SanPhamKhuyenMai\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

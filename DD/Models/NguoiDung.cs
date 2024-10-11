@@ -18,22 +18,20 @@ namespace DD.Models
         public NguoiDung()
         {
             this.DanhGias = new HashSet<DanhGia>();
-            this.TichDiems = new HashSet<TichDiem>();
         }
     
-        public string maKH { get; set; }
-        public string tenKH { get; set; }
-        public string email { get; set; }
-        public string gioitinh { get; set; }
-        public Nullable<int> thangsinh { get; set; }
-        public string diachi { get; set; }
-        public string sodienthoai { get; set; }
-        public string tendangnhap { get; set; }
-        public string matkhau { get; set; }
+        public int MaKH { get; set; }
+        public string TenKH { get; set; }
+        public string Email { get; set; }
+        public string GioiTinh { get; set; }
+        public Nullable<int> ThangSinh { get; set; }
+        public string DiaChi { get; set; }
+        public string SoDienThoai { get; set; }
+        public string TenDangNhap { get; set; }
+        public string MatKhau { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DanhGia> DanhGias { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TichDiem> TichDiems { get; set; }
+        public virtual TichDiem TichDiem { get; set; }
     }
 }

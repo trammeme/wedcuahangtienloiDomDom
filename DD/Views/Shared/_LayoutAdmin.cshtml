@@ -28,6 +28,9 @@
                     <li class="nav-item">
                         <button class="btn btn-primary show-section" data-target="#khuyen-mai-partial">Quản lý khuyến mãi</button>
                     </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary show-section" data-target="#san-pham-partial">Quản lý sản phẩm khuyến mãi</button>
+                    </li>
                 </ul>
                 <div class="logo">
                     <h1>DOMDOM</h1>
@@ -39,19 +42,23 @@
                     @RenderBody()
 
                     <div id="user-management-partial" style="display: none;">
-                        @Html.Action("Index", "QLUser")
+                        @Html.Action("Index", "QuanLyUser")
                     </div>
 
                     <div id="danh-gia-partial" style="display: none;">
-                        @Html.Action("Index", "QLDanhGia")
+                        @Html.Action("Index", "QuanLyDanhGia")
                     </div>
 
                     <div id="tich-diem-partial" style="display: none;">
-                        @Html.Action("Index", "QLTichDiem")
+                        @Html.Action("Index", "QuanLyTichDiem")
                     </div>
 
                     <div id="khuyen-mai-partial" style="display: none;">
-                        <!-- Nội dung quản lý khuyến mãi -->
+                        @Html.Action("Index", "QLKhuyenMai")
+                    </div>
+
+                    <div id="san-pham-partial" style="display: none;">
+                        @Html.Action("Index", "SanPhamKhuyenMai")
                     </div>
                 </div>
             </main>
@@ -65,50 +72,12 @@
                 var target = $(this).data('target');
 
                 // Ẩn tất cả các phần
-                $('#user-management-partial, #danh-gia-partial, #tich-diem-partial, #khuyen-mai-partial').hide();
+                $('#user-management-partial, #danh-gia-partial, #tich-diem-partial, #khuyen-mai-partial, #san-pham-partial').hide();
 
                 // Hiện phần tương ứng
                 $(target).show();
             });
         });
     </script>
-</body>
-</html>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btnShowUserManagement').click(function () {
-            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
-            $('#user-management-partial').toggle();
-            $('#danh-gia-partial').hide();
-            $('#tich-diem-partial').hide();
-            $('#khuyen-mai-partial').hide();
-        });
-
-        $('#btnShowReviews').click(function () {
-            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
-            $('#danh-gia-partial').toggle();
-            $('#user-management-partial').hide();
-            $('#tich-diem-partial').hide();
-            $('#khuyen-mai-partial').hide();
-        });
-
-        $('#btnShowPointManagement').click(function () {
-            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
-            $('#tich-diem-partial').toggle();
-            $('#user-management-partial').hide();
-            $('#danh-gia-partial').hide();
-            $('#khuyen-mai-partial').hide();
-        });
-
-        $('#btnShowPromotions').click(function () {
-            // Ẩn tất cả các phần tử trước khi hiện phần tử mới
-            $('#khuyen-mai-partial').toggle();
-            $('#user-management-partial').hide();
-            $('#danh-gia-partial').hide();
-            $('#tich-diem-partial').hide();
-        });
-    });
-
-</script>
 </body>
 </html>

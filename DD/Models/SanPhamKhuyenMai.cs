@@ -23,7 +23,7 @@ namespace DD.Models
         public string masanphamKM { get; set; }
         public string tensanpham { get; set; }
         public string motaKhuyenMai { get; set; }
-        public int thoigianhieuluc { get; set; }
+        public string hinhAnh { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<KhuyenMai> KhuyenMais { get; set; }

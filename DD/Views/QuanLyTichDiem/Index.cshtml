@@ -1,0 +1,71 @@
+﻿@using DD.Models
+
+@{
+    ViewBag.Title = "Quản Lý Tích Điểm";
+}
+
+<h2>Quản Lý Tích Điểm</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Khách Hàng</th>
+            <th>Tên Khách Hàng</th>
+            <th>Email</th>
+            <th>Số Điện Thoại</th>
+            <th>Điểm Tích Lũy</th>
+            <th>Cấp Thành Viên</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.MaKH</td>
+                <td>@user.TenKH</td>
+                <td>@user.Email</td>
+                <td>@user.SoDienThoai</td>
+                <td>@user.Diem</td>
+                <td>
+                    <button class="btn btn-success" onclick="capThanhVien('@user.MaKH', @user.Diem)">Cấp Thành Viên</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function capThanhVien(maKH, diem) {
+        let capBac = "";
+
+        // Xác định cấp bậc dựa trên điểm
+        if (diem >= 500) {
+            capBac = "Kim Cương";
+        } else if (diem >= 200) {
+            capBac = "Vàng";
+        } else if (diem >= 100) {
+            capBac = "Bạc";
+        } else {
+            alert('Điểm tích lũy không đủ để cấp thành viên.');
+            return;
+        }
+
+        // Gọi AJAX để cấp thành viên
+        $.ajax({
+            url: '@Url.Action("CapThanhVien", "QuanLyTichDiem")',
+            type: 'POST',
+            data: { maKH: maKH, capBac: capBac },
+            success: function (response) {
+                if (response.success) {
+                    alert('Cấp thành viên thành công cho mã khách hàng: ' + maKH + ' - Cấp bậc: ' + capBac);
+                } else {
+                    alert('Cấp thành viên không thành công. Vui lòng kiểm tra lại.');
+                }
+            },
+            error: function () {
+                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
+            }
+        });
+    }
+</script>

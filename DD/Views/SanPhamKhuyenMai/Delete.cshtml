@@ -1,0 +1,31 @@
+﻿@model DD.Models.SanPhamKhuyenMai
+
+<h2>Xóa sản phẩm khuyến mãi</h2>
+
+<div>
+    <h4>Sản phẩm khuyến mãi</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.masanphamKM)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.masanphamKM)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.motaKhuyenMai)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.motaKhuyenMai)
+        </dd>
+    </dl>
+
+    <h4>Bạn có chắc chắn muốn xóa sản phẩm này không?</h4>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.masanphamKM" />
+        <input type="submit" value="Xóa" class="btn btn-danger" />
+        @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+    }
+</div>

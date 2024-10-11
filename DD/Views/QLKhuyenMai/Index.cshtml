@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DD.Models.KhuyenMai>
+
+<h2>Danh sách khuyến mãi</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã khuyến mãi</th>
+            <th>Mô tả</th>
+            <th>Thời gian hiệu lực</th>
+            <th>Mã sản phẩm KM</th>
+            <th>Hình ảnh</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.makhuyenmai</td>
+                <td>@item.mota</td>
+                <td>@item.ngayBatDau.ToString("dd/MM/yyyy")</td>
+                <td>@item.ngayKetThuc.ToString("dd/MM/yyyy")</td>
+                <td>@item.masanphamKM</td>
+
+                <td>
+                    <img src="@Url.Content("~/Images/KhuyenMai/" + item.hinhAnh)" alt="Khuyến mãi" style="width: 100px; height: auto;" />
+                </td>
+                <td>
+                    <a href="@Url.Action("Delete", new { id = item.masanphamKM })">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "QLKhuyenMai")" class="btn btn-success">Thêm khuyến mãi mới</a>

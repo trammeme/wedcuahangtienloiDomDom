@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DD.Models.SanPhamKhuyenMai>
+
+@{
+    ViewBag.Title = "Danh Sách Sản Phẩm Khuyến Mãi";
+}
+
+<h2>Danh Sách Sản Phẩm Khuyến Mãi</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Sản Phẩm</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Mô Tả</th>
+            <th>Hình Ảnh</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.masanphamKM</td>
+                <td>@item.tensanpham</td>
+                <td>@item.motaKhuyenMai</td>
+                <td>
+
+                    <img src="@Url.Content(item.hinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
+                </td>
+                <td>
+                    <!-- Thêm các thao tác như sửa, xóa nếu cần -->
+                    <a href="@Url.Action("Edit", new { id = item.masanphamKM })">Sửa</a> |
+                    <a href="@Url.Action("Delete", new { id = item.masanphamKM })">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "SanPhamKhuyenMai")" class="btn btn-success">Thêm sản phẩm khuyến mãi mới</a>
