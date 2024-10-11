@@ -8,85 +8,55 @@ namespace DD.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string connectionString = "Data Source=MINU\\SQLEXPRESS;Initial Catalog=Dom1;Integrated Security=True;";
+        private string connectionString = "Data Source=MINU\\SQLEXPRESS;Initial Catalog=luck;Integrated Security=True;";
 
-        // GET: Register
-        [HttpGet]
+        // GET: Account/Register
         public ActionResult Register()
         {
             return View();
         }
 
-        public ActionResult Register(RegisterViewModel model)
+
+        [HttpPost]
+        public ActionResult Register(User user)
         {
             if (ModelState.IsValid)
             {
-                string maKH = GenerateMaKH(); // Gọi phương thức để tạo maKH
-
-                try
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
-                    {
-                        conn.Open();
-                        string query = "INSERT INTO NguoiDung (maKH, tenKH, email, gioiTinh, thangSinh, diaChi, soDienThoai, tenDangNhap, matKhau) " +
-                                       "VALUES (@MaKH, @TenKH, @Email, @GioiTinh, @ThangSinh, @DiaChi, @SoDienThoai, @TenDangNhap, @MatKhau)";
-                        SqlCommand cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@MaKH", maKH);
-                        cmd.Parameters.AddWithValue("@TenKH", model.TenKH);
-                        cmd.Parameters.AddWithValue("@Email", model.Email);
-                        cmd.Parameters.AddWithValue("@GioiTinh", model.GioiTinh);
-                        cmd.Parameters.AddWithValue("@ThangSinh", model.ThangSinh);
-                        cmd.Parameters.AddWithValue("@DiaChi", model.DiaChi);
-                        cmd.Parameters.AddWithValue("@SoDienThoai", model.SoDienThoai);
-                        cmd.Parameters.AddWithValue("@TenDangNhap", model.TenDangNhap);
-                        cmd.Parameters.AddWithValue("@MatKhau", model.MatKhau);
+                    conn.Open();
 
-                        cmd.ExecuteNonQuery();
+                    // Kiểm tra xem email đã tồn tại chưa
+                    SqlCommand checkEmailCmd = new SqlCommand("SELECT COUNT(*) FROM NguoiDung WHERE Email = @Email", conn);
+                    checkEmailCmd.Parameters.AddWithValue("@Email", user.Email);
+                    int emailExists = (int)checkEmailCmd.ExecuteScalar();
+
+                    if (emailExists > 0)
+                    {
+                        ModelState.AddModelError("Email", "Email đã được sử dụng. Vui lòng nhập email khác.");
+                        return View(user);
                     }
 
-                    TempData["SuccessMessage"] = "Tài khoản đã được đăng ký thành công!"; // Lưu thông báo thành công
+                    SqlCommand cmd = new SqlCommand("INSERT INTO NguoiDung (TenKH, Email, DiaChi, ThangSinh, GioiTinh, SoDienThoai, TenDangNhap, MatKhau) VALUES (@TenKH, @Email, @DiaChi, @ThangSinh, @GioiTinh, @SoDienThoai, @TenDangNhap, @MatKhau)", conn);
 
-                    return RedirectToAction("Login", "Account"); // Chuyển hướng về trang Login
+                    cmd.Parameters.AddWithValue("@TenKH", user.TenKH);
+                    cmd.Parameters.AddWithValue("@Email", user.Email);
+                    cmd.Parameters.AddWithValue("@DiaChi", user.DiaChi);
+                    cmd.Parameters.AddWithValue("@ThangSinh", user.ThangSinh); // Đảm bảo giá trị là kiểu int
+                    cmd.Parameters.AddWithValue("@GioiTinh", user.GioiTinh); // Truyền vào giá trị là "Nam" hoặc "Nữ"
+                    cmd.Parameters.AddWithValue("@SoDienThoai", user.SoDienThoai);
+                    cmd.Parameters.AddWithValue("@TenDangNhap", user.TenDangNhap);
+                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau); // Nên mã hóa mật khẩu
+
+
+                    cmd.ExecuteNonQuery();
                 }
-                catch (SqlException sqlEx)
-                {
-                    ModelState.AddModelError("", "Có lỗi xảy ra: " + sqlEx.Message);
-                }
+
+                TempData["Message"] = "Đăng ký thành công!";
+                return RedirectToAction("Index", "User"); // Chuyển đến trang User
             }
-
-            return View(model); 
+            return View(user);
         }
-
-
-        public string GenerateMaKH()
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                string checkQuery = "SELECT COUNT(*) FROM NguoiDung";
-                SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                int recordCount = (int)checkCmd.ExecuteScalar();
-
-                if (recordCount == 0)
-                {
-                    
-                    return "KH001";
-                }
-
-                
-                string query = "SELECT MAX(CAST(SUBSTRING(maKH, 3, LEN(maKH) - 2) AS INT)) " +
-                               "FROM NguoiDung WHERE LEN(maKH) > 2"; 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                object result = cmd.ExecuteScalar();
-
-               
-                int newMaKH = (result != DBNull.Value ? (int)result : 0) + 1;
-
-                return "KH" + newMaKH.ToString("D3"); 
-            }
-        }
-
         [HttpGet]
         public ActionResult Login(string returnUrl)
         {

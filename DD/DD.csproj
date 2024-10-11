@@ -540,6 +540,7 @@
     <Compile Include="Models\KhuyenMai.cs">
       <DependentUpon>luck.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\KhuyenMaiViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\luck.Context.cs">
       <AutoGen>True</AutoGen>
@@ -576,6 +577,7 @@
       <DependentUpon>luck.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TichDiemViewModel.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserPointViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -623,6 +625,8 @@
     <Content Include="Images\khuyenmai\khuyenmai1.png" />
     <Content Include="Images\khuyenmai\khuyenmai2.jpg" />
     <Content Include="Images\khuyenmai\khuyenmai3.jpeg" />
+    <Content Include="Images\khuyenmai\KM4.jpg" />
+    <Content Include="Images\khuyenmai\KM5.jpg" />
     <Content Include="Images\migasot.jpg" />
     <Content Include="Images\nuocuongsuachuaxoai.jpg" />
     <Content Include="Images\nuocuongxoai.jpg" />
@@ -662,7 +666,6 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Images\khuyen-mai-giang-sinh-1.webp" />
     <EntityDeploy Include="Models\dbdomlamlai.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>dbdomlamlai.Designer.cs</LastGenOutput>

@@ -1,4 +1,4 @@
-﻿@model DD.Models.KhuyenMai
+﻿@model DD.Models.KhuyenMaiViewModel
 
 @{
     Layout = null;
@@ -9,75 +9,59 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
+    <title>Delete Confirmation</title>
 </head>
 <body>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>KhuyenMai</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.makhuyenmai, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.makhuyenmai, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.makhuyenmai, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.mota, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.mota, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.mota, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ngayBatDau, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ngayBatDau, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ngayBatDau, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ngayKetThuc, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ngayKetThuc, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ngayKetThuc, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.masanphamKM, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.masanphamKM, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.masanphamKM, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.hinhAnh, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.hinhAnh, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.hinhAnh, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }
-
+    <h3>Are you sure you want to delete this?</h3>
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        <h4>KhuyenMai Details</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.MaKhuyenMai)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MaKhuyenMai)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MoTa)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MoTa)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.NgayBatDau)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NgayBatDau)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.NgayKetThuc)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NgayKetThuc)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MaSanPhamKM)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MaSanPhamKM)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HinhAnh)
+            </dt>
+            <dd>
+                <img src="@Url.Content(Model.HinhAnh)" alt="Hình ảnh khuyến mãi" style="width: 100px; height: auto;" />
+            </dd>
+        </dl>
+        @using (Html.BeginForm("DeleteConfirmed", "QLKhuyenMai", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.MaKhuyenMai" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+        }
+
     </div>
 </body>
 </html>

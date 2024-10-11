@@ -24,10 +24,13 @@
                 <td>@item.masanphamKM</td>
 
                 <td>
-                    <img src="@Url.Content("~/Images/KhuyenMai/" + item.hinhAnh)" alt="Khuyến mãi" style="width: 100px; height: auto;" />
+                    <img src="@Url.Content(item.hinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
                 </td>
                 <td>
-                    <a href="@Url.Action("Delete", new { id = item.masanphamKM })">Xóa</a>
+
+                    <a href="@Url.Action("Delete", new { id = item.makhuyenmai })">Xóa</a>
+                    <a href="@Url.Action("Edit", new { id = item.makhuyenmai })">sua</a>
+
                 </td>
             </tr>
         }
