@@ -1,69 +1,48 @@
-﻿@using DD.Models
-@model DD.Models.RegisterViewModel
+﻿@model DD.Models.User
 
-<head>
-    <link rel="stylesheet" href="~/Content/dangki.css" /> <!-- Liên kết đến file CSS mới -->
-</head>
+<h2>Đăng Ký Người Dùng</h2>
 
-<body>
-    <h2 class="text-center" style="color: #ff63417; font-family: 'Pacifico', cursive; font-size: 3em; margin-bottom: 30px;">Đăng Ký Tài Khoản Mới</h2>
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.TenKH)
+        @Html.TextBoxFor(model => model.TenKH, new { @class = "form-control" })
+    </div>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.TenKH, "Tên Khách Hàng:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.TenKH, new { @class = "form-control form-control-lg", placeholder = "Nhập tên khách hàng...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.TenKH, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ThangSinh)
+        @Html.TextBoxFor(model => model.ThangSinh, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.Email, "Email:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Nhập email...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.GioiTinh)
+        @Html.TextBoxFor(model => model.GioiTinh, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.GioiTinh, "Giới Tính:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.GioiTinh, new { @class = "form-control form-control-lg", placeholder = "Nam/Nữ", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.GioiTinh, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DiaChi)
+        @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.ThangSinh, "Tháng Sinh:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.ThangSinh, new { @class = "form-control form-control-lg", placeholder = "Nhập tháng sinh...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.ThangSinh, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.SoDienThoai)
+        @Html.TextBoxFor(model => model.SoDienThoai, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.DiaChi, "Địa Chỉ:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.DiaChi, new { @class = "form-control form-control-lg", placeholder = "Nhập địa chỉ...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.DiaChi, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TenDangNhap)
+        @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.SoDienThoai, "Số Điện Thoại:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.SoDienThoai, new { @class = "form-control form-control-lg", placeholder = "Nhập số điện thoại...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.SoDienThoai, "", new { @class = "text-danger" })
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.MatKhau)
+        @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control" })
+    </div>
 
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.TenDangNhap, "Tên Đăng Nhập:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.TextBoxFor(m => m.TenDangNhap, new { @class = "form-control form-control-lg", placeholder = "Nhập tên đăng nhập...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.TenDangNhap, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group text-center">
-            @Html.LabelFor(m => m.MatKhau, "Mật Khẩu:", new { @class = "control-label", style = "font-size: 1.5em;" })
-            @Html.PasswordFor(m => m.MatKhau, new { @class = "form-control form-control-lg", placeholder = "Nhập mật khẩu...", style = "background-color: #f9f9f9;" })
-            @Html.ValidationMessageFor(m => m.MatKhau, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">Đăng ký</button>
-        </div>    }
-
-    <script src="~/Scripts/jquery-3.5.1.min.js"></script> <!-- Liên kết đến jQuery -->
-    <script src="~/Content/dangki.js"></script> <!-- Liên kết đến file JS -->
-</body>
+    <input type="submit" value="Đăng Ký" class="btn btn-primary" />
+}

@@ -18,59 +18,127 @@ namespace DD.Controllers
                 return View(khuyenMais); // Truyền danh sách cho view
             }
 
-            // Tạo khuyến mãi mới
-            [HttpGet]
-            public ActionResult Create()
-            {
-                return View();
-            }
+        public ActionResult Create()
+        {
+            return View();
+        }
+        // Xử lý khi form được gửi
 
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult Create(KhuyenMai model, HttpPostedFileBase file)
+        // POST: SanPhamKhuyenMai/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(KhuyenMaiViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                var KM = new KhuyenMai
                 {
-                    // Kiểm tra và lưu hình ảnh (nếu có)
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        var path = Path.Combine(Server.MapPath("~/images/"), fileName);
-                        file.SaveAs(path);
-                        model.hinhAnh = "~/images/" + fileName; // Gán đường dẫn hình ảnh
-                    }
+                    makhuyenmai = model.MaKhuyenMai,
+                    mota = model.MoTa,
+                    ngayBatDau = model.NgayBatDau,
+                    ngayKetThuc = model.NgayKetThuc,
+                    masanphamKM= model.MaSanPhamKM,
+                    hinhAnh = $"~/Images/khuyenmai/{model.HinhAnh}" // Sửa chỗ này
+                };
 
-                    // Kiểm tra nếu masanphamKM có tồn tại trong SanPhamKhuyenMai
-                    var sanPham = db.SanPhamKhuyenMais.FirstOrDefault(sp => sp.masanphamKM == model.masanphamKM);
-                    if (sanPham != null)
-                    {
-                        // Thêm dữ liệu khuyến mãi vào CSDL
-                        db.KhuyenMais.Add(model);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", $"Mã sản phẩm '{model.masanphamKM}' không tồn tại.");
-                    }
-
-                }
-
-                return View(model); // Trả về model để hiển thị lỗi
+                db.KhuyenMais.Add(KM);
+                db.SaveChanges();
+                return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm
             }
 
-            // Xóa khuyến mãi
-            public ActionResult Delete(int id)
+            return View(model);
+        }
+
+
+        public ActionResult Delete(string id)
+        {
+            System.Diagnostics.Debug.WriteLine($"Delete method called with id: {id}");
+
+            var khuyenMai = db.KhuyenMais.Find(id);
+            if (khuyenMai == null)
+            {
+                return HttpNotFound();
+            }
+            var viewModel = new KhuyenMaiViewModel
+            {
+                MaKhuyenMai = khuyenMai.makhuyenmai,
+                MoTa = khuyenMai.mota,
+                NgayBatDau = khuyenMai.ngayBatDau,
+                NgayKetThuc = khuyenMai.ngayKetThuc,
+                MaSanPhamKM = khuyenMai.masanphamKM,
+                HinhAnh = khuyenMai.hinhAnh
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            System.Diagnostics.Debug.WriteLine($"DeleteConfirmed called with id: {id}");
+
+            try
             {
                 var khuyenMai = db.KhuyenMais.Find(id);
                 if (khuyenMai != null)
                 {
                     db.KhuyenMais.Remove(khuyenMai);
                     db.SaveChanges();
+                    // Optional: inform the user that deletion was successful  
                 }
-                return RedirectToAction("Index");
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Khuyen mai with id {id} not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error during deletion: {ex.Message}");
+                ModelState.AddModelError("", "Unable to delete the item. Please try again later.");
             }
 
+            return RedirectToAction("Index");
         }
+
+
+        public ActionResult Edit(string id)
+        {
+            var KhuyenMai = db.KhuyenMais.Find(id);
+            if (KhuyenMai == null)
+            {
+                return HttpNotFound();
+            }
+            return View(KhuyenMai);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(KhuyenMai model)
+        {
+            if (ModelState.IsValid)
+            {
+                var KhuyenMai = db.KhuyenMais.Find(model.makhuyenmai);
+                if (KhuyenMai != null)
+                {
+                    // Kiểm tra masanphamKM có tồn tại trong bảng SanPhamKhuyenMai
+                    var sanPham = db.SanPhamKhuyenMais.Find(model.masanphamKM);
+                    if (sanPham == null)
+                    {
+                        ModelState.AddModelError("MaSanPhamKM", "Mã sản phẩm không tồn tại.");
+                        return View(model);
+                    }
+
+                    KhuyenMai.masanphamKM = model.masanphamKM;
+                    KhuyenMai.mota = model.mota;
+                    KhuyenMai.ngayBatDau = model.ngayBatDau;
+                    KhuyenMai.ngayKetThuc = model.ngayKetThuc;
+                    KhuyenMai.hinhAnh = $"~/Images/khuyenmai/{model.hinhAnh}"; // Cập nhật hình ảnh
+
+                    db.SaveChanges();
+                    return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm
+                }
+            }
+            return View(model);
+        }
+
     }
+}
