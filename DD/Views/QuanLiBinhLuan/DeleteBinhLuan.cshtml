@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DD.Models.BinhLuan>
+
+@{
+    ViewBag.Title = "Quản Lý Bình Luận";
+}
+
+<h2>Quản Lý Bình Luận</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã Bình Luận</th>
+            <th>Mã Sản Phẩm</th>
+            <th>Mã Khách Hàng</th>
+            <th>Nội Dung</th>
+            <th>Ngày Bình Luận</th>
+            <th>Phản Hồi</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            int stt = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@stt</td>
+                    <td>@item.MaBinhLuan</td>
+                    <td>@item.MaSanPham</td>
+                    <td>@item.MaKH</td>
+                    <td>@item.NoiDung</td>
+                    <td>@item.NgayBinhLuan.ToShortDateString()</td>
+                    <td>@item.PhanHoi</td>
+                    <td>
+                        @using (Html.BeginForm("DeleteBinhLuan", "QuanLiBinhLuan", FormMethod.Post))
+                        {
+                            @Html.Hidden("mabinhluan", item.MaBinhLuan) <!-- Đảm bảo rằng tên hơn có chữ cái đầu là viết thường -->
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">Xóa</button>
+                        }
+                    </td>
+                </tr>
+                stt++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">Chưa có bình luận nào.</td>
+            </tr>
+        }
+    </tbody>
+</table>

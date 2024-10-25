@@ -1,48 +1,56 @@
 ﻿@model DD.Models.User
+<link rel="stylesheet" href="~/Content/dangki.css">
 
-<h2>Đăng Ký Người Dùng</h2>
+<div class="container">
+    <div class="form-container">
+        <h2>Đăng Ký Người Dùng</h2>
 
-@using (Html.BeginForm())
-{
-    <div class="form-group">
-        @Html.LabelFor(model => model.TenKH)
-        @Html.TextBoxFor(model => model.TenKH, new { @class = "form-control" })
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                @Html.Label("Tên khách hàng")
+                @Html.TextBoxFor(model => model.TenKH, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Email")
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Tháng sinh")
+                @Html.TextBoxFor(model => model.ThangSinh, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Giới tính")
+                @Html.TextBoxFor(model => model.GioiTinh, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Địa chỉ")
+                @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Số điện thoại")
+                @Html.TextBoxFor(model => model.SoDienThoai, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Tên đăng nhập")
+                @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Mật khẩu")
+                @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control" })
+            </div>
+
+            <div class="text-center">
+                <input type="submit" value="Đăng Ký" class="btn btn-primary" />
+            </div>        }
     </div>
+</div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email)
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ThangSinh)
-        @Html.TextBoxFor(model => model.ThangSinh, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.GioiTinh)
-        @Html.TextBoxFor(model => model.GioiTinh, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DiaChi)
-        @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.SoDienThoai)
-        @Html.TextBoxFor(model => model.SoDienThoai, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TenDangNhap)
-        @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.MatKhau)
-        @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control" })
-    </div>
-
-    <input type="submit" value="Đăng Ký" class="btn btn-primary" />
-}
+<script src="~/Content/dangki.js"></script>

@@ -7,16 +7,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.masanphamKM)
+            @Html.DisplayNameFor(model => model.MaSanPhamKM)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.masanphamKM)
+            @Html.DisplayFor(model => model.MoTaKhuyenMai)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.motaKhuyenMai)
+            @Html.DisplayNameFor(model => model.MoTaKhuyenMai)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.motaKhuyenMai)
+            @Html.DisplayFor(model => model.MoTaKhuyenMai)
         </dd>
     </dl>
 
@@ -24,7 +24,7 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        <input type="hidden" name="id" value="@Model.masanphamKM" />
+        <input type="hidden" name="id" value="@Model.MaSanPhamKM" />
         <input type="submit" value="Xóa" class="btn btn-danger" />
         @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
     }

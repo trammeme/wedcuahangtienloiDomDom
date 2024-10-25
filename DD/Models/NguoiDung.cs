@@ -17,7 +17,7 @@ namespace DD.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public NguoiDung()
         {
-            this.DanhGias = new HashSet<DanhGia>();
+            this.BinhLuans = new HashSet<BinhLuan>();
         }
     
         public int MaKH { get; set; }
@@ -31,7 +31,7 @@ namespace DD.Models
         public string MatKhau { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DanhGia> DanhGias { get; set; }
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
         public virtual TichDiem TichDiem { get; set; }
     }
 }

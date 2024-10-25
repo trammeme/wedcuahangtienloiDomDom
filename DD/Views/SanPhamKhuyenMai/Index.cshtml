@@ -2,7 +2,8 @@
 
 @{
     ViewBag.Title = "Danh Sách Sản Phẩm Khuyến Mãi";
-}
+ <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    }
 
 <h2>Danh Sách Sản Phẩm Khuyến Mãi</h2>
 
@@ -20,17 +21,17 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.masanphamKM</td>
-                <td>@item.tensanpham</td>
-                <td>@item.motaKhuyenMai</td>
+                <td>@item.MaSanPhamKM</td>
+                <td>@item.TenSanPham</td>
+                <td>@item.MoTaKhuyenMai</td>
                 <td>
 
-                    <img src="@Url.Content(item.hinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
+                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
                 </td>
                 <td>
                     <!-- Thêm các thao tác như sửa, xóa nếu cần -->
-                    <a href="@Url.Action("Edit", new { id = item.masanphamKM })">Sửa</a> |
-                    <a href="@Url.Action("Delete", new { id = item.masanphamKM })">Xóa</a>
+                    <a href="@Url.Action("Edit", new { id = item.MaSanPhamKM })">Sửa</a> |
+                    <a href="@Url.Action("Delete", new { id = item.MaSanPhamKM })">Xóa</a>
                 </td>
             </tr>
         }

@@ -10,7 +10,7 @@ namespace DD.Controllers
     public class SanPhamKhuyenMaiController : Controller
     {
         // Khởi tạo context
-        private luckEntities db = new luckEntities();
+        private thuaEntities1 db = new thuaEntities1();
 
         // GET: SanPhamKhuyenMai
         public ActionResult Index()
@@ -36,10 +36,10 @@ namespace DD.Controllers
             {
                 var sanPham = new SanPhamKhuyenMai
                 {
-                    masanphamKM = model.MasanphamKM,
-                    tensanpham = model.Tensanpham,
-                    motaKhuyenMai = model.MotaKhuyenMai,
-                    hinhAnh = $"~/Images/SanPhamKhuyenMai/{model.HinhAnh}" // Sửa chỗ này
+                    MaSanPhamKM = model.MasanphamKM,
+                    TenSanPham = model.Tensanpham,
+                    MoTaKhuyenMai = model.MotaKhuyenMai,
+                    HinhAnh = $"~/Images/SanPhamKhuyenMai/{model.HinhAnh}" // Sửa chỗ này
                 };
 
                 db.SanPhamKhuyenMais.Add(sanPham);
@@ -94,11 +94,11 @@ namespace DD.Controllers
                 var sanPhamKhuyenMai = db.SanPhamKhuyenMais.Find(model.MasanphamKM);
                 if (sanPhamKhuyenMai != null)
                 {
-                    sanPhamKhuyenMai.masanphamKM = model.MasanphamKM;
+                    sanPhamKhuyenMai.MaSanPhamKM = model.MasanphamKM;
 
-                    sanPhamKhuyenMai.tensanpham = model.Tensanpham;
-                    sanPhamKhuyenMai.motaKhuyenMai = model.MotaKhuyenMai;
-                    sanPhamKhuyenMai.hinhAnh = $"~/Images/SanPhamKhuyenMai/{model.HinhAnh}"; // Cập nhật hình ảnh
+                    sanPhamKhuyenMai.TenSanPham = model.Tensanpham;
+                    sanPhamKhuyenMai.MoTaKhuyenMai = model.MotaKhuyenMai;
+                    sanPhamKhuyenMai.HinhAnh = $"~/Images/SanPhamKhuyenMai/{model.HinhAnh}"; // Cập nhật hình ảnh
 
                     db.SaveChanges();
                     return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm

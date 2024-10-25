@@ -5,13 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using System.Data.Entity.Validation;
 
 namespace DD.Controllers
 { public class QLKhuyenMaiController : Controller
         {
-            luckEntities db = new luckEntities();
+        thuaEntities1 db = new thuaEntities1();
 
-            // Hiển thị danh sách khuyến mãi
             public ActionResult Index()
             {
                 var khuyenMais = db.KhuyenMais.ToList(); // Lấy danh sách khuyến mãi
@@ -32,23 +32,39 @@ namespace DD.Controllers
         {
             if (ModelState.IsValid)
             {
-                var KM = new KhuyenMai
+                try
                 {
-                    makhuyenmai = model.MaKhuyenMai,
-                    mota = model.MoTa,
-                    ngayBatDau = model.NgayBatDau,
-                    ngayKetThuc = model.NgayKetThuc,
-                    masanphamKM= model.MaSanPhamKM,
-                    hinhAnh = $"~/Images/khuyenmai/{model.HinhAnh}" // Sửa chỗ này
-                };
+                    var KM = new KhuyenMai
+                    {
+                        MaKhuyenMai = model.MaKhuyenMai,
+                        TenKhuyenMai = model.TenKhuyenMai, // Gán giá trị cho TenKhuyenMai
+                        MoTa = model.MoTa,
+                        NgayBatDau = model.NgayBatDau,
+                        NgayKetThuc=model.NgayKetThuc,
+                        MaSanPhamKM = model.MaSanPhamKM,
+                        HinhAnh = model.HinhAnh
+                    };
 
-                db.KhuyenMais.Add(KM);
-                db.SaveChanges();
-                return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm
+                    db.KhuyenMais.Add(KM);
+                    db.SaveChanges();
+                    return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    // Lặp qua các lỗi và thêm vào ModelState để hiển thị
+                    foreach (var validationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                }
             }
-
+            // Nếu có lỗi, view sẽ hiển thị lỗi validation
             return View(model);
         }
+
 
 
         public ActionResult Delete(string id)
@@ -62,12 +78,12 @@ namespace DD.Controllers
             }
             var viewModel = new KhuyenMaiViewModel
             {
-                MaKhuyenMai = khuyenMai.makhuyenmai,
-                MoTa = khuyenMai.mota,
-                NgayBatDau = khuyenMai.ngayBatDau,
-                NgayKetThuc = khuyenMai.ngayKetThuc,
-                MaSanPhamKM = khuyenMai.masanphamKM,
-                HinhAnh = khuyenMai.hinhAnh
+                MaKhuyenMai = khuyenMai.MaKhuyenMai,
+                MoTa = khuyenMai.MoTa,
+                NgayBatDau = khuyenMai.NgayBatDau,
+                NgayKetThuc = khuyenMai.NgayKetThuc,
+                MaSanPhamKM = khuyenMai.MaSanPhamKM,
+                HinhAnh = khuyenMai.HinhAnh
             };
             return View(viewModel);
         }
@@ -116,22 +132,22 @@ namespace DD.Controllers
         {
             if (ModelState.IsValid)
             {
-                var KhuyenMai = db.KhuyenMais.Find(model.makhuyenmai);
+                var KhuyenMai = db.KhuyenMais.Find(model.MaKhuyenMai);
                 if (KhuyenMai != null)
                 {
                     // Kiểm tra masanphamKM có tồn tại trong bảng SanPhamKhuyenMai
-                    var sanPham = db.SanPhamKhuyenMais.Find(model.masanphamKM);
+                    var sanPham = db.SanPhamKhuyenMais.Find(model.MaSanPhamKM);
                     if (sanPham == null)
                     {
                         ModelState.AddModelError("MaSanPhamKM", "Mã sản phẩm không tồn tại.");
                         return View(model);
                     }
 
-                    KhuyenMai.masanphamKM = model.masanphamKM;
-                    KhuyenMai.mota = model.mota;
-                    KhuyenMai.ngayBatDau = model.ngayBatDau;
-                    KhuyenMai.ngayKetThuc = model.ngayKetThuc;
-                    KhuyenMai.hinhAnh = $"~/Images/khuyenmai/{model.hinhAnh}"; // Cập nhật hình ảnh
+                    KhuyenMai.MaSanPhamKM = model.MaSanPhamKM;
+                    KhuyenMai.MoTa = model.MoTa;
+                    KhuyenMai.NgayBatDau = model.NgayBatDau;
+                    KhuyenMai.NgayKetThuc = model.NgayKetThuc;
+                    KhuyenMai.HinhAnh = $"~/Images/khuyenmai/{model.HinhAnh}"; // Cập nhật hình ảnh
 
                     db.SaveChanges();
                     return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm

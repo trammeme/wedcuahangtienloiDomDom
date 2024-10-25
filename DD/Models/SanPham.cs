@@ -14,9 +14,23 @@ namespace DD.Models
     
     public partial class SanPham
     {
-        public string masanpham { get; set; }
-        public string tensanpham { get; set; }
-        public string mota { get; set; }
-        public decimal gia { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SanPham()
+        {
+            this.BinhLuans = new HashSet<BinhLuan>();
+            this.SanPhamKhuyenMais = new HashSet<SanPhamKhuyenMai>();
+        }
+    
+        public int MaSanPham { get; set; }
+        public string TenSanPham { get; set; }
+        public string MoTa { get; set; }
+        public decimal Gia { get; set; }
+        public string HinhAnh { get; set; }
+        public string LoaiSanPham { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
     }
 }

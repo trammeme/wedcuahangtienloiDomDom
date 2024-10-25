@@ -17,20 +17,26 @@
                 <h4 class="sidebar-heading">Admin Menu</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#user-management-partial">Quản lý người dùng</button>
-                    </li>
-                    <li class="nav-item">
                         <button class="btn btn-primary show-section" data-target="#danh-gia-partial">Quản lý đánh giá</button>
                     </li>
                     <li class="nav-item">
                         <button class="btn btn-primary show-section" data-target="#tich-diem-partial">Quản lý tích điểm</button>
                     </li>
                     <li class="nav-item">
+                        <button class="btn btn-primary show-section" data-target="#san-pham-partial">Quản lý sản phẩm </button>
+                    </li>
+
+
+                    <li class="nav-item">
                         <button class="btn btn-primary show-section" data-target="#khuyen-mai-partial">Quản lý khuyến mãi</button>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#san-pham-partial">Quản lý sản phẩm khuyến mãi</button>
+                        <button class="btn btn-primary show-section" data-target="#user-management-partial">Quản lý người dùng</button>
                     </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary show-section" data-target="#san-pham-khuyen-mai-partial">Quản lý sản phẩm khuyến mãi</button>
+                    </li>
+
                 </ul>
                 <div class="logo">
                     <h1>DOMDOM</h1>
@@ -46,7 +52,7 @@
                     </div>
 
                     <div id="danh-gia-partial" style="display: none;">
-                        @Html.Action("Index", "QuanLyDanhGia")
+                        @Html.Action("Index", "QuanLiBinhLuan")
                     </div>
 
                     <div id="tich-diem-partial" style="display: none;">
@@ -56,10 +62,13 @@
                     <div id="khuyen-mai-partial" style="display: none;">
                         @Html.Action("Index", "QLKhuyenMai")
                     </div>
-
                     <div id="san-pham-partial" style="display: none;">
+                        @Html.Action("Index", "SanPham")
+                    </div>
+                    <div id="san-pham-khuyen-mai-partial" style="display: none;">
                         @Html.Action("Index", "SanPhamKhuyenMai")
                     </div>
+                    
                 </div>
             </main>
         </div>
@@ -72,7 +81,7 @@
                 var target = $(this).data('target');
 
                 // Ẩn tất cả các phần
-                $('#user-management-partial, #danh-gia-partial, #tich-diem-partial, #khuyen-mai-partial, #san-pham-partial').hide();
+                $('#user-management-partial, #danh-gia-partial, #tich-diem-partial, #khuyen-mai-partial, #san-pham-khuyen-mai-partial, #san-pham-partial').hide();
 
                 // Hiện phần tương ứng
                 $(target).show();

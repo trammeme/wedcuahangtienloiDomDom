@@ -3,24 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to DomDom</title>
-    <link rel="stylesheet" href="~/Content/trangchu.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <title>Welcome to DomDom - Merry Christmas!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <link href="@Url.Content("~/Content/trangchu.css")" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
-    <div class="welcome-container">
-        <h1 class="cute-text">Welcome to<br>DomDom!</h1>
-
-        <div id="menu" class="hidden">
-            <button class="btn btn-login" onclick="window.location.href='@Url.Action("Login", "Account")'">Đăng nhập</button>
-            <button class="btn btn-register" onclick="window.location.href='@Url.Action("Register", "Account")'">Đăng ký</button>
+    <div class="container">
+        <div class="christmas-tree tree-left">🎄</div>
+        <div class="firefly"></div>
+        <h1 class="welcome-text">Welcome to DomDom!</h1>
+        <div class="login-register">
+            <button class="login-button" onclick="location.href='@Url.Action("Login", "Account")'">Đăng Nhập</button>
+            <button class="register-button" onclick="location.href='@Url.Action("Register", "Account")'">Đăng Ký</button>
         </div>
-
-        <div class="container">
-            <img src="https://sieucontent.com/wp-content/uploads/2020/12/24Artboard-2-2000x1125.webp" alt="Beautiful Image" class="beautiful-image">
-        </div>
+        <div class="christmas-tree tree-right">🎄</div>
     </div>
 
-    <script src="~/Content/trangchu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Thêm hiệu ứng tuyết rơi
+            createSnowflakes();
+
+            // Thêm hiệu ứng phát sáng cho text khi đom đóm bay qua
+            setTimeout(() => {
+                const welcomeText = document.querySelector('.welcome-text');
+                if (welcomeText) {
+                    welcomeText.classList.add('glow');
+                    setTimeout(() => {
+                        welcomeText.classList.remove('glow');
+                    }, 1000);
+                }
+            }, 3000);
+        });
+
+        const createSnowflakes = () => {
+            const snowflakes = '❅❆✻❄';
+            const numberOfSnowflakes = 30;
+
+            for (let i = 0; i < numberOfSnowflakes; i++) {
+                const snowflake = document.createElement('div');
+                const randomChar = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.className = 'snowflake';
+                snowflake.style.left = `${Math.random() * 100}%`;
+                snowflake.style.opacity = `${Math.random()}`;
+                snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
+                snowflake.innerHTML = randomChar;
+                snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`; // Thay đổi thời gian rơi
+                snowflake.style.animationDelay = `${Math.random() * 10}s`;
+                document.body.appendChild(snowflake);
+            }
+        };
+    </script>
 </body>
 </html>

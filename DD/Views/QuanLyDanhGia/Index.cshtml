@@ -1,39 +1,35 @@
-﻿@model IEnumerable<DD.Models.DanhGia>
+﻿@model IEnumerable<DD.Models.BinhLuan>
 
-<h2>Quản Lý Đánh Giá</h2>
+<h2>Quản Lý Bình Luận</h2>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Mã Đánh Giá</th>
+            <th>Mã Bình Luận</th>
             <th>Mã Khách Hàng</th>
             <th>Nội Dung</th>
-            <th>Số Sao</th>
-            <th>Ngày Đánh Giá</th>
+            <th>Ngày Bình Luận</th>
             <th>Phản Hồi</th>
             <th>Hành Động</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var danhGia in Model)
+        @foreach (var binhLuan in Model)
         {
             <tr>
-                <td>@danhGia.madanggia</td>
-                <td>@danhGia.maKH</td>
+                <td>@binhLuan.MaBinhLuan</td>
+                <td>@binhLuan.MaKH</td>
                 <td>
-                    <input type="text" value="@danhGia.noidung" id="noidung_@danhGia.madanggia" />
+                    <input type="text" value="@binhLuan.NoiDung" id="noidung_@binhLuan.MaBinhLuan" />
+                </td>
+                <td>@binhLuan.NgayBinhLuan</td>
+                <td>
+                    <textarea id="phanHoi_@binhLuan.MaBinhLuan">@binhLuan.PhanHoi</textarea>
                 </td>
                 <td>
-                    <input type="number" value="@danhGia.sosao" min="1" max="5" id="sosao_@danhGia.madanggia" />
-                </td>
-                <td>@danhGia.ngayDanhGia</td>
-                <td>
-                    <input type="text" value="@danhGia.PhanHoi" id="phanHoi_@danhGia.madanggia" />
-                </td>
-                <td>
-                    <button class="btn btn-primary" onclick="updateDanhGia('@danhGia.madanggia')">Sửa</button>
-                    <button class="btn btn-danger" onclick="deleteDanhGia('@danhGia.madanggia')">Xóa</button>
-                    <button class="btn btn-info" onclick="replyToDanhGia('@danhGia.madanggia')">Phản Hồi</button>
+                    <button class="btn btn-primary" onclick="updateBinhLuan('@binhLuan.MaBinhLuan')">Sửa</button>
+                    <button class="btn btn-danger" onclick="deleteBinhLuan('@binhLuan.MaBinhLuan')">Xóa</button>
+                    <button class="btn btn-info" onclick="replyToBinhLuan('@binhLuan.MaBinhLuan')">Phản Hồi</button>
                 </td>
             </tr>
         }
@@ -42,19 +38,18 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    function updateDanhGia(madanggia) {
-        var noidung = $('#noidung_' + madanggia).val();
-        var sosao = $('#sosao_' + madanggia).val();
+    function updateBinhLuan(maBinhLuan) {
+        var noiDung = $('#noidung_' + maBinhLuan).val();
 
         $.ajax({
-            url: '@Url.Action("UpdateDanhGia", "QuanLyDanhGia")',
+            url: '@Url.Action("UpdateBinhLuan", "QuanLyBinhLuan")',
             type: 'POST',
-            data: { madanggia: madanggia, noidung: noidung, sosao: sosao },
+            data: { maBinhLuan: maBinhLuan, noiDung: noiDung },
             success: function (response) {
                 if (response.success) {
-                    alert('Cập nhật đánh giá thành công!');
+                    alert('Cập nhật bình luận thành công!');
                 } else {
-                    alert('Cập nhật đánh giá không thành công.');
+                    alert('Cập nhật bình luận không thành công.');
                 }
             },
             error: function () {
@@ -63,18 +58,18 @@
         });
     }
 
-    function deleteDanhGia(madanggia) {
-        if (confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) {
+    function deleteBinhLuan(maBinhLuan) {
+        if (confirm('Bạn có chắc chắn muốn xóa bình luận này?')) {
             $.ajax({
-                url: '@Url.Action("DeleteDanhGia", "QuanLyDanhGia")',
+                url: '@Url.Action("DeleteBinhLuan", "QuanLyBinhLuan")',
                 type: 'POST',
-                data: { madanggia: madanggia },
+                data: { maBinhLuan: maBinhLuan },
                 success: function (response) {
                     if (response.success) {
-                        alert('Xóa đánh giá thành công!');
+                        alert('Xóa bình luận thành công!');
                         location.reload(); // Tải lại trang để cập nhật danh sách
                     } else {
-                        alert('Xóa đánh giá không thành công.');
+                        alert('Xóa bình luận không thành công.');
                     }
                 },
                 error: function () {
@@ -84,13 +79,13 @@
         }
     }
 
-    function replyToDanhGia(madanggia) {
-        var phanHoi = $('#phanHoi_' + madanggia).val();
+    function replyToBinhLuan(maBinhLuan) {
+        var phanHoi = $('#phanHoi_' + maBinhLuan).val();
 
         $.ajax({
-            url: '@Url.Action("ReplyToDanhGia", "QuanLyDanhGia")',
+            url: '@Url.Action("ReplyToBinhLuan", "QuanLyBinhLuan")',
             type: 'POST',
-            data: { madanggia: madanggia, phanHoi: phanHoi },
+            data: { maBinhLuan: maBinhLuan, phanHoi: phanHoi },
             success: function (response) {
                 if (response.success) {
                     alert('Phản hồi thành công!');
