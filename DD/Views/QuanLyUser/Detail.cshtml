@@ -2,8 +2,41 @@
 
 @{
     Layout = null;
-}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
+}
+<style>
+    body {
+        background-color: #003366; /* Nền xanh lá */
+        color: black; /* Chữ trắng */
+        font-family: Arial, sans-serif; /* Phông chữ */
+    }
+
+    .form-horizontal {
+        background-color: rgba(255, 255, 255, 0.9); /* Nền trắng trong suốt cho khung */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h4 {
+        color: snow; /* Tiêu đề màu đỏ */
+        font-size: 28px; /* Kích thước tiêu đề lớn */
+    }
+
+    .btn {
+        background-color: #f44336; /* Nút màu đỏ */
+        color: white; /* Chữ nút màu trắng */
+    }
+
+        .btn:hover {
+            background-color: #c62828; /* Màu nút khi hover */
+        }
+
+    .text-danger {
+        color: red; /* Màu cho thông báo lỗi */
+    }
+</style>
 <!DOCTYPE html>
 
 <html>
@@ -91,7 +124,7 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Back to List", "Index")
+        <a href="@Url.Action("Index", "Admin")" class="btn">Quay về menu chính</a>
     </p>
 </body>
 </html>

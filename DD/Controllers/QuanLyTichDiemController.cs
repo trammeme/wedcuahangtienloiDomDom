@@ -10,13 +10,13 @@ namespace DD.Controllers
 
     public class QuanLyTichDiemController : Controller
     {
-        luckEntities db = new luckEntities();
+        thuaEntities1 db = new thuaEntities1();
 
         // GET: QuanLyTichDiem
         public ActionResult Index()
         {
             var result = from user in db.NguoiDungs
-                         join point in db.TichDiems on user.MaKH equals point.maKH into points
+                         join point in db.TichDiems on user.MaKH equals point.MaKH into points
                          from point in points.DefaultIfEmpty() // Thực hiện LEFT JOIN
                          select new UserPointViewModel
                          {
@@ -24,7 +24,7 @@ namespace DD.Controllers
                              TenKH = user.TenKH,
                              Email = user.Email,
                              ThangSinh = user.ThangSinh,
-                             Diem = point != null ? point.diem : 0, // Nếu không có điểm thì là 0
+                             Diem = point != null ? point.Diem : 0, // Nếu không có điểm thì là 0
                              SoDienThoai = user.SoDienThoai // Gán giá trị SoDienThoai
                          };
 
@@ -34,13 +34,13 @@ namespace DD.Controllers
         public ActionResult ManagePoints()
         {
             var result = (from td in db.TichDiems
-                          join nd in db.NguoiDungs on td.maKH equals nd.MaKH
+                          join nd in db.NguoiDungs on td.MaKH equals nd.MaKH
                           select new
                           {
                               nd.MaKH,
                               nd.TenKH,
                               nd.SoDienThoai,
-                              td.diem
+                              td.Diem
                           }).ToList();
             bool success = true; // Thay đổi theo logic của bạn
 
@@ -51,7 +51,7 @@ namespace DD.Controllers
         public JsonResult CapThanhVien(int maKH, string capBac)
         {
             // Lấy thông tin điểm tích lũy của người dùng
-            var tichDiem = db.TichDiems.FirstOrDefault(td => td.maKH == maKH);
+            var tichDiem = db.TichDiems.FirstOrDefault(td => td.MaKH == maKH);
 
             if (tichDiem != null)
             {

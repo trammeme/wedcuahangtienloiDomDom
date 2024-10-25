@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="luckModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="whashbiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CuaHang">
           <Key>
             <PropertyRef Name="macuahang" />
@@ -32,6 +32,7 @@
             <PropertyRef Name="makhuyenmai" />
           </Key>
           <Property Name="makhuyenmai" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="tenkhuyenmai" Type="nvarchar" MaxLength="100" />
           <Property Name="mota" Type="nvarchar" MaxLength="100" />
           <Property Name="ngayBatDau" Type="date" Nullable="false" />
           <Property Name="ngayKetThuc" Type="date" Nullable="false" />
@@ -62,12 +63,14 @@
         </EntityType>
         <EntityType Name="SanPham">
           <Key>
-            <PropertyRef Name="masanpham" />
+            <PropertyRef Name="MaSanPham" />
           </Key>
-          <Property Name="masanpham" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="tensanpham" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="mota" Type="nvarchar" MaxLength="255" />
-          <Property Name="gia" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MaSanPham" Type="int" Nullable="false" />
+          <Property Name="TenSanPham" Type="nvarchar" MaxLength="255" />
+          <Property Name="MoTa" Type="nvarchar" MaxLength="500" />
+          <Property Name="Gia" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Hinh" Type="nvarchar" MaxLength="255" />
+          <Property Name="LoaiSanPham" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="SanPhamKhuyenMai">
           <Key>
@@ -86,7 +89,7 @@
           <Property Name="diem" Type="int" Nullable="false" />
           <Property Name="CapBac" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK__CuaHang__adminID__52593CB8">
+        <Association Name="FK__CuaHang__adminID__5070F446">
           <End Role="QuanTriVien" Type="Self.QuanTriVien" Multiplicity="0..1" />
           <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="*" />
           <ReferentialConstraint>
@@ -98,7 +101,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DanhGia__maKH__628FA481">
+        <Association Name="FK__DanhGia__maKH__5EBF139D">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="DanhGia" Type="Self.DanhGia" Multiplicity="*" />
           <ReferentialConstraint>
@@ -122,7 +125,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TichDiem__maKH__5DCAEF64">
+        <Association Name="FK__TichDiem__maKH__59FA5E80">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="TichDiem" Type="Self.TichDiem" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -134,7 +137,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="luckModelStoreContainer">
+        <EntityContainer Name="whashbiModelStoreContainer">
           <EntitySet Name="CuaHang" EntityType="Self.CuaHang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DanhGia" EntityType="Self.DanhGia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KhuyenMai" EntityType="Self.KhuyenMai" Schema="dbo" store:Type="Tables" />
@@ -143,11 +146,11 @@
           <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanPhamKhuyenMai" EntityType="Self.SanPhamKhuyenMai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TichDiem" EntityType="Self.TichDiem" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__CuaHang__adminID__52593CB8" Association="Self.FK__CuaHang__adminID__52593CB8">
+          <AssociationSet Name="FK__CuaHang__adminID__5070F446" Association="Self.FK__CuaHang__adminID__5070F446">
             <End Role="QuanTriVien" EntitySet="QuanTriVien" />
             <End Role="CuaHang" EntitySet="CuaHang" />
           </AssociationSet>
-          <AssociationSet Name="FK__DanhGia__maKH__628FA481" Association="Self.FK__DanhGia__maKH__628FA481">
+          <AssociationSet Name="FK__DanhGia__maKH__5EBF139D" Association="Self.FK__DanhGia__maKH__5EBF139D">
             <End Role="NguoiDung" EntitySet="NguoiDung" />
             <End Role="DanhGia" EntitySet="DanhGia" />
           </AssociationSet>
@@ -155,7 +158,7 @@
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMai" />
             <End Role="KhuyenMai" EntitySet="KhuyenMai" />
           </AssociationSet>
-          <AssociationSet Name="FK__TichDiem__maKH__5DCAEF64" Association="Self.FK__TichDiem__maKH__5DCAEF64">
+          <AssociationSet Name="FK__TichDiem__maKH__59FA5E80" Association="Self.FK__TichDiem__maKH__59FA5E80">
             <End Role="NguoiDung" EntitySet="NguoiDung" />
             <End Role="TichDiem" EntitySet="TichDiem" />
           </AssociationSet>
@@ -164,7 +167,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="luckModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="whashbiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="CuaHang">
           <Key>
             <PropertyRef Name="macuahang" />
@@ -174,7 +177,7 @@
           <Property Name="makhuyenmai" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="diachi" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="adminID" Type="Int32" />
-          <NavigationProperty Name="QuanTriVien" Relationship="Self.FK__CuaHang__adminID__52593CB8" FromRole="CuaHang" ToRole="QuanTriVien" />
+          <NavigationProperty Name="QuanTriVien" Relationship="Self.FK__CuaHang__adminID__5070F446" FromRole="CuaHang" ToRole="QuanTriVien" />
         </EntityType>
         <EntityType Name="DanhGia">
           <Key>
@@ -187,13 +190,14 @@
           <Property Name="ngayDanhGia" Type="DateTime" Precision="3" />
           <Property Name="PhanHoi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsApproved" Type="Boolean" />
-          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__DanhGia__maKH__628FA481" FromRole="DanhGia" ToRole="NguoiDung" />
+          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__DanhGia__maKH__5EBF139D" FromRole="DanhGia" ToRole="NguoiDung" />
         </EntityType>
         <EntityType Name="KhuyenMai">
           <Key>
             <PropertyRef Name="makhuyenmai" />
           </Key>
           <Property Name="makhuyenmai" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tenkhuyenmai" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="mota" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ngayBatDau" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="ngayKetThuc" Type="DateTime" Nullable="false" Precision="0" />
@@ -214,8 +218,8 @@
           <Property Name="SoDienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="TenDangNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="DanhGias" Relationship="Self.FK__DanhGia__maKH__628FA481" FromRole="NguoiDung" ToRole="DanhGia" />
-          <NavigationProperty Name="TichDiem" Relationship="Self.FK__TichDiem__maKH__5DCAEF64" FromRole="NguoiDung" ToRole="TichDiem" />
+          <NavigationProperty Name="DanhGias" Relationship="Self.FK__DanhGia__maKH__5EBF139D" FromRole="NguoiDung" ToRole="DanhGia" />
+          <NavigationProperty Name="TichDiem" Relationship="Self.FK__TichDiem__maKH__59FA5E80" FromRole="NguoiDung" ToRole="TichDiem" />
         </EntityType>
         <EntityType Name="QuanTriVien">
           <Key>
@@ -224,16 +228,18 @@
           <Property Name="adminID" Type="Int32" Nullable="false" />
           <Property Name="tendangnhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="matkhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CuaHangs" Relationship="Self.FK__CuaHang__adminID__52593CB8" FromRole="QuanTriVien" ToRole="CuaHang" />
+          <NavigationProperty Name="CuaHangs" Relationship="Self.FK__CuaHang__adminID__5070F446" FromRole="QuanTriVien" ToRole="CuaHang" />
         </EntityType>
         <EntityType Name="SanPham">
           <Key>
-            <PropertyRef Name="masanpham" />
+            <PropertyRef Name="MaSanPham" />
           </Key>
-          <Property Name="masanpham" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="tensanpham" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="mota" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="gia" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MaSanPham" Type="Int32" Nullable="false" />
+          <Property Name="TenSanPham" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Gia" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Hinh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LoaiSanPham" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SanPhamKhuyenMai">
           <Key>
@@ -252,9 +258,9 @@
           <Property Name="maKH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="diem" Type="Int32" Nullable="false" />
           <Property Name="CapBac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__TichDiem__maKH__5DCAEF64" FromRole="TichDiem" ToRole="NguoiDung" />
+          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__TichDiem__maKH__59FA5E80" FromRole="TichDiem" ToRole="NguoiDung" />
         </EntityType>
-        <Association Name="FK__CuaHang__adminID__52593CB8">
+        <Association Name="FK__CuaHang__adminID__5070F446">
           <End Role="QuanTriVien" Type="Self.QuanTriVien" Multiplicity="0..1" />
           <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="*" />
           <ReferentialConstraint>
@@ -266,7 +272,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__DanhGia__maKH__628FA481">
+        <Association Name="FK__DanhGia__maKH__5EBF139D">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="DanhGia" Type="Self.DanhGia" Multiplicity="*" />
           <ReferentialConstraint>
@@ -290,7 +296,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TichDiem__maKH__5DCAEF64">
+        <Association Name="FK__TichDiem__maKH__59FA5E80">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="TichDiem" Type="Self.TichDiem" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -302,7 +308,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="luckEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="whashbiEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CuaHangs" EntityType="Self.CuaHang" />
           <EntitySet Name="DanhGias" EntityType="Self.DanhGia" />
           <EntitySet Name="KhuyenMais" EntityType="Self.KhuyenMai" />
@@ -311,11 +317,11 @@
           <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
           <EntitySet Name="SanPhamKhuyenMais" EntityType="Self.SanPhamKhuyenMai" />
           <EntitySet Name="TichDiems" EntityType="Self.TichDiem" />
-          <AssociationSet Name="FK__CuaHang__adminID__52593CB8" Association="Self.FK__CuaHang__adminID__52593CB8">
+          <AssociationSet Name="FK__CuaHang__adminID__5070F446" Association="Self.FK__CuaHang__adminID__5070F446">
             <End Role="QuanTriVien" EntitySet="QuanTriViens" />
             <End Role="CuaHang" EntitySet="CuaHangs" />
           </AssociationSet>
-          <AssociationSet Name="FK__DanhGia__maKH__628FA481" Association="Self.FK__DanhGia__maKH__628FA481">
+          <AssociationSet Name="FK__DanhGia__maKH__5EBF139D" Association="Self.FK__DanhGia__maKH__5EBF139D">
             <End Role="NguoiDung" EntitySet="NguoiDungs" />
             <End Role="DanhGia" EntitySet="DanhGias" />
           </AssociationSet>
@@ -323,7 +329,7 @@
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMais" />
             <End Role="KhuyenMai" EntitySet="KhuyenMais" />
           </AssociationSet>
-          <AssociationSet Name="FK__TichDiem__maKH__5DCAEF64" Association="Self.FK__TichDiem__maKH__5DCAEF64">
+          <AssociationSet Name="FK__TichDiem__maKH__59FA5E80" Association="Self.FK__TichDiem__maKH__59FA5E80">
             <End Role="NguoiDung" EntitySet="NguoiDungs" />
             <End Role="TichDiem" EntitySet="TichDiems" />
           </AssociationSet>
@@ -333,9 +339,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="luckModelStoreContainer" CdmEntityContainer="luckEntities">
+        <EntityContainerMapping StorageEntityContainer="whashbiModelStoreContainer" CdmEntityContainer="whashbiEntities">
           <EntitySetMapping Name="CuaHangs">
-            <EntityTypeMapping TypeName="luckModel.CuaHang">
+            <EntityTypeMapping TypeName="whashbiModel.CuaHang">
               <MappingFragment StoreEntitySet="CuaHang">
                 <ScalarProperty Name="macuahang" ColumnName="macuahang" />
                 <ScalarProperty Name="makhuyenmai" ColumnName="makhuyenmai" />
@@ -345,7 +351,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DanhGias">
-            <EntityTypeMapping TypeName="luckModel.DanhGia">
+            <EntityTypeMapping TypeName="whashbiModel.DanhGia">
               <MappingFragment StoreEntitySet="DanhGia">
                 <ScalarProperty Name="madanggia" ColumnName="madanggia" />
                 <ScalarProperty Name="maKH" ColumnName="maKH" />
@@ -358,9 +364,10 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="KhuyenMais">
-            <EntityTypeMapping TypeName="luckModel.KhuyenMai">
+            <EntityTypeMapping TypeName="whashbiModel.KhuyenMai">
               <MappingFragment StoreEntitySet="KhuyenMai">
                 <ScalarProperty Name="makhuyenmai" ColumnName="makhuyenmai" />
+                <ScalarProperty Name="tenkhuyenmai" ColumnName="tenkhuyenmai" />
                 <ScalarProperty Name="mota" ColumnName="mota" />
                 <ScalarProperty Name="ngayBatDau" ColumnName="ngayBatDau" />
                 <ScalarProperty Name="ngayKetThuc" ColumnName="ngayKetThuc" />
@@ -370,7 +377,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NguoiDungs">
-            <EntityTypeMapping TypeName="luckModel.NguoiDung">
+            <EntityTypeMapping TypeName="whashbiModel.NguoiDung">
               <MappingFragment StoreEntitySet="NguoiDung">
                 <ScalarProperty Name="MaKH" ColumnName="MaKH" />
                 <ScalarProperty Name="TenKH" ColumnName="TenKH" />
@@ -385,7 +392,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="QuanTriViens">
-            <EntityTypeMapping TypeName="luckModel.QuanTriVien">
+            <EntityTypeMapping TypeName="whashbiModel.QuanTriVien">
               <MappingFragment StoreEntitySet="QuanTriVien">
                 <ScalarProperty Name="adminID" ColumnName="adminID" />
                 <ScalarProperty Name="tendangnhap" ColumnName="tendangnhap" />
@@ -394,17 +401,19 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SanPhams">
-            <EntityTypeMapping TypeName="luckModel.SanPham">
+            <EntityTypeMapping TypeName="whashbiModel.SanPham">
               <MappingFragment StoreEntitySet="SanPham">
-                <ScalarProperty Name="masanpham" ColumnName="masanpham" />
-                <ScalarProperty Name="tensanpham" ColumnName="tensanpham" />
-                <ScalarProperty Name="mota" ColumnName="mota" />
-                <ScalarProperty Name="gia" ColumnName="gia" />
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="Gia" ColumnName="Gia" />
+                <ScalarProperty Name="Hinh" ColumnName="Hinh" />
+                <ScalarProperty Name="LoaiSanPham" ColumnName="LoaiSanPham" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SanPhamKhuyenMais">
-            <EntityTypeMapping TypeName="luckModel.SanPhamKhuyenMai">
+            <EntityTypeMapping TypeName="whashbiModel.SanPhamKhuyenMai">
               <MappingFragment StoreEntitySet="SanPhamKhuyenMai">
                 <ScalarProperty Name="masanphamKM" ColumnName="masanphamKM" />
                 <ScalarProperty Name="tensanpham" ColumnName="tensanpham" />
@@ -414,7 +423,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TichDiems">
-            <EntityTypeMapping TypeName="luckModel.TichDiem">
+            <EntityTypeMapping TypeName="whashbiModel.TichDiem">
               <MappingFragment StoreEntitySet="TichDiem">
                 <ScalarProperty Name="maKH" ColumnName="maKH" />
                 <ScalarProperty Name="diem" ColumnName="diem" />

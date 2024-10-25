@@ -1,0 +1,98 @@
+﻿<link rel="stylesheet" href="~/Content/thanhmenu.css">
+<header>
+    <div class="top-bar">
+        <div class="opening-hours">Giờ mở cửa: Thứ 2 - Chủ nhật 24/7</div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." onkeyup="searchProducts()">
+            <button>Tìm</button>
+        </div>
+        <div class="user-info">
+            @if (Session["TenKhachHang"] != null)
+            {
+                <div class="user-dropdown">
+                    <p class="user-greeting" onclick="toggleDropdown()">Chào, @Session["TenKhachHang"]! <span class="arrow">▼</span></p>
+                    <div class="dropdown-content" id="userDropdown">
+                        <a href="#" onclick="showCustomerInfo()">Xem thông tin</a>
+                        <a href="@Url.Action("Logout", "Account")">Đăng Xuất</a>
+
+                        @if (Session["QRCodePath"] != null)
+                        {
+                            <div class="qr-code">
+                                <img src="@Url.Content("~/wwwroot/qrcodes/" + Session["QRCodePath"])"
+                                     alt="Mã QR của bạn"
+                                     style="width: 50px; height: 50px; cursor: pointer;"
+                                     onclick="showQrCode()" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p><a href="@Url.Action("Login", "Account")">Đăng nhập</a></p>
+            }
+        </div>
+    </div>
+</header>
+
+<!-- Modal cho thông tin khách hàng -->
+<div id="customerInfoModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="hideCustomerInfo()" style="cursor: pointer;">&times;</span>
+        <h3>Thông tin khách hàng</h3>
+        <p>Họ và tên: @Session["TenKhachHang"]</p>
+        <p>Email: @Session["Email"]</p>
+        <p>Điện thoại: @Session["PhoneNumber"]</p>
+        <!-- Thêm thông tin khách hàng khác nếu cần -->
+    </div>
+</div>
+
+<!-- Modal cho mã QR -->
+<div id="qrCodeModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="hideQrCode()" style="cursor: pointer;">&times;</span>
+        <img id="qrCodeImage" src="" alt="Mã QR" style="width: 100%; height: auto;" />
+    </div>
+</div>
+
+<script>
+    function toggleDropdown() {
+        var dropdown = document.getElementById("userDropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+
+    function showCustomerInfo() {
+        var modal = document.getElementById("customerInfoModal");
+        modal.style.display = 'block';
+    }
+
+    function hideCustomerInfo() {
+        var modal = document.getElementById("customerInfoModal");
+        modal.style.display = 'none';
+    }
+
+    function showQrCode() {
+        var modal = document.getElementById("qrCodeModal");
+        var qrCodeImage = document.querySelector('.qr-code img').src; // Lấy src của mã QR
+        document.getElementById("qrCodeImage").src = qrCodeImage;
+        modal.style.display = 'block';
+    }
+
+    function hideQrCode() {
+        var modal = document.getElementById("qrCodeModal");
+        modal.style.display = 'none';
+    }
+
+    // Đóng dropdown nếu người dùng nhấp ra ngoài
+    window.onclick = function (event) {
+        if (!event.target.matches('.user-greeting')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === "block") {
+                    openDropdown.style.display = "none";
+                }
+            }
+        }
+    }
+</script>

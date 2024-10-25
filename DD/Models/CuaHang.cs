@@ -14,11 +14,18 @@ namespace DD.Models
     
     public partial class CuaHang
     {
-        public string macuahang { get; set; }
-        public string makhuyenmai { get; set; }
-        public string diachi { get; set; }
-        public Nullable<int> adminID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CuaHang()
+        {
+            this.KhuyenMais = new HashSet<KhuyenMai>();
+        }
+    
+        public string MaCuaHang { get; set; }
+        public string DiaChi { get; set; }
+        public Nullable<int> AdminID { get; set; }
     
         public virtual QuanTriVien QuanTriVien { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KhuyenMai> KhuyenMais { get; set; }
     }
 }

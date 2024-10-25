@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DD.Models.SanPham>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Danh Sách Sản Phẩm</title>
+    
+</head>
+<body>
+    <h2>Danh Sách Sản Phẩm</h2>
+    <table class="table">
+        <tr>
+            <th>Mã Sản Phẩm</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Mô Tả</th>
+            <th>Giá</th>
+            <th>Hình Ảnh</th>
+            <th>Loại Sản Phẩm</th>
+            <th>Hành Động</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.MaSanPham)</td>
+                <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
+                <td>@Html.DisplayFor(modelItem => item.MoTa)</td>
+                <td>@Html.DisplayFor(modelItem => item.Gia)</td>
+                <td><img src="@Html.DisplayFor(modelItem => item.HinhAnh)" alt="Hình ảnh" style="width: 50px; height: auto;" /></td>
+                <td>@Html.DisplayFor(modelItem => item.LoaiSanPham)</td>
+                <td>
+                    <a href="@Url.Action("Delete", new { id = item.MaSanPham })" class="link-edit">Xóa</a>
+                    <a href="@Url.Action("Edit", new { id = item.MaSanPham })" class="link-edit">Sửa</a>
+                    <a href="@Url.Action("Create", new { id = item.MaSanPham })" class="link-edit">Thêm mới</a>
+                </td>
+            </tr>
+
+        }
+    </table>
+
+</body>
+</html>

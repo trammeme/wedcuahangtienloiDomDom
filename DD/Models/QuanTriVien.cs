@@ -20,9 +20,9 @@ namespace DD.Models
             this.CuaHangs = new HashSet<CuaHang>();
         }
     
-        public int adminID { get; set; }
-        public string tendangnhap { get; set; }
-        public string matkhau { get; set; }
+        public int AdminID { get; set; }
+        public string TenDangNhap { get; set; }
+        public string MatKhau { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CuaHang> CuaHangs { get; set; }

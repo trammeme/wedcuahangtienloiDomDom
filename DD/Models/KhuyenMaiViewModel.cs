@@ -6,11 +6,17 @@ using System.Web;
 
 namespace DD.Models
 {
+
+
     public class KhuyenMaiViewModel
     {
         [Required(ErrorMessage = "Mã khuyến mãi là bắt buộc.")]
         [StringLength(50, ErrorMessage = "Mã khuyến mãi không được vượt quá 50 ký tự.")]
         public string MaKhuyenMai { get; set; }
+
+        [Required(ErrorMessage = "Tên khuyến mãi là bắt buộc.")]
+        [StringLength(100, ErrorMessage = "Tên khuyến mãi không được vượt quá 100 ký tự.")]
+        public string TenKhuyenMai { get; set; }  // Thêm trường tên khuyến mãi
 
         [StringLength(100, ErrorMessage = "Mô tả không được vượt quá 100 ký tự.")]
         public string MoTa { get; set; }

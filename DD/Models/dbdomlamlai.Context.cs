@@ -26,7 +26,7 @@ namespace DD.Models
         }
     
         public virtual DbSet<CuaHang> CuaHangs { get; set; }
-        public virtual DbSet<DanhGia> DanhGias { get; set; }
+        public virtual DbSet<BinhLuan> BinhLuans { get; set; }
         public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
         public virtual DbSet<NguoiDung> NguoiDungs { get; set; }
         public virtual DbSet<QuanTriVien> QuanTriViens { get; set; }

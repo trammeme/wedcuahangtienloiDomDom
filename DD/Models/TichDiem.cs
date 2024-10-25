@@ -14,8 +14,8 @@ namespace DD.Models
     
     public partial class TichDiem
     {
-        public int maKH { get; set; }
-        public int diem { get; set; }
+        public int MaKH { get; set; }
+        public int Diem { get; set; }
         public string CapBac { get; set; }
     
         public virtual NguoiDung NguoiDung { get; set; }

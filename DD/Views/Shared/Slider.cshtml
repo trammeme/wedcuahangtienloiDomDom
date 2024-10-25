@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Mở Rộng</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+        }
+
+        .carousel {
+            height: 500px; /* Đặt chiều cao cho carousel */
+            margin-right: 0; /* Đảm bảo không có khoảng cách bên phải */
+            flex: 1; /* Cho phép carousel chiếm không gian còn lại */
+        }
+
+        .carousel-inner > .item > img {
+            width: 100%; /* Chiều rộng 100% */
+            height: 500px; /* Chiều cao 500px */
+        }
+
+        .carousel-caption h3 {
+            font-size: 24px; /* Kích thước chữ cho tiêu đề */
+            font-weight: bold; /* Đậm cho tiêu đề */
+        }
+
+        .carousel-caption p {
+            font-size: 16px; /* Kích thước chữ cho mô tả */
+        }
+
+        .btn-custom {
+            background-color: #f39c12; /* Màu nền cho nút */
+            color: white; /* Màu chữ */
+            border-radius: 5px; /* Bo góc cho nút */
+            margin-top: 10px; /* Khoảng cách trên nút */
+        }
+
+        .carousel-control {
+            background-image: none; /* Ẩn hình nền cho nút điều hướng */
+        }
+
+            .carousel-control .glyphicon-chevron-left,
+            .carousel-control .glyphicon-chevron-right {
+                font-size: 30px; /* Kích thước mũi tên lớn hơn */
+                color: #f39c12; /* Màu mũi tên điều hướng */
+            }
+
+        /* Thêm phần sidebar vào layout */
+        .sidebar {
+            width: 250px;
+            background-color: #ffeb3b; /* Màu nền cho sidebar */
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            margin-right: 20px; /* Khoảng cách bên phải của sidebar */
+        }
+
+            .sidebar h2 {
+                color: #3f51b5; /* Màu tiêu đề */
+            }
+
+            .sidebar a {
+                display: block;
+                color: #000;
+                text-decoration: none;
+                padding: 10px 0;
+            }
+
+                .sidebar a:hover {
+                    background-color: #3f51b5; /* Màu nền khi hover */
+                    color: #fff; /* Màu chữ khi hover */
+                }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .product-section {
+            margin-top: 20px;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Căn lề về bên trái */
+        }
+
+        .product-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            width: calc(30% - 20px); /* Điều chỉnh kích thước ô */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer; /* Thay đổi con trỏ khi di chuột qua */
+        }
+
+            .product-card img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 5px;
+            }
+
+        .description {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        #productDetail {
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none; /* Ẩn mặc định */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="carousel1" class="carousel slide carousel-fade" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel1" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel1" data-slide-to="1"></li>
+                        <li data-target="#carousel1" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img class="img-responsive" src="~/Images/slider/dagachien.png" alt="thumb">
+                            <div class="carousel-caption">
+                                <!-- Có thể thêm nội dung vào đây -->
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img class="img-responsive" src="~/Images/slider/taoxanhtra.jpg" alt="thumb">
+                            <div class="carousel-caption">
+                                <!-- Có thể thêm nội dung vào đây -->
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img class="img-responsive" src="~/Images/slider/trasuanuong.jpg" alt="thumb">
+                            <div class="carousel-caption">
+                                <!-- Có thể thêm nội dung vào đây -->
+                            </div>
+                        </div>
+                    </div>
+                    <a class="left carousel-control" href="#carousel1" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel1" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -5,21 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/Content/Site.css" />
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                
             </ul>
         </nav>
     </header>
 
     <main>
-        @RenderBody()
+        <div class="container">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Message"]
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["Error"]
+                </div>
+            }
+            @RenderBody()
+        </div>
     </main>
-
+    @Html.AntiForgeryToken()
     <footer>
     </footer>
 

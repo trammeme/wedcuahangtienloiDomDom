@@ -13,10 +13,10 @@ namespace DD.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class luckEntities : DbContext
+    public partial class thuaEntities1 : DbContext
     {
-        public luckEntities()
-            : base("name=luckEntities")
+        public thuaEntities1()
+            : base("name=thuaEntities1")
         {
         }
     
@@ -25,8 +25,8 @@ namespace DD.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<BinhLuan> BinhLuans { get; set; }
         public virtual DbSet<CuaHang> CuaHangs { get; set; }
-        public virtual DbSet<DanhGia> DanhGias { get; set; }
         public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
         public virtual DbSet<NguoiDung> NguoiDungs { get; set; }
         public virtual DbSet<QuanTriVien> QuanTriViens { get; set; }

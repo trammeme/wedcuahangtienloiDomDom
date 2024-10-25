@@ -1,0 +1,210 @@
+﻿@model DD.Models.SanPham
+
+<div id="productDetail" style="display:none;" class="product-detail">
+    <h3>Chi tiết sản phẩm</h3>
+    <img id="detailImage" src="@Model.HinhAnh" alt="Product Image" />
+    <h4 id="detailName">@Model.TenSanPham</h4>
+    <p id="detailDescription">@Model.MoTa</p>
+    <p id="detailPrice">@Model.Gia.ToString("C")</p>
+    <button onclick="hideDetail()">Đóng</button>
+
+    <div class="comments-section" data-product-id="@Model.MaSanPham">
+        <h2>Bình luận</h2>
+
+        @if (Model.BinhLuans != null && Model.BinhLuans.Any())
+        {
+            var productComments = Model.BinhLuans.Where(b => b.MaSanPham == Model.MaSanPham).ToList();
+
+            if (productComments.Any())
+            {
+                foreach (var comment in productComments)
+                {
+                    <div class="comment">
+                        <strong class="comment-author">@comment.NguoiDung.TenKH</strong>
+                        <p class="comment-content">@comment.NoiDung</p>
+                        <small>Ngày: @comment.NgayBinhLuan.ToString("dd/MM/yyyy HH:mm")</small>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="no-comments">Chưa có bình luận nào cho sản phẩm này.</p>
+            }
+        }
+        else
+        {
+            <p class="no-comments">Chưa có bình luận nào cho sản phẩm này.</p>
+        }
+    </div>
+
+    <div class="comment-form">
+        <h2>Gửi bình luận</h2>
+        @using (Html.BeginForm("AddComment", "Home", FormMethod.Post, new { id = "commentForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="masanpham" value="@Model.MaSanPham" />
+
+            <div class="form-group">
+                <textarea name="noiDung" class="form-control" rows="5" placeholder="Viết bình luận của bạn ở đây..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Gửi Bình Luận</button>
+        }
+    </div>
+    <div id="productDetail" class="modal">
+        <!-- Phần hiển thị thông tin sản phẩm giữ nguyên -->
+
+        <div class="comments-section">
+            <h4>Bình luận</h4>
+            <div id="productComments">
+                <!-- Bình luận sẽ được load động ở đây -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    <style>
+        .product-detail {
+            max-height: 300px; /* Kích thước tối đa của phần chi tiết sản phẩm */
+            overflow-y: auto; /* Cho phép cuộn theo chiều dọc */
+            border: 1px solid #ccc; /* Đường viền cho khoảng chi tiết */
+            padding: 10px; /* Padding cho khoảng chi tiết */
+            background-color: #f9f9f9; /* Màu nền */
+        }
+
+        .comment {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .comment-author {
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        .comment-content {
+            margin-top: 10px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .no-comments {
+            font-style: italic;
+            color: #7f8c8d;
+            text-align: center;
+        }
+
+        .comment-form {
+            margin-top: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+            .comment-form h2 {
+                font-size: 24px;
+                color: #2c3e50;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #3498db;
+                padding-bottom: 10px;
+            }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+            }
+
+        .login-prompt {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+            .login-prompt a {
+                color: #3498db;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+                .login-prompt a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+    <script>
+        function showDetail(name, description, price, image, maSanPham) {
+            var modal = document.getElementById('productDetail');
+            document.getElementById('detailImage').src = image;
+            document.getElementById('detailName').innerText = name;
+            document.getElementById('detailDescription').innerText = description;
+            document.getElementById('detailPrice').innerText = "Giá: " + price;
+
+            // Cập nhật maSanPham trong form
+            document.querySelector('input[name="masanpham"]').value = maSanPham;
+
+            // Load bình luận cho sản phẩm
+            loadComments(maSanPham);
+
+            modal.style.display = 'block';
+        }
+
+
+        // 3. Cập nhật hàm loadComments trong script để xử lý phản hồi:
+        function loadComments(maSanPham) {
+            $.ajax({
+                url: '/Home/GetComments',
+                type: 'GET',
+                data: { masanpham: maSanPham },
+                success: function (response) {
+                    var commentSection = $('.comments-section[data-product-id="' + maSanPham + '"]');
+                    if (response.length > 0) {
+                        var commentsHtml = '';
+                        response.forEach(function (comment) {
+                            commentsHtml += `
+                        <div class="comment">
+                            <strong class="comment-author">${comment.NguoiDung.TenKH}</strong>
+                            <p class="comment-content">${comment.NoiDung}</p>
+                            <small>Ngày: ${new Date(comment.NgayBinhLuan).toLocaleString()}</small>`;
+
+                            if (comment.PhanHoi) {
+                                commentsHtml += `
+                            <div class="admin-reply">
+                                <strong>Admin:</strong>
+                                <p>${comment.PhanHoi}</p>
+                                <small>Ngày phản hồi: ${new Date(comment.NgayPhanHoi).toLocaleString()}</small>
+                            </div>`;
+                            }
+
+                            commentsHtml += `</div>`;
+                        });
+                        commentSection.html(commentsHtml);
+                    } else {
+                        commentSection.html('<p class="no-comments">Chưa có bình luận nào cho sản phẩm này.</p>');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error loading comments:', error);
+                }
+            });
+        }
+
+
+    </script>

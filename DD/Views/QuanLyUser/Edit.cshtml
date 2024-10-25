@@ -2,8 +2,41 @@
 
 @{
     Layout = null;
-}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
+}
+<style>
+    body {
+        background-color: #003366; /* Nền xanh lá */
+        color: black; /* Chữ trắng */
+        font-family: Arial, sans-serif; /* Phông chữ */
+    }
+
+    .form-horizontal {
+        background-color: rgba(255, 255, 255, 0.9); /* Nền trắng trong suốt cho khung */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h4 {
+        color: snow; /* Tiêu đề màu đỏ */
+        font-size: 28px; /* Kích thước tiêu đề lớn */
+    }
+
+    .btn {
+        background-color: #f44336; /* Nút màu đỏ */
+        color: white; /* Chữ nút màu trắng */
+    }
+
+        .btn:hover {
+            background-color: #c62828; /* Màu nút khi hover */
+        }
+
+    .text-danger {
+        color: red; /* Màu cho thông báo lỗi */
+    }
+</style>
 <!DOCTYPE html>
 
 <html>
@@ -21,7 +54,7 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.MaKH, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Mã Khách Hàng", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DisplayFor(model => model.MaKH, new { htmlAttributes = new { @class = "form-control" } })  <!-- Hiển thị mật khẩu -->
                     @Html.HiddenFor(model => model.MaKH)  <!-- Trường ẩn để gửi lại mật khẩu -->
@@ -31,7 +64,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.TenKH, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Tên Khách Hàng", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.TenKH, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.TenKH, "", new { @class = "text-danger" })
@@ -39,7 +72,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
@@ -47,7 +80,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.GioiTinh, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Giới Tính", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.GioiTinh, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.GioiTinh, "", new { @class = "text-danger" })
@@ -55,7 +88,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ThangSinh, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Tháng Sinh", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.ThangSinh, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ThangSinh, "", new { @class = "text-danger" })
@@ -63,7 +96,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.DiaChi, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Địa Chỉ", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
@@ -71,7 +104,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.SoDienThoai, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Số Điện Thoại", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.SoDienThoai, "", new { @class = "text-danger" })
@@ -79,7 +112,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.TenDangNhap, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Tên Đăng Nhập", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DisplayFor(model => model.TenDangNhap, new { htmlAttributes = new { @class = "form-control" } })  <!-- Hiển thị mật khẩu -->
                     @Html.HiddenFor(model => model.TenDangNhap)  <!-- Trường ẩn để gửi lại mật khẩu -->
@@ -89,7 +122,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Mật Khẩu", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DisplayFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })  <!-- Hiển thị mật khẩu -->
                     @Html.HiddenFor(model => model.MatKhau)  <!-- Trường ẩn để gửi lại mật khẩu -->
@@ -106,8 +139,8 @@
         </div>
     }
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+<div>
+    <a href="@Url.Action("Index", "Admin")" class="btn">Quay về menu chính</a>
+</div>
 </body>
 </html>

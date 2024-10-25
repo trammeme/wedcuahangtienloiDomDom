@@ -14,13 +14,22 @@ namespace DD.Models
     
     public partial class KhuyenMai
     {
-        public string makhuyenmai { get; set; }
-        public string mota { get; set; }
-        public System.DateTime ngayBatDau { get; set; }
-        public System.DateTime ngayKetThuc { get; set; }
-        public string masanphamKM { get; set; }
-        public string hinhAnh { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public KhuyenMai()
+        {
+            this.CuaHangs = new HashSet<CuaHang>();
+        }
+    
+        public string MaKhuyenMai { get; set; }
+        public string TenKhuyenMai { get; set; }
+        public string MoTa { get; set; }
+        public System.DateTime NgayBatDau { get; set; }
+        public System.DateTime NgayKetThuc { get; set; }
+        public string MaSanPhamKM { get; set; }
+        public string HinhAnh { get; set; }
     
         public virtual SanPhamKhuyenMai SanPhamKhuyenMai { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CuaHang> CuaHangs { get; set; }
     }
 }

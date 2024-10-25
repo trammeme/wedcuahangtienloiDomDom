@@ -1,0 +1,149 @@
+﻿@model IEnumerable<DD.Models.BinhLuan>
+@{
+    ViewBag.Title = "Quản Lý Bình Luận";
+}
+
+<h2>Quản Lý Bình Luận</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã Bình Luận</th>
+            <th>Mã Sản Phẩm</th>
+            <th>Mã Khách Hàng</th>
+            <th>Nội Dung</th>
+            <th>Ngày Bình Luận</th>
+            <th>Phản Hồi</th>
+            <th>Ngày Phản Hồi</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            int stt = 1;
+            foreach (var item in Model)
+            {
+                <tr id="comment-row-@item.MaBinhLuan">
+                    <td>@stt</td>
+                    <td>@item.MaBinhLuan</td>
+                    <td>@item.MaSanPham</td>
+                    <td>@item.MaKH</td>
+                    <td>@item.NoiDung</td>
+                    <td>@item.NgayBinhLuan.ToShortDateString()</td>
+                    <td class="reply-content">
+                        <span class="reply-text">@item.PhanHoi</span>
+                        <textarea class="form-control reply-editor" style="display: none;">@item.PhanHoi</textarea>
+                    </td>
+                    <td class="reply-date">
+                        @(item.NgayPhanHoi.HasValue ? item.NgayPhanHoi.Value.ToString("dd/MM/yyyy HH:mm") : "")
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-reply" data-comment-id="@item.MaBinhLuan">
+                            @(string.IsNullOrEmpty(item.PhanHoi) ? "Trả lời" : "Sửa phản hồi")
+                        </button>
+                        <button class="btn btn-success btn-save-reply" style="display: none;" data-comment-id="@item.MaBinhLuan">
+                            Lưu
+                        </button>
+                        <button class="btn btn-secondary btn-cancel-reply" style="display: none;" data-comment-id="@item.MaBinhLuan">
+                            Hủy
+                        </button>
+                        <form action="@Url.Action("DeleteBinhLuan", "QuanLiBinhLuan")" method="post" style="display: inline-block;"
+                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
+                            <input type="hidden" name="mabinhluan" value="@item.MaBinhLuan" />
+                            <button type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                stt++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center">Chưa có bình luận nào.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+            // Click event for reply/edit button
+            $('.btn-reply').click(function () {
+                var commentId = $(this).data('comment-id');
+                var row = $('#comment-row-' + commentId);
+
+                // Show/hide elements
+                row.find('.reply-text').hide();
+                row.find('.reply-editor').show();
+                row.find('.btn-reply').hide();
+                row.find('.btn-save-reply, .btn-cancel-reply').show();
+            });
+
+            // Click event for cancel button
+            $('.btn-cancel-reply').click(function () {
+                var commentId = $(this).data('comment-id');
+                var row = $('#comment-row-' + commentId);
+
+                // Reset and hide elements
+                row.find('.reply-editor').hide().val(row.find('.reply-text').text());
+                row.find('.reply-text').show();
+                row.find('.btn-reply').show();
+                row.find('.btn-save-reply, .btn-cancel-reply').hide();
+            });
+
+            // Click event for save button
+            $('.btn-save-reply').click(function () {
+                var commentId = $(this).data('comment-id');
+                var row = $('#comment-row-' + commentId);
+                var replyText = row.find('.reply-editor').val();
+
+                $.ajax({
+                    url: '@Url.Action("ReplyToBinhLuan", "QuanLiBinhLuan")',
+                    type: 'POST',
+                    data: {
+                        mabinhluan: commentId,
+                        phanhoi: replyText
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Update UI
+                            row.find('.reply-text').text(replyText).show();
+                            row.find('.reply-editor').hide();
+                            row.find('.btn-reply').text('Sửa phản hồi').show();
+                            row.find('.btn-save-reply, .btn-cancel-reply').hide();
+                            row.find('.reply-date').text(response.ngayPhanHoi);
+
+                            // Show success message
+                            alert('Phản hồi đã được cập nhật thành công!');
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi cập nhật phản hồi.');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,13 +1,23 @@
 ﻿@model IEnumerable<DD.Models.KhuyenMai>
 
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Đường dẫn tới layout của bạn
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+}
+
+
 <h2>Danh sách khuyến mãi</h2>
 
 <table class="table">
     <thead>
         <tr>
             <th>Mã khuyến mãi</th>
+            <th>Tên khuyến mãi</th>
+
             <th>Mô tả</th>
-            <th>Thời gian hiệu lực</th>
+            <th>Thời gian bắt đầu</th>
+            <th>Thời gian kết thúc</th>
             <th>Mã sản phẩm KM</th>
             <th>Hình ảnh</th>
             <th>Hành động</th>
@@ -17,19 +27,21 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.makhuyenmai</td>
-                <td>@item.mota</td>
-                <td>@item.ngayBatDau.ToString("dd/MM/yyyy")</td>
-                <td>@item.ngayKetThuc.ToString("dd/MM/yyyy")</td>
-                <td>@item.masanphamKM</td>
+                <td>@item.MaKhuyenMai</td>
+                <td>@item.TenKhuyenMai</td>
+
+                <td>@item.MoTa</td>
+                <td>@item.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                <td>@item.NgayKetThuc.ToString("dd/MM/yyyy")</td>
+                <td>@item.MaSanPhamKM</td>
 
                 <td>
-                    <img src="@Url.Content(item.hinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
+                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
                 </td>
                 <td>
 
-                    <a href="@Url.Action("Delete", new { id = item.makhuyenmai })">Xóa</a>
-                    <a href="@Url.Action("Edit", new { id = item.makhuyenmai })">sua</a>
+                    <a href="@Url.Action("Delete", new { id = item.MaKhuyenMai })" class="link-edit">Xóa </a>
+                    <a href="@Url.Action("Edit", new { id = item.MaKhuyenMai })" class="link-edit">Sửa</a>
 
                 </td>
             </tr>
@@ -38,3 +50,4 @@
 </table>
 
 <a href="@Url.Action("Create", "QLKhuyenMai")" class="btn btn-success">Thêm khuyến mãi mới</a>
+<a href="@Url.Action("Index", "Admin")" class="btn btn-success">Quay về menu</a>
