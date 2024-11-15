@@ -1,19 +1,47 @@
 ﻿@model IEnumerable<DD.Models.SanPham>
-
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Danh Sách Sản Phẩm</title>
-    
+    <style>
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table th, .table td {
+                padding: 8px;
+                border: 1px solid #ddd;
+            }
+
+        .btn-delete {
+            color: white;
+            background-color: #dc3545;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 2px;
+            display: inline-block;
+        }
+
+        .link-edit {
+            color: white;
+            background-color: #14559e;
+            padding: 5px 10px;
+            text-decoration: none;
+            margin: 2px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     <h2>Danh Sách Sản Phẩm</h2>
+    <p>
+        @Html.ActionLink("Thêm Sản Phẩm Mới", "Create", null, new { @class = "link-edit" })
+    </p>
     <table class="table">
         <tr>
             <th>Mã Sản Phẩm</th>
@@ -24,25 +52,36 @@
             <th>Loại Sản Phẩm</th>
             <th>Hành Động</th>
         </tr>
-
         @foreach (var item in Model)
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.MaSanPham)</td>
                 <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
                 <td>@Html.DisplayFor(modelItem => item.MoTa)</td>
-                <td>@Html.DisplayFor(modelItem => item.Gia)</td>
-                <td><img src="@Html.DisplayFor(modelItem => item.HinhAnh)" alt="Hình ảnh" style="width: 50px; height: auto;" /></td>
+                <td>@string.Format("{0:N0}", item.Gia) VNĐ</td>
+                <td>
+                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" />
+                </td>
                 <td>@Html.DisplayFor(modelItem => item.LoaiSanPham)</td>
                 <td>
-                    <a href="@Url.Action("Delete", new { id = item.MaSanPham })" class="link-edit">Xóa</a>
-                    <a href="@Url.Action("Edit", new { id = item.MaSanPham })" class="link-edit">Sửa</a>
-                    <a href="@Url.Action("Create", new { id = item.MaSanPham })" class="link-edit">Thêm mới</a>
+                    @using (Html.BeginForm("Delete", "SanPham", new { id = item.MaSanPham }, FormMethod.Post, new { style = "display:inline;" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="@Url.Action("Edit", new { id = item.MaSanPham })" class="link-edit">Sửa</a>
+                        <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                            Xóa
+                        </button>
+                    }
                 </td>
             </tr>
-
         }
     </table>
 
+    @if (TempData["Error"] != null)
+    {
+        <div style="color: red; margin-top: 10px;">
+            @TempData["Error"]
+        </div>
+    }
 </body>
 </html>

@@ -17,8 +17,9 @@ namespace DD.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SanPham()
         {
-            this.BinhLuans = new HashSet<BinhLuan>();
+            this.CHITIETDATHANGs = new HashSet<CHITIETDATHANG>();
             this.SanPhamKhuyenMais = new HashSet<SanPhamKhuyenMai>();
+            this.BinhLuans = new HashSet<BinhLuan>();
         }
     
         public int MaSanPham { get; set; }
@@ -29,8 +30,10 @@ namespace DD.Models
         public string LoaiSanPham { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        public virtual ICollection<CHITIETDATHANG> CHITIETDATHANGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace DD.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DomlamlaiEntities : DbContext
+    public partial class camlyEntities : DbContext
     {
-        public DomlamlaiEntities()
-            : base("name=DomlamlaiEntities")
+        public camlyEntities()
+            : base("name=camlyEntities")
         {
         }
     
@@ -25,13 +25,15 @@ namespace DD.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CuaHang> CuaHangs { get; set; }
-        public virtual DbSet<BinhLuan> BinhLuans { get; set; }
-        public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
+        public virtual DbSet<CHITIETDATHANG> CHITIETDATHANGs { get; set; }
+        public virtual DbSet<DONHANG> DONHANGs { get; set; }
         public virtual DbSet<NguoiDung> NguoiDungs { get; set; }
+        public virtual DbSet<SanPham> SanPhams { get; set; }
+        public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
         public virtual DbSet<QuanTriVien> QuanTriViens { get; set; }
         public virtual DbSet<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
         public virtual DbSet<TichDiem> TichDiems { get; set; }
-        public virtual DbSet<BanTinMoiNgay> BanTinMoiNgays { get; set; }
+        public virtual DbSet<BinhLuan> BinhLuans { get; set; }
+        public virtual DbSet<CuaHang> CuaHangs { get; set; }
     }
 }

@@ -1,12 +1,68 @@
 ﻿@model IEnumerable<DD.Models.KhuyenMai>
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Đường dẫn tới layout của bạn
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<link rel="stylesheet" href="~/css/khuyenmai.css"> <!-- Liên kết tới file CSS của bạn -->
 
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+    /* Định dạng cho bảng */
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
 
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* Định dạng cho ảnh trong bảng */
+        .table img {
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Định dạng cho các nút */
+    .btn {
+        margin: 10px 5px;
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+    /* Định dạng cho các liên kết xóa/sửa */
+    .link-edit {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+        .link-edit:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+</style>
 <h2>Danh sách khuyến mãi</h2>
 
 <table class="table">
@@ -50,4 +106,3 @@
 </table>
 
 <a href="@Url.Action("Create", "QLKhuyenMai")" class="btn btn-success">Thêm khuyến mãi mới</a>
-<a href="@Url.Action("Index", "Admin")" class="btn btn-success">Quay về menu</a>

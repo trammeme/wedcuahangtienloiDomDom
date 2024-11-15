@@ -30,8 +30,8 @@ namespace DD.Models
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
     
+        public virtual TichDiem TichDiem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
-        public virtual TichDiem TichDiem { get; set; }
     }
 }

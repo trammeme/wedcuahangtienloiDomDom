@@ -10,7 +10,7 @@ namespace DD.Controllers
     public class SanPhamKhuyenMaiController : Controller
     {
         // Khởi tạo context
-        private thuaEntities1 db = new thuaEntities1();
+        private camlyEntities1 db = new camlyEntities1  ();
 
         // GET: SanPhamKhuyenMai
         public ActionResult Index()

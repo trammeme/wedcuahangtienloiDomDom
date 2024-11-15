@@ -60,6 +60,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Core, Version=1.8.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.8.15\lib\net46\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.8.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.8.15\lib\net451\Hangfire.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Antiforgery, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Antiforgery.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Antiforgery.dll</HintPath>
     </Reference>
@@ -244,11 +250,24 @@
     <Reference Include="Microsoft.Net.Http.Headers, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.5.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.Bson.1.0.1\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -431,10 +450,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
@@ -508,6 +523,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -520,74 +536,95 @@
     <Compile Include="Controllers\QuanLyUserController.cs" />
     <Compile Include="Controllers\SanPhamController.cs" />
     <Compile Include="Controllers\SanPhamKhuyenMaiController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TrangChuAdminController.cs" />
     <Compile Include="Controllers\TrangChuController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BanTinMoiNgay.cs">
-      <DependentUpon>dbdomlamlai.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\BinhLuan.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\camly4.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>camly4.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\camly4.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>camly4.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\camly4.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>camly4.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHITIETDATHANG.cs">
+      <DependentUpon>camly4.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cly.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cly.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cly.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cly.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cly.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cly.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\CuaHang.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\dbdomlamlai.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbdomlamlai.Context.tt</DependentUpon>
+    <Compile Include="Models\DONHANG.cs">
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\dbdomlamlai.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbdomlamlai.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\dbdomlamlai.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\DonHangViewModel.cs" />
+    <Compile Include="Models\GioHang.cs" />
     <Compile Include="Models\KhuyenMai.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\KhuyenMaiViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\MyViewModel.cs" />
     <Compile Include="Models\NguoiDung.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\qldanhgia.cs" />
     <Compile Include="Models\QuanTriVien.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SanPham.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SanPhamKhuyenMai.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SanPhamKhuyenMaiViewModel.cs" />
-    <Compile Include="Models\thua.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>thua.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\thua.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>thua.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\thua.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>thua.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\TichDiem.cs">
-      <DependentUpon>thua.tt</DependentUpon>
+      <DependentUpon>camly4.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TichDiemViewModel.cs" />
     <Compile Include="Models\User.cs" />
@@ -680,25 +717,35 @@
     <Content Include="Images\slider\trasuanuong.jpg" />
     <Content Include="Images\suachuaxoai.jpg" />
     <Content Include="Images\trasen.jpg" />
-    <Content Include="Models\dbdomlamlai.Context.tt">
+    <Content Include="Models\camly4.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
-      <LastGenOutput>dbdomlamlai.Context.cs</LastGenOutput>
+      <DependentUpon>camly4.edmx</DependentUpon>
+      <LastGenOutput>camly4.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\dbdomlamlai.tt">
+    <Content Include="Models\camly4.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
-      <LastGenOutput>dbdomlamlai.cs</LastGenOutput>
+      <DependentUpon>camly4.edmx</DependentUpon>
+      <LastGenOutput>camly4.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\thua.Context.tt">
+    <Content Include="Models\cly.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>thua.edmx</DependentUpon>
-      <LastGenOutput>thua.Context.cs</LastGenOutput>
+      <DependentUpon>cly.edmx</DependentUpon>
+      <LastGenOutput>cly.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\thua.tt">
+    <Content Include="Models\cly.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>thua.edmx</DependentUpon>
-      <LastGenOutput>thua.cs</LastGenOutput>
+      <DependentUpon>cly.edmx</DependentUpon>
+      <LastGenOutput>cly.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Models\wasabi.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -716,13 +763,6 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\dbdomlamlai.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>dbdomlamlai.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\dbdomlamlai.edmx.diagram">
-      <DependentUpon>dbdomlamlai.edmx</DependentUpon>
-    </Content>
     <EntityDeploy Include="Models\wasabi.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>wasabi.Designer.cs</LastGenOutput>
@@ -730,12 +770,26 @@
     <Content Include="Models\wasabi.edmx.diagram">
       <DependentUpon>wasabi.edmx</DependentUpon>
     </Content>
-    <EntityDeploy Include="Models\thua.edmx">
+    <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>thua.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\thua.edmx.diagram">
-      <DependentUpon>thua.edmx</DependentUpon>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\camly4.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>camly4.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\camly4.edmx.diagram">
+      <DependentUpon>camly4.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\cly.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>cly.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\cly.edmx.diagram">
+      <DependentUpon>cly.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -766,7 +820,6 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\TrangChuAdmin\Index.cshtml" />
     <Content Include="Views\Shared\_ValidationSummary.cshtml" />
-    <Content Include="Views\Shared\LayoutUser.cshtml" />
     <Content Include="Views\Danhgia.cshtml" />
     <Content Include="Views\Danhgia\Index.cshtml" />
     <Content Include="Views\QLCuaHang\Create.cshtml" />
@@ -794,7 +847,6 @@
     <Content Include="Views\Home\ProductDetail.cshtml" />
     <Content Include="Views\QuanLiBinhLuan\Index.cshtml" />
     <Content Include="Views\QuanLiBinhLuan\DeleteBinhLuan.cshtml" />
-    <Content Include="Views\Home\BinhLuanPartial.cshtml" />
     <Content Include="Views\Home\BirthdayEmail.cshtml" />
     <Content Include="Views\SanPham\Create.cshtml" />
     <Content Include="Views\SanPham\Delete.cshtml" />
@@ -802,11 +854,25 @@
     <Content Include="Views\SanPham\Index.cshtml" />
     <Content Include="Views\TrangChu\Index.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\Favorites.cshtml" />
+    <Content Include="Views\GioHang\Index.cshtml" />
+    <Content Include="Views\Home\GioHang.cshtml" />
+    <Content Include="Views\Home\DatHang.cshtml" />
+    <Content Include="Views\Home\XacNhanDonHang.cshtml" />
+    <Content Include="Views\Home\ThongBaoDatHang.cshtml" />
+    <Content Include="Views\GioHang\Create.cshtml" />
+    <Content Include="Views\Home\Detailsp.cshtml" />
+    <Content Include="Views\Shared\sliderbar.cshtml" />
+    <Content Include="Views\Home\DoiDiem.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Doidiem\" />
     <Folder Include="Views\QLSP\" />
     <Folder Include="Views\QRCode\" />
+    <Folder Include="Views\Search\" />
     <Folder Include="wwwroot\qrcodes\" />
   </ItemGroup>
   <ItemGroup>

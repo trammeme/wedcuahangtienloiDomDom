@@ -1,0 +1,31 @@
+﻿@model DD.Models.DonHangViewModel
+
+<h2>Đặt Hàng</h2>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label>Địa Chỉ Giao:</label>
+        <input asp-for="DonHang.DiaChiGiao" />
+    </div>
+    <div>
+        <label>Phương Thức Thanh Toán:</label>
+        <input asp-for="DonHang.PhuongThucThanhToan" />
+    </div>
+    <div>
+        <label>Ghi Chú:</label>
+        <textarea asp-for="DonHang.GhiChu"></textarea>
+    </div>
+    <h3>Chi Tiết Đơn Hàng</h3>
+    <div id="chiTietContainer">
+        <div class="chiTietItem">
+            <label>Sản Phẩm:</label>
+            <input type="text" name="ChiTietDonHangs[0].MaSanPham" placeholder="Mã sản phẩm" />
+            <label>Số Lượng:</label>
+            <input type="number" name="ChiTietDonHangs[0].SoLuong" />
+            <label>Giá Sản Phẩm:</label>
+            <input type="decimal" name="ChiTietDonHangs[0].GiaSanPham" />
+        </div>
+        <!-- Thêm phần tử chi tiết đơn hàng khác tại đây -->
+    </div>
+    <button type="submit">Đặt Hàng</button>
+</form>

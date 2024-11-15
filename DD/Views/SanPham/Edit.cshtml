@@ -9,24 +9,28 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
+    <title>Chỉnh Sửa Sản Phẩm</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
             background-color: #003366; /* Nền xanh lá */
-            color: black; /* Chữ trắng */
+            color: snow; /* Chữ trắng */
             font-family: Arial, sans-serif; /* Phông chữ */
         }
 
-        .form-horizontal {
-            background-color: rgba(255, 255, 255, 0.9); /* Nền trắng trong suốt cho khung */
+        .container {
+            max-width: 600px; /* Giới hạn chiều rộng khung */
+            margin-top: 50px; /* Khoảng cách trên */
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9); /* Nền trắng trong suốt cho khung */
+            border-radius: 10px; /* Bo tròn góc */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Đổ bóng */
         }
 
-        h4 {
-            color: snow; /* Tiêu đề màu đỏ */
-            font-size: 28px; /* Kích thước tiêu đề lớn */
+        h2 {
+            color: #f44336; /* Màu tiêu đề */
+            text-align: center; /* Căn giữa tiêu đề */
+            margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
         }
 
         .btn {
@@ -35,81 +39,89 @@
         }
 
             .btn:hover {
-                background-color: #c62828; /* Màu nút khi hover */
+                background-color: #c62828; /* Màu khi hover */
             }
 
         .text-danger {
             color: red; /* Màu cho thông báo lỗi */
         }
+
+        .form-group label {
+            color: black; /* Đặt màu cho nhãn */
+        }
+
+        .help-block {
+            font-size: 0.85em; /* Kích thước chữ nhỏ hơn cho các hướng dẫn */
+            color: #555; /* Màu xám nhạt */
+        }
     </style>
 </head>
 <body>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        
-        <div class="form-horizontal">
-            <h4>SanPham</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.MaSanPham, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.MaSanPham, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.MaSanPham, "", new { @class = "text-danger" })
+    <div class="container">
+        <h2>Chỉnh Sửa Sản Phẩm</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.Label("Mã Sản Phẩm", htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.EditorFor(model => model.MaSanPham, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MaSanPham, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Tên Sản Phẩm", htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TenSanPham, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Mô tả", htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.TextAreaFor(model => model.MoTa, new { @class = "form-control", rows = 3 })
+                        @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Hình Ảnh", htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.EditorFor(model => model.HinhAnh, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
+                        <p class="help-block">Vui lòng nhập tên file hình ảnh (ví dụ: SPKM01.jpg)</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Giá", htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.EditorFor(model => model.Gia, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Gia, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Loại Sản Phẩm", htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.EditorFor(model => model.LoaiSanPham, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LoaiSanPham, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div>
+                        <input type="submit" value="Cập Nhật Sản Phẩm" class="btn btn-success" />
+                        <a href="@Url.Action("Index", "Admin")" class="btn">Quay về menu chính</a>
+                    </div>
                 </div>
             </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.TenSanPham, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.TenSanPham, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.MoTa, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.Gia, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Gia, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Gia, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.HinhAnh, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.HinhAnh, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.LoaiSanPham, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LoaiSanPham, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.LoaiSanPham, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-    }
-    
-<div>
-    <a href="@Url.Action("Index", "Admin")" class="btn">Quay về menu chính</a>
-</div>
+        }
+    </div>
 </body>
 </html>

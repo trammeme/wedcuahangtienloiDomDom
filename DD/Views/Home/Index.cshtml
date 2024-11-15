@@ -1,4 +1,5 @@
-﻿@model DD.Models.MyViewModel
+﻿@using System.Linq
+@model DD.Models.MyViewModel
 
 @{
     ViewBag.Title = "Trang chủ";
@@ -37,7 +38,9 @@
         <a href="javascript:void(0);" onclick="showSection('thucuong')">Thức uống</a>
         <a href="javascript:void(0);" onclick="showSection('tatCaSanPham')">Tất cả sản phẩm</a>
         <h2><a href="javascript:void(0);" onclick="showSection('khuyenMaiSection')">Các khuyến mãi và ưu đãi</a></h2>
+
     </div>
+
 
     <div class="content">
         <div id="khuyenMaiSection" class="product-section">
@@ -55,15 +58,33 @@
                 </div>
             </div>
         </div>
+
+
         <div id="doan" class="product-section" style="display: none;">
             <h3>Đồ ăn</h3>
-            <div class="product-container">
-                @foreach (var item in doAn)
+            <div class="row text-center">
+                @foreach (var item in doAn) // thucAn là danh sách thực phẩm của bạn
                 {
-                    <div class="product-card" onclick="showDetail('@item.TenSanPham', '@item.MoTa', '@item.Gia', '@item.HinhAnh', '@item.MaSanPham')">
-                        <img src="@item.HinhAnh" alt="@item.TenSanPham" />
-                        <h4>@item.TenSanPham</h4>
-                        <p class="price">Giá: @item.Gia</p>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+                        <div class="thumbnail">
+                            <img src="@item.HinhAnh" alt="@item.TenSanPham" />
+                            <div class="caption">
+                                <h4 style="min-height:70px;">
+                                    <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
+                                </h4>
+                                <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
+                                <div class="product-buttons">
+                                    <!-- Nút yêu thích -->
+                                    <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
+                                        <i class="fas fa-heart"></i> <!-- Biểu tượng yêu thích -->
+                                    </button>
+                                    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                                        <input type="hidden" name="id" value="@item.MaSanPham" />
+                                        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
@@ -74,125 +95,172 @@
             <div class="product-container">
                 @foreach (var item in thucUong)
                 {
-                    <div class="product-card" onclick="showDetail('@item.TenSanPham', '@item.MoTa', '@item.Gia', '@item.HinhAnh', '@item.MaSanPham')">
-                        <img src="@item.HinhAnh" alt="@item.TenSanPham" />
-                        <h4>@item.TenSanPham</h4>
-                        <p class="price">Giá: @item.Gia</p>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+                        <div class="thumbnail">
+                            <img src="@item.HinhAnh" alt="@item.TenSanPham" />
+                            <div class="caption">
+                                <h4 style="min-height:70px;">
+                                    <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
+                                </h4>
+                                <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
+                                <div class="product-buttons">
+                                    <!-- Nút yêu thích -->
+                                    <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
+                                        <i class="fas fa-heart"></i> <!-- Biểu tượng yêu thích -->
+                                    </button>
+                                    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                                        <input type="hidden" name="id" value="@item.MaSanPham" />
+                                        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
         </div>
-
         <div id="tatCaSanPham" class="product-section" style="display:none;">
             <h3>Tất cả sản phẩm</h3>
-            <div class="product-container">
+            <div class="row text-center">
                 @foreach (var item in Model.SanPhams)
                 {
-                    <div class="product-card" onclick="showDetail('@item.TenSanPham', '@item.MoTa', '@item.Gia', '@item.HinhAnh', '@item.MaSanPham')">
-                        <img src="@item.HinhAnh" alt="@item.TenSanPham" />
-                        <h4>@item.TenSanPham</h4>
-                        <p class="price">Giá: @item.Gia</p>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+                        <div class="thumbnail">
+                            <img src="@item.HinhAnh" alt="@item.TenSanPham" />
+                            <div class="caption">
+                                <h4 style="min-height:70px;">
+                                    <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
+                                </h4>
+                                <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
+                                <div class="product-buttons">
+                                    <!-- Nút yêu thích -->
+                                    <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
+                                        <i class="fas fa-heart"></i> <!-- Biểu tượng trái tim từ Font Awesome -->
+                                    </button>
+                                    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                                        <input type="hidden" name="id" value="@item.MaSanPham" />
+                                        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
-        </div>
 
-        <!-- Modal cho chi tiết khuyến mãi -->
-        <div id="promotionModal" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
-            <div class="modal-content">
-                <span class="close" onclick="hidePromotionDetail()" style="cursor: pointer;">&times;</span>
-                <img id="promotionImage" src="" alt="Hình ảnh khuyến mãi" style="width: 100%; height: auto;" />
-                <h4 id="promotionName"></h4>
-                <p id="promotionDescription"></p>
-                <p id="promotionTime"></p>
+            <!-- Modal cho chi tiết sản phẩm -->
+            <div id="productDetail" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+                <div class="modal-content">
+                    <span class="close" onclick="hideDetail()" style="cursor: pointer;">&times;</span>
+                    <img id="detailImage" src="" alt="Hình ảnh sản phẩm" style="width: 100%; height: auto;" />
+                    <h4 id="detailName"></h4>
+                    <p id="detailDescription"></p>
+                    <p id="detailPrice"></p>
+                </div>
             </div>
+
+            <!-- Modal cho chi tiết khuyến mãi -->
+            <div id="promotionModal" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+                <div class="modal-content">
+                    <span class="close" onclick="hidePromotionDetail()" style="cursor: pointer;">&times;</span>
+                    <img id="promotionImage" src="" alt="Hình ảnh khuyến mãi" style="width: 100%; height: auto;" />
+                    <h4 id="promotionName"></h4>
+                    <p id="promotionDescription"></p>
+                    <p id="promotionTime"></p>
+                </div>
+            </div>
+
+            <!-- Gọi Partial View cho chi tiết sản phẩm -->
+            @Html.Partial("ProductDetail", Model.SanPhams.FirstOrDefault())
+
+
         </div>
 
-        <!-- Gọi Partial View cho chi tiết sản phẩm -->
-        @Html.Partial("ProductDetail", Model.SanPhams.FirstOrDefault())
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
 
-    function showSection(sectionId) {
-        // Ẩn tất cả các section
-        var sections = document.getElementsByClassName('product-section');
-        for (var i = 0; i < sections.length; i++) {
-            sections[i].style.display = 'none';
-        }
 
-        // Hiển thị section được chọn
-        var selectedSection = document.getElementById(sectionId);
-        if (selectedSection) {
-            selectedSection.style.display = 'block'; // Đảm bảo display là 'block'
-        } else {
-            console.error("Không tìm thấy section với ID:", sectionId);
-        }
-
-        // Ẩn modal nếu đang hiển thị
-        hidePromotionDetail();
-    }
-    function showPromotionDetail(image, name, description, startTime, endTime) {
-        var modal = document.getElementById('promotionModal');
-        document.getElementById('promotionImage').src = image;
-        document.getElementById('promotionName').innerText = name;
-        document.getElementById('promotionDescription').innerText = description;
-        document.getElementById('promotionTime').innerText = "Thời gian: " + startTime + " - " + endTime;
-        modal.style.display = 'block'; // Hiển thị modal
-    }
-    function showDetail(name, description, price, image, maSanPham) {
-        var modal = document.getElementById('productDetail');
-        document.getElementById('detailImage').src = image;
-        document.getElementById('detailName').innerText = name;
-        document.getElementById('detailDescription').innerText = description;
-        document.getElementById('detailPrice').innerText = "Giá: " + price;
-
-        // Cập nhật maSanPham trong form
-        document.querySelector('input[name="masanpham"]').value = maSanPham;
-
-        // Cập nhật data-product-id cho comments section
-        document.querySelector('.comments-section').setAttribute('data-product-id', maSanPham);
-
-        // Load bình luận cho sản phẩm cụ thể
-        loadComments(maSanPham);
-
-        modal.style.display = 'block';
-    }
-
-    // Thêm function để load bình luận
-    function loadComments(maSanPham) {
-        $.ajax({
-            url: '/Home/GetComments',
-            type: 'GET',
-            data: { masanpham: maSanPham },
-            success: function (response) {
-                var commentSection = $('.comments-section[data-product-id="' + maSanPham + '"]');
-                commentSection.html(response);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error loading comments:", error);
+            // Hàm ẩn modal chi tiết sản phẩm
+            function hideDetail() {
+                document.getElementById('productDetail').style.display = 'none';
             }
-        });
-    }
 
-    function hideDetail() {
-        document.getElementById('productDetail').style.display = 'none';
-    }
+            // Hàm hiển thị chi tiết khuyến mãi
+            function showPromotionDetail(image, name, description, startTime, endTime) {
+                var modal = document.getElementById('promotionModal');
+                document.getElementById('promotionImage').src = image;
+                document.getElementById('promotionName').innerText = name;
+                document.getElementById('promotionDescription').innerText = description;
+                document.getElementById('promotionTime').innerText = "Thời gian: " + startTime + " - " + endTime;
+                modal.style.display = 'block'; // Hiển thị modal
+            }
 
-    // Thêm sự kiện để đóng modal khi click bên ngoài
-    window.onclick = function (event) {
-        var productModal = document.getElementById('productDetail');
-        var promotionModal = document.getElementById('promotionModal');
-        if (event.target == productModal) {
-            hideDetail();
-        }
-        if (event.target == promotionModal) {
-            hidePromotionDetail();
-        }
-    }
-    function hidePromotionDetail() {
-    var modal = document.getElementById('promotionModal');
-    modal.style.display = 'none';
-}
-</script>
+            // Hàm ẩn modal chi tiết khuyến mãi
+            function hidePromotionDetail() {
+                var modal = document.getElementById('promotionModal');
+                modal.style.display = 'none';
+            }
+
+            // Hàm hiển thị các section sản phẩm
+            function showSection(sectionId) {
+                var sections = document.getElementsByClassName('product-section');
+                for (var i = 0; i < sections.length; i++) {
+                    sections[i].style.display = 'none'; // Ẩn tất cả các section
+                }
+
+                // Hiển thị section được chọn
+                var selectedSection = document.getElementById(sectionId);
+                if (selectedSection) {
+                    selectedSection.style.display = 'block'; // Hiển thị section
+                }
+            }
+
+            // Thêm sự kiện đóng modal khi nhấn bên ngoài
+            window.onclick = function (event) {
+                var productModal = document.getElementById('productDetail');
+                var promotionModal = document.getElementById('promotionModal');
+                if (event.target == productModal) {
+                    hideDetail();
+                }
+                if (event.target == promotionModal) {
+                    hidePromotionDetail();
+                }
+            }
+        </script>
+        <script>
+            $(document).on('click', '.add-to-favorites', function () {
+                var productId = $(this).data('product-id');
+                var button = $(this);
+
+                $.ajax({
+                    url: '/Home/AddToFavorites',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Đã thêm vào danh sách yêu thích!');
+                            button.text('Đã yêu thích'); // Cập nhật văn bản nút nếu cần
+                        }
+                    }
+                });
+            });
+            $(document).on('click', '.add-to-favorites', function () {
+                var productId = $(this).data('product-id');
+                var button = $(this);
+
+                $.ajax({
+                    url: '/Home/AddToFavorites',
+                    type: 'POST',
+                    data: { productId: productId },
+                    success: function (response) {
+                        if (response.success) {
+                            button.find('i').toggleClass('fas fa-heart far fa-heart'); // Đổi icon nếu cần
+                            alert('Đã thêm vào danh sách yêu thích!');
+                            button.addClass('liked'); // Thêm class để biểu thị trạng thái yêu thích
+                        }
+                    }
+                });
+            });
+
+        </script>
+

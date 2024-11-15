@@ -1,0 +1,105 @@
+﻿@model IEnumerable<DD.Models.SanPham>
+
+@{
+    ViewBag.Title = "Sản phẩm yêu thích";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Sản phẩm yêu thích của bạn</h2>
+
+<div class="product-container">
+    @if (!Model.Any())
+    {
+        <p>Không có sản phẩm yêu thích nào!</p>
+    }
+    else
+    {
+        foreach (var product in Model)
+        {
+<div class="product-card">
+    <img src="@product.HinhAnh" alt="@product.TenSanPham" />
+    <h4>@product.TenSanPham</h4>
+    <p class="price">Giá: @product.Gia</p>
+    <button class="remove-from-favorites" data-product-id="@product.MaSanPham">Xóa</button>
+    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+        <input type="hidden" name="id" value="@product.MaSanPham" />
+        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+    </form>
+
+</div>
+        }
+    }
+</div>
+
+<div class="back-to-home">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay về trang chủ</a>
+</div>
+
+<style>
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        width: calc(33.333% - 20px); /* Hiển thị 3 sản phẩm trên một hàng */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+    .price {
+        font-weight: bold;
+        color: #e74c3c;
+    }
+
+    .remove-from-favorites {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .remove-from-favorites:hover {
+            background-color: #c0392b;
+        }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).on('click', '.remove-from-favorites', function() {
+        var productId = $(this).data('product-id');
+        var button = $(this);
+
+        $.ajax({
+            url: '/Home/RemoveFromFavorites', // Đường dẫn đến action xóa sản phẩm
+            type: 'POST',
+            data: { productId: productId },
+            success: function(response) {
+                if (response.success) {
+                    alert('Đã xóa sản phẩm khỏi danh sách yêu thích!');
+                    button.closest('.product-card').remove(); // Xóa sản phẩm khỏi giao diện
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error removing from favorites:", error);
+            }
+        });
+    });
+</script>

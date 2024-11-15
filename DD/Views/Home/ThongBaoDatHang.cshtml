@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Thông báo đặt hàng";
+}
+
+<h2>Thông báo đặt hàng</h2>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["ThongBao"]
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        Không có thông báo nào.
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay về trang chủ", "Index", "Home")
+</div>

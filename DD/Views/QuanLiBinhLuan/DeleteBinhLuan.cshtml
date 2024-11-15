@@ -36,7 +36,7 @@
                     <td>
                         @using (Html.BeginForm("DeleteBinhLuan", "QuanLiBinhLuan", FormMethod.Post))
                         {
-                            @Html.Hidden("mabinhluan", item.MaBinhLuan) <!-- Đảm bảo rằng tên hơn có chữ cái đầu là viết thường -->
+                            @Html.Hidden("mabinhluan", item.MaBinhLuan) 
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">Xóa</button>
                         }
                     </td>

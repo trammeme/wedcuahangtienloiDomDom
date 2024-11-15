@@ -18,5 +18,7 @@ namespace DD.Models
             public string SoDienThoai { get; set; }
             public string TenDangNhap { get; set; }
             public string MatKhau { get; set; }
-        }
+        public List<DD.Models.NguoiDung> DonHangs { get; set; }
+
     }
+}

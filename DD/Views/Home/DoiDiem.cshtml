@@ -1,0 +1,218 @@
+﻿@model DD.Models.TichDiem
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2 class="page-title">Đổi Điểm Ngay – Nhận Mã Voucher Hấp Dẫn!</h2>
+
+<p>Điểm hiện tại của bạn: @Model.Diem</p>
+
+@using (Html.BeginForm("DoiDiem", "Home", FormMethod.Post))
+{
+    <label for="soDiem">Số điểm muốn đổi:</label>
+    <input type="number" name="soDiem" id="soDiem" min="1" max="@Model.Diem" required />
+
+    <p><strong>Lưu ý:</strong> Nếu bạn đồng ý đổi điểm, số điểm tích lũy của bạn sẽ giảm và cấp bậc thành viên cũng sẽ thay đổi.</p>
+
+    <button type="submit">Xác nhận đổi điểm</button>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <p style="color:red;">@TempData["ErrorMessage"]</p>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <p style="color:green;">@TempData["SuccessMessage"]</p>
+}
+<div class="back-to-home">
+    <a href="@Url.Action("Index", "Home")" class="btn-back-home">Quay về trang chủ</a>
+</div>
+
+<style>
+  /* Cấu trúc chung của trang */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Tiêu đề trang */
+h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+/* Form đổi điểm */
+form {
+    background-color: #fff;
+    padding: 20px;
+    max-width: 500px;
+    margin: 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Nhãn cho các trường */
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Trường nhập số điểm */
+input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Nút gửi */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Thông báo lỗi */
+p {
+    font-size: 14px;
+    text-align: center;
+}
+
+p[style*="color:red"] {
+    color: #f44336; /* Màu đỏ cho thông báo lỗi */
+    font-weight: bold;
+}
+
+p[style*="color:green"] {
+    color: #4CAF50; /* Màu xanh cho thông báo thành công */
+    font-weight: bold;
+}
+
+/* Lưu ý về việc đổi điểm */
+p strong {
+    color: #d9534f;
+}
+
+/* Tiêu đề trang */
+.page-title {
+    text-align: center;
+    color: #FFD700; /* Màu vàng */
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background-image: linear-gradient(to right, #FFD700, #FFCC00);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Bóng đổ nhẹ */
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* Hiệu ứng fade-in cho tiêu đề */
+keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+    /* Nút Quay về trang chủ */
+    .btn-back-home {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #333; /* Màu đen xám */
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+        .btn-back-home:hover {
+            background-color: #555; /* Màu xám nhạt khi hover */
+            transform: translateY(-3px); /* Tạo hiệu ứng nhấc lên khi hover */
+        }
+
+        .btn-back-home:active {
+            background-color: #444; /* Màu xám đậm khi nhấn */
+            transform: translateY(0); /* Trở lại trạng thái ban đầu khi nhấn */
+        }
+
+        .btn-back-home:focus {
+            outline: none; /* Loại bỏ viền focus */
+        }
+
+    /* Nút Xác nhận đổi điểm */
+    .btn-submit {
+        width: 100%;
+        padding: 10px;
+        background-color: #1E90FF; /* Màu xanh biển */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: #4682B4; /* Màu xanh biển đậm khi hover */
+        }
+
+        .btn-submit:active {
+            background-color: #5A9BD5; /* Màu xanh biển nhạt khi nhấn */
+            /* Nút Xác nhận đổi điểm */
+            .btn-submit
+
+    {
+        width: 100%;
+        padding: 10px;
+        background-color: #1E90FF; /* Màu xanh biển */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #4682B4; /* Màu xanh biển đậm khi hover */
+    }
+
+    .btn-submit:active {
+        background-color: #5A9BD5; /* Màu xanh biển nhạt khi nhấn */
+    }
+
+    .btn-submit:focus {
+        outline: none; /* Loại bỏ viền focus */
+    }
+
+
+
+</style>

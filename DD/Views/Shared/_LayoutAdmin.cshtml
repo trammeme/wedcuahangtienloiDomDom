@@ -3,90 +3,136 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/Content/css/layoutad.css" />
+    <title>DOMDOM - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/Content/layoutad.css" />
+    <style>
+        /* Bố cục chính của trang */
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Sidebar cột trái */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+            .sidebar .sidebar-brand {
+                text-align: center;
+                font-size: 1.5rem;
+                font-weight: 700;
+                padding: 10px 0;
+                color: #ffc107;
+            }
+
+            .sidebar .menu-heading {
+                padding: 10px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #adb5bd;
+            }
+
+            .sidebar .menu-item {
+                display: flex;
+                align-items: center;
+                padding: 12px 20px;
+                color: #f8f9fa;
+                text-decoration: none;
+                transition: background 0.3s;
+            }
+
+                .sidebar .menu-item i {
+                    margin-right: 10px;
+                }
+
+                .sidebar .menu-item:hover {
+                    background-color: #495057;
+                    color: #ffc107;
+                }
+
+                .sidebar .menu-item.active {
+                    background-color: #495057;
+                    color: #ffc107;
+                }
+
+        /* Nội dung chính bên phải */
+        .main-content {
+            margin-left: 250px; /* Phần cách để trừ ra khoảng sidebar */
+            padding: 20px;
+            flex-grow: 1;
+            background-color: #f1f3f5;
+            min-height: 100vh;
+        }
+
+        /* Phần tử container trong nội dung chính */
+        .container-fluid {
+            padding-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block sidebar">
-                <h4 class="sidebar-heading">Admin Menu</h4>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#danh-gia-partial">Quản lý đánh giá</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#tich-diem-partial">Quản lý tích điểm</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#san-pham-partial">Quản lý sản phẩm </button>
-                    </li>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2>DOMDOM</h2>
+        </div>
 
+        <div class="sidebar-menu">
+            <div class="menu-heading">Quản lý chung</div>
 
-                    <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#khuyen-mai-partial">Quản lý khuyến mãi</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#user-management-partial">Quản lý người dùng</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary show-section" data-target="#san-pham-khuyen-mai-partial">Quản lý sản phẩm khuyến mãi</button>
-                    </li>
+            <a href="@Url.Action("Index", "SanPham")" class="menu-item">
+                <i class="fas fa-box"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <a href="@Url.Action("Index", "SanPhamKhuyenMai")" class="menu-item">
+                <i class="fas fa-box"></i>
+                <span>Quản lý sản  khuyến mãi</span>
+            </a>
+            <div class="menu-heading">Khách hàng</div>
+            <a href="@Url.Action("Index", "QuanLyUser")" class="menu-item">
+                <i class="fas fa-users"></i>
+                <span>Quản lý khách hàng</span>
+            </a>
+            <a href="@Url.Action("Index", "QuanLiBinhLuan")" class="menu-item">
+                <i class="fas fa-comments"></i>
+                <span>Quản lý bình luận</span>
+            </a>
 
-                </ul>
-                <div class="logo">
-                    <h1>DOMDOM</h1>
-                </div>
-            </nav>
-
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <div class="container" id="main-content">
-                    @RenderBody()
-
-                    <div id="user-management-partial" style="display: none;">
-                        @Html.Action("Index", "QuanLyUser")
-                    </div>
-
-                    <div id="danh-gia-partial" style="display: none;">
-                        @Html.Action("Index", "QuanLiBinhLuan")
-                    </div>
-
-                    <div id="tich-diem-partial" style="display: none;">
-                        @Html.Action("Index", "QuanLyTichDiem")
-                    </div>
-
-                    <div id="khuyen-mai-partial" style="display: none;">
-                        @Html.Action("Index", "QLKhuyenMai")
-                    </div>
-                    <div id="san-pham-partial" style="display: none;">
-                        @Html.Action("Index", "SanPham")
-                    </div>
-                    <div id="san-pham-khuyen-mai-partial" style="display: none;">
-                        @Html.Action("Index", "SanPhamKhuyenMai")
-                    </div>
-                    
-                </div>
-            </main>
+            <div class="menu-heading">Marketing</div>
+            <a href="@Url.Action("Index", "QLKhuyenMai")" class="menu-item">
+                <i class="fas fa-percent"></i>
+                <span>Quản lý khuyến mãi</span>
+            </a>
+            <a href="@Url.Action("Index", "QuanLyTichDiem")" class="menu-item">
+                <i class="fas fa-star"></i>
+                <span>Quản lý tích điểm</span>
+            </a>
         </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // Khi nhấn vào nút, hiển thị phần tương ứng và ẩn các phần còn lại
-            $('.show-section').click(function () {
-                var target = $(this).data('target');
+    <!-- Nội dung chính -->
+    
+    <div class="main-content">
+        @RenderBody() <!-- Gọi RenderBody để hiển thị nội dung view con -->
+    </div>
+    @RenderSection("Scripts", required: false)
 
-                // Ẩn tất cả các phần
-                $('#user-management-partial, #danh-gia-partial, #tich-diem-partial, #khuyen-mai-partial, #san-pham-khuyen-mai-partial, #san-pham-partial').hide();
-
-                // Hiện phần tương ứng
-                $(target).show();
-            });
-        });
-    </script>
+    <!-- JavaScript cho Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,721 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="camlyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BinhLuan">
+          <Key>
+            <PropertyRef Name="MaBinhLuan" />
+          </Key>
+          <Property Name="MaBinhLuan" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="MaSanPham" Type="int" Nullable="false" />
+          <Property Name="NoiDung" Type="text" Nullable="false" />
+          <Property Name="NgayBinhLuan" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CHITIETDATHANG">
+          <Key>
+            <PropertyRef Name="MaChiTiet" />
+          </Key>
+          <Property Name="MaChiTiet" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaDonHang" Type="int" />
+          <Property Name="MaSanPham" Type="int" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="DonGia" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="CuaHang">
+          <Key>
+            <PropertyRef Name="MaCuaHang" />
+          </Key>
+          <Property Name="MaCuaHang" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="AdminID" Type="int" />
+        </EntityType>
+        <EntityType Name="CuaHang_KhuyenMai">
+          <Key>
+            <PropertyRef Name="MaCuaHang" />
+            <PropertyRef Name="MaKhuyenMai" />
+          </Key>
+          <Property Name="MaCuaHang" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaKhuyenMai" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DONHANG">
+          <Key>
+            <PropertyRef Name="MaDonHang" />
+          </Key>
+          <Property Name="MaDonHang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DienThoai" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="NgayDat" Type="datetime" Nullable="false" />
+          <Property Name="NgayGiao" Type="datetime" Nullable="false" />
+          <Property Name="TinhTrangGiaoHang" Type="int" Nullable="false" />
+          <Property Name="DaThanhToan" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KhuyenMai">
+          <Key>
+            <PropertyRef Name="MaKhuyenMai" />
+          </Key>
+          <Property Name="MaKhuyenMai" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenKhuyenMai" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar" MaxLength="255" />
+          <Property Name="NgayBatDau" Type="date" Nullable="false" />
+          <Property Name="NgayKetThuc" Type="date" Nullable="false" />
+          <Property Name="MaSanPhamKM" Type="varchar" MaxLength="50" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="NguoiDung">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenKH" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="GioiTinh" Type="nvarchar" MaxLength="10" />
+          <Property Name="ThangSinh" Type="int" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" />
+          <Property Name="SoDienThoai" Type="varchar" MaxLength="15" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuanTriVien">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDangNhap" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SanPham">
+          <Key>
+            <PropertyRef Name="MaSanPham" />
+          </Key>
+          <Property Name="MaSanPham" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenSanPham" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar" MaxLength="500" />
+          <Property Name="Gia" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="255" />
+          <Property Name="LoaiSanPham" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SanPhamKhuyenMai">
+          <Key>
+            <PropertyRef Name="MaSanPhamKM" />
+          </Key>
+          <Property Name="MaSanPhamKM" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenSanPham" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MoTaKhuyenMai" Type="nvarchar" MaxLength="255" />
+          <Property Name="HinhAnh" Type="nvarchar" MaxLength="255" />
+          <Property Name="MaSanPham" Type="int" />
+        </EntityType>
+        <EntityType Name="TichDiem">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="Diem" Type="int" Nullable="false" />
+          <Property Name="CapBac" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__BinhLuan__MaKH__7D439ABD">
+          <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NguoiDung">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinhLuan__MaSanP__7E37BEF6">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
+          <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CHITIETDA__MaDon__534D60F1">
+          <End Role="DONHANG" Type="Self.DONHANG" Multiplicity="0..1" />
+          <End Role="CHITIETDATHANG" Type="Self.CHITIETDATHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DONHANG">
+              <PropertyRef Name="MaDonHang" />
+            </Principal>
+            <Dependent Role="CHITIETDATHANG">
+              <PropertyRef Name="MaDonHang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CHITIETDA__MaSan__5441852A">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
+          <End Role="CHITIETDATHANG" Type="Self.CHITIETDATHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="CHITIETDATHANG">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuaHang__AdminID__71D1E811">
+          <End Role="QuanTriVien" Type="Self.QuanTriVien" Multiplicity="0..1" />
+          <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuanTriVien">
+              <PropertyRef Name="AdminID" />
+            </Principal>
+            <Dependent Role="CuaHang">
+              <PropertyRef Name="AdminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuaHang_K__MaCua__778AC167">
+          <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="1" />
+          <End Role="CuaHang_KhuyenMai" Type="Self.CuaHang_KhuyenMai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CuaHang">
+              <PropertyRef Name="MaCuaHang" />
+            </Principal>
+            <Dependent Role="CuaHang_KhuyenMai">
+              <PropertyRef Name="MaCuaHang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuaHang_K__MaKhu__787EE5A0">
+          <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="1" />
+          <End Role="CuaHang_KhuyenMai" Type="Self.CuaHang_KhuyenMai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KhuyenMai">
+              <PropertyRef Name="MaKhuyenMai" />
+            </Principal>
+            <Dependent Role="CuaHang_KhuyenMai">
+              <PropertyRef Name="MaKhuyenMai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__KhuyenMai__MaSan__6C190EBB">
+          <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="0..1" />
+          <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPhamKhuyenMai">
+              <PropertyRef Name="MaSanPhamKM" />
+            </Principal>
+            <Dependent Role="KhuyenMai">
+              <PropertyRef Name="MaSanPhamKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SanPhamKh__MaSan__6383C8BA">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
+          <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="SanPhamKhuyenMai">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TichDiem__MaKH__5CD6CB2B">
+          <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
+          <End Role="TichDiem" Type="Self.TichDiem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="NguoiDung">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="TichDiem">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="camlyModelStoreContainer">
+          <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CHITIETDATHANG" EntityType="Self.CHITIETDATHANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CuaHang" EntityType="Self.CuaHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CuaHang_KhuyenMai" EntityType="Self.CuaHang_KhuyenMai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DONHANG" EntityType="Self.DONHANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KhuyenMai" EntityType="Self.KhuyenMai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NguoiDung" EntityType="Self.NguoiDung" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuanTriVien" EntityType="Self.QuanTriVien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SanPhamKhuyenMai" EntityType="Self.SanPhamKhuyenMai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TichDiem" EntityType="Self.TichDiem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BinhLuan__MaKH__7D439ABD" Association="Self.FK__BinhLuan__MaKH__7D439ABD">
+            <End Role="NguoiDung" EntitySet="NguoiDung" />
+            <End Role="BinhLuan" EntitySet="BinhLuan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinhLuan__MaSanP__7E37BEF6" Association="Self.FK__BinhLuan__MaSanP__7E37BEF6">
+            <End Role="SanPham" EntitySet="SanPham" />
+            <End Role="BinhLuan" EntitySet="BinhLuan" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CHITIETDA__MaDon__534D60F1" Association="Self.FK__CHITIETDA__MaDon__534D60F1">
+            <End Role="DONHANG" EntitySet="DONHANG" />
+            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CHITIETDA__MaSan__5441852A" Association="Self.FK__CHITIETDA__MaSan__5441852A">
+            <End Role="SanPham" EntitySet="SanPham" />
+            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANG" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuaHang__AdminID__71D1E811" Association="Self.FK__CuaHang__AdminID__71D1E811">
+            <End Role="QuanTriVien" EntitySet="QuanTriVien" />
+            <End Role="CuaHang" EntitySet="CuaHang" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuaHang_K__MaCua__778AC167" Association="Self.FK__CuaHang_K__MaCua__778AC167">
+            <End Role="CuaHang" EntitySet="CuaHang" />
+            <End Role="CuaHang_KhuyenMai" EntitySet="CuaHang_KhuyenMai" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuaHang_K__MaKhu__787EE5A0" Association="Self.FK__CuaHang_K__MaKhu__787EE5A0">
+            <End Role="KhuyenMai" EntitySet="KhuyenMai" />
+            <End Role="CuaHang_KhuyenMai" EntitySet="CuaHang_KhuyenMai" />
+          </AssociationSet>
+          <AssociationSet Name="FK__KhuyenMai__MaSan__6C190EBB" Association="Self.FK__KhuyenMai__MaSan__6C190EBB">
+            <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMai" />
+            <End Role="KhuyenMai" EntitySet="KhuyenMai" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SanPhamKh__MaSan__6383C8BA" Association="Self.FK__SanPhamKh__MaSan__6383C8BA">
+            <End Role="SanPham" EntitySet="SanPham" />
+            <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMai" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TichDiem__MaKH__5CD6CB2B" Association="Self.FK__TichDiem__MaKH__5CD6CB2B">
+            <End Role="NguoiDung" EntitySet="NguoiDung" />
+            <End Role="TichDiem" EntitySet="TichDiem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="camlyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CHITIETDATHANG">
+          <Key>
+            <PropertyRef Name="MaChiTiet" />
+          </Key>
+          <Property Name="MaChiTiet" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaDonHang" Type="Int32" />
+          <Property Name="MaSanPham" Type="Int32" />
+          <Property Name="SoLuong" Type="Int32" />
+          <Property Name="DonGia" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="DONHANG" Relationship="Self.FK__CHITIETDA__MaDon__534D60F1" FromRole="CHITIETDATHANG" ToRole="DONHANG" />
+          <NavigationProperty Name="SanPham" Relationship="Self.FK__CHITIETDA__MaSan__5441852A" FromRole="CHITIETDATHANG" ToRole="SanPham" />
+        </EntityType>
+        <EntityType Name="DONHANG">
+          <Key>
+            <PropertyRef Name="MaDonHang" />
+          </Key>
+          <Property Name="MaDonHang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDat" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NgayGiao" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TinhTrangGiaoHang" Type="Int32" Nullable="false" />
+          <Property Name="DaThanhToan" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CHITIETDATHANGs" Relationship="Self.FK__CHITIETDA__MaDon__534D60F1" FromRole="DONHANG" ToRole="CHITIETDATHANG" />
+        </EntityType>
+        <EntityType Name="NguoiDung">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenKH" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GioiTinh" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ThangSinh" Type="Int32" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SoDienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TichDiem" Relationship="camlyModel.FK__TichDiem__MaKH__5CD6CB2B" FromRole="NguoiDung" ToRole="TichDiem" />
+          <NavigationProperty Name="BinhLuans" Relationship="camlyModel.FK__BinhLuan__MaKH__7D439ABD" FromRole="NguoiDung" ToRole="BinhLuan" />
+        </EntityType>
+        <EntityType Name="SanPham">
+          <Key>
+            <PropertyRef Name="MaSanPham" />
+          </Key>
+          <Property Name="MaSanPham" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenSanPham" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MoTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Gia" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LoaiSanPham" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CHITIETDATHANGs" Relationship="Self.FK__CHITIETDA__MaSan__5441852A" FromRole="SanPham" ToRole="CHITIETDATHANG" />
+          <NavigationProperty Name="SanPhamKhuyenMais" Relationship="camlyModel.FK__SanPhamKh__MaSan__6383C8BA" FromRole="SanPham" ToRole="SanPhamKhuyenMai" />
+          <NavigationProperty Name="BinhLuans" Relationship="camlyModel.FK__BinhLuan__MaSanP__7E37BEF6" FromRole="SanPham" ToRole="BinhLuan" />
+        </EntityType>
+        <Association Name="FK__CHITIETDA__MaDon__534D60F1">
+          <End Role="DONHANG" Type="Self.DONHANG" Multiplicity="0..1" />
+          <End Role="CHITIETDATHANG" Type="Self.CHITIETDATHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DONHANG">
+              <PropertyRef Name="MaDonHang" />
+            </Principal>
+            <Dependent Role="CHITIETDATHANG">
+              <PropertyRef Name="MaDonHang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CHITIETDA__MaSan__5441852A">
+          <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
+          <End Role="CHITIETDATHANG" Type="Self.CHITIETDATHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="CHITIETDATHANG">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="camlyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CHITIETDATHANGs" EntityType="Self.CHITIETDATHANG" />
+          <EntitySet Name="DONHANGs" EntityType="Self.DONHANG" />
+          <EntitySet Name="NguoiDungs" EntityType="Self.NguoiDung" />
+          <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
+          <AssociationSet Name="FK__CHITIETDA__MaDon__534D60F1" Association="Self.FK__CHITIETDA__MaDon__534D60F1">
+            <End Role="DONHANG" EntitySet="DONHANGs" />
+            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CHITIETDA__MaSan__5441852A" Association="Self.FK__CHITIETDA__MaSan__5441852A">
+            <End Role="SanPham" EntitySet="SanPhams" />
+            <End Role="CHITIETDATHANG" EntitySet="CHITIETDATHANGs" />
+          </AssociationSet>
+          <EntitySet Name="KhuyenMais" EntityType="camlyModel.KhuyenMai" />
+          <EntitySet Name="QuanTriViens" EntityType="camlyModel.QuanTriVien" />
+          <EntitySet Name="SanPhamKhuyenMais" EntityType="camlyModel.SanPhamKhuyenMai" />
+          <EntitySet Name="TichDiems" EntityType="camlyModel.TichDiem" />
+          <AssociationSet Name="FK__KhuyenMai__MaSan__6C190EBB" Association="camlyModel.FK__KhuyenMai__MaSan__6C190EBB">
+            <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMais" />
+            <End Role="KhuyenMai" EntitySet="KhuyenMais" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TichDiem__MaKH__5CD6CB2B" Association="camlyModel.FK__TichDiem__MaKH__5CD6CB2B">
+            <End Role="NguoiDung" EntitySet="NguoiDungs" />
+            <End Role="TichDiem" EntitySet="TichDiems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SanPhamKh__MaSan__6383C8BA" Association="camlyModel.FK__SanPhamKh__MaSan__6383C8BA">
+            <End Role="SanPham" EntitySet="SanPhams" />
+            <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMais" />
+          </AssociationSet>
+          <EntitySet Name="BinhLuans" EntityType="camlyModel.BinhLuan" />
+          <EntitySet Name="CuaHangs" EntityType="camlyModel.CuaHang" />
+          <AssociationSet Name="FK__BinhLuan__MaKH__7D439ABD" Association="camlyModel.FK__BinhLuan__MaKH__7D439ABD">
+            <End Role="NguoiDung" EntitySet="NguoiDungs" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BinhLuan__MaSanP__7E37BEF6" Association="camlyModel.FK__BinhLuan__MaSanP__7E37BEF6">
+            <End Role="SanPham" EntitySet="SanPhams" />
+            <End Role="BinhLuan" EntitySet="BinhLuans" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CuaHang__AdminID__71D1E811" Association="camlyModel.FK__CuaHang__AdminID__71D1E811">
+            <End Role="QuanTriVien" EntitySet="QuanTriViens" />
+            <End Role="CuaHang" EntitySet="CuaHangs" />
+          </AssociationSet>
+          <AssociationSet Name="CuaHang_KhuyenMai" Association="camlyModel.CuaHang_KhuyenMai">
+            <End Role="CuaHang" EntitySet="CuaHangs" />
+            <End Role="KhuyenMai" EntitySet="KhuyenMais" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="KhuyenMai">
+          <Key>
+            <PropertyRef Name="MaKhuyenMai" />
+          </Key>
+          <Property Name="MaKhuyenMai" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenKhuyenMai" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MoTa" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBatDau" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayKetThuc" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MaSanPhamKM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SanPhamKhuyenMai" Relationship="camlyModel.FK__KhuyenMai__MaSan__6C190EBB" FromRole="KhuyenMai" ToRole="SanPhamKhuyenMai" />
+          <NavigationProperty Name="CuaHangs" Relationship="camlyModel.CuaHang_KhuyenMai" FromRole="KhuyenMai" ToRole="CuaHang" />
+        </EntityType>
+        <EntityType Name="QuanTriVien">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDangNhap" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MatKhau" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CuaHangs" Relationship="camlyModel.FK__CuaHang__AdminID__71D1E811" FromRole="QuanTriVien" ToRole="CuaHang" />
+        </EntityType>
+        <EntityType Name="SanPhamKhuyenMai">
+          <Key>
+            <PropertyRef Name="MaSanPhamKM" />
+          </Key>
+          <Property Name="MaSanPhamKM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenSanPham" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MoTaKhuyenMai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MaSanPham" Type="Int32" />
+          <NavigationProperty Name="KhuyenMais" Relationship="camlyModel.FK__KhuyenMai__MaSan__6C190EBB" FromRole="SanPhamKhuyenMai" ToRole="KhuyenMai" />
+          <NavigationProperty Name="SanPham" Relationship="camlyModel.FK__SanPhamKh__MaSan__6383C8BA" FromRole="SanPhamKhuyenMai" ToRole="SanPham" />
+        </EntityType>
+        <EntityType Name="TichDiem">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="Diem" Type="Int32" Nullable="false" />
+          <Property Name="CapBac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NguoiDung" Relationship="camlyModel.FK__TichDiem__MaKH__5CD6CB2B" FromRole="TichDiem" ToRole="NguoiDung" />
+        </EntityType>
+        <Association Name="FK__KhuyenMai__MaSan__6C190EBB">
+          <End Type="camlyModel.SanPhamKhuyenMai" Role="SanPhamKhuyenMai" Multiplicity="0..1" />
+          <End Type="camlyModel.KhuyenMai" Role="KhuyenMai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPhamKhuyenMai">
+              <PropertyRef Name="MaSanPhamKM" />
+            </Principal>
+            <Dependent Role="KhuyenMai">
+              <PropertyRef Name="MaSanPhamKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TichDiem__MaKH__5CD6CB2B">
+          <End Type="camlyModel.NguoiDung" Role="NguoiDung" Multiplicity="1" />
+          <End Type="camlyModel.TichDiem" Role="TichDiem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="NguoiDung">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="TichDiem">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SanPhamKh__MaSan__6383C8BA">
+          <End Type="camlyModel.SanPham" Role="SanPham" Multiplicity="0..1" />
+          <End Type="camlyModel.SanPhamKhuyenMai" Role="SanPhamKhuyenMai" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="SanPhamKhuyenMai">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BinhLuan">
+          <Key>
+            <PropertyRef Name="MaBinhLuan" />
+          </Key>
+          <Property Name="MaBinhLuan" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="MaSanPham" Type="Int32" Nullable="false" />
+          <Property Name="NoiDung" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NgayBinhLuan" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="NguoiDung" Relationship="camlyModel.FK__BinhLuan__MaKH__7D439ABD" FromRole="BinhLuan" ToRole="NguoiDung" />
+          <NavigationProperty Name="SanPham" Relationship="camlyModel.FK__BinhLuan__MaSanP__7E37BEF6" FromRole="BinhLuan" ToRole="SanPham" />
+        </EntityType>
+        <EntityType Name="CuaHang">
+          <Key>
+            <PropertyRef Name="MaCuaHang" />
+          </Key>
+          <Property Name="MaCuaHang" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DiaChi" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AdminID" Type="Int32" />
+          <NavigationProperty Name="QuanTriVien" Relationship="camlyModel.FK__CuaHang__AdminID__71D1E811" FromRole="CuaHang" ToRole="QuanTriVien" />
+          <NavigationProperty Name="KhuyenMais" Relationship="camlyModel.CuaHang_KhuyenMai" FromRole="CuaHang" ToRole="KhuyenMai" />
+        </EntityType>
+        <Association Name="FK__BinhLuan__MaKH__7D439ABD">
+          <End Type="camlyModel.NguoiDung" Role="NguoiDung" Multiplicity="1" />
+          <End Type="camlyModel.BinhLuan" Role="BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NguoiDung">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BinhLuan__MaSanP__7E37BEF6">
+          <End Type="camlyModel.SanPham" Role="SanPham" Multiplicity="1" />
+          <End Type="camlyModel.BinhLuan" Role="BinhLuan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SanPham">
+              <PropertyRef Name="MaSanPham" />
+            </Principal>
+            <Dependent Role="BinhLuan">
+              <PropertyRef Name="MaSanPham" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CuaHang__AdminID__71D1E811">
+          <End Type="camlyModel.QuanTriVien" Role="QuanTriVien" Multiplicity="0..1" />
+          <End Type="camlyModel.CuaHang" Role="CuaHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QuanTriVien">
+              <PropertyRef Name="AdminID" />
+            </Principal>
+            <Dependent Role="CuaHang">
+              <PropertyRef Name="AdminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CuaHang_KhuyenMai">
+          <End Type="camlyModel.CuaHang" Role="CuaHang" Multiplicity="*" />
+          <End Type="camlyModel.KhuyenMai" Role="KhuyenMai" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="camlyModelStoreContainer" CdmEntityContainer="camlyEntities">
+          <EntitySetMapping Name="CHITIETDATHANGs">
+            <EntityTypeMapping TypeName="camlyModel.CHITIETDATHANG">
+              <MappingFragment StoreEntitySet="CHITIETDATHANG">
+                <ScalarProperty Name="MaChiTiet" ColumnName="MaChiTiet" />
+                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+                <ScalarProperty Name="DonGia" ColumnName="DonGia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DONHANGs">
+            <EntityTypeMapping TypeName="camlyModel.DONHANG">
+              <MappingFragment StoreEntitySet="DONHANG">
+                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="NgayGiao" ColumnName="NgayGiao" />
+                <ScalarProperty Name="TinhTrangGiaoHang" ColumnName="TinhTrangGiaoHang" />
+                <ScalarProperty Name="DaThanhToan" ColumnName="DaThanhToan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NguoiDungs">
+            <EntityTypeMapping TypeName="camlyModel.NguoiDung">
+              <MappingFragment StoreEntitySet="NguoiDung">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="TenKH" ColumnName="TenKH" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="GioiTinh" ColumnName="GioiTinh" />
+                <ScalarProperty Name="ThangSinh" ColumnName="ThangSinh" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SanPhams">
+            <EntityTypeMapping TypeName="camlyModel.SanPham">
+              <MappingFragment StoreEntitySet="SanPham">
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="Gia" ColumnName="Gia" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="LoaiSanPham" ColumnName="LoaiSanPham" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KhuyenMais">
+            <EntityTypeMapping TypeName="camlyModel.KhuyenMai">
+              <MappingFragment StoreEntitySet="KhuyenMai">
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="MaSanPhamKM" ColumnName="MaSanPhamKM" />
+                <ScalarProperty Name="NgayKetThuc" ColumnName="NgayKetThuc" />
+                <ScalarProperty Name="NgayBatDau" ColumnName="NgayBatDau" />
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+                <ScalarProperty Name="TenKhuyenMai" ColumnName="TenKhuyenMai" />
+                <ScalarProperty Name="MaKhuyenMai" ColumnName="MaKhuyenMai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuanTriViens">
+            <EntityTypeMapping TypeName="camlyModel.QuanTriVien">
+              <MappingFragment StoreEntitySet="QuanTriVien">
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SanPhamKhuyenMais">
+            <EntityTypeMapping TypeName="camlyModel.SanPhamKhuyenMai">
+              <MappingFragment StoreEntitySet="SanPhamKhuyenMai">
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="MoTaKhuyenMai" ColumnName="MoTaKhuyenMai" />
+                <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
+                <ScalarProperty Name="MaSanPhamKM" ColumnName="MaSanPhamKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TichDiems">
+            <EntityTypeMapping TypeName="camlyModel.TichDiem">
+              <MappingFragment StoreEntitySet="TichDiem">
+                <ScalarProperty Name="CapBac" ColumnName="CapBac" />
+                <ScalarProperty Name="Diem" ColumnName="Diem" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BinhLuans">
+            <EntityTypeMapping TypeName="camlyModel.BinhLuan">
+              <MappingFragment StoreEntitySet="BinhLuan">
+                <ScalarProperty Name="NgayBinhLuan" ColumnName="NgayBinhLuan" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="MaBinhLuan" ColumnName="MaBinhLuan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CuaHangs">
+            <EntityTypeMapping TypeName="camlyModel.CuaHang">
+              <MappingFragment StoreEntitySet="CuaHang">
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="MaCuaHang" ColumnName="MaCuaHang" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CuaHang_KhuyenMai" TypeName="camlyModel.CuaHang_KhuyenMai" StoreEntitySet="CuaHang_KhuyenMai">
+            <EndProperty Name="KhuyenMai">
+              <ScalarProperty Name="MaKhuyenMai" ColumnName="MaKhuyenMai" />
+            </EndProperty>
+            <EndProperty Name="CuaHang">
+              <ScalarProperty Name="MaCuaHang" ColumnName="MaCuaHang" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

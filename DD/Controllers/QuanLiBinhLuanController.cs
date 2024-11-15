@@ -9,7 +9,7 @@ namespace DD.Controllers
 {
     public class QuanLiBinhLuanController : Controller
     {
-        thuaEntities1 db = new thuaEntities1();
+        camlyEntities1 db = new camlyEntities1();
 
         public ActionResult Index()
         {
@@ -17,7 +17,7 @@ namespace DD.Controllers
             return View(danhGias);
         }
 
-        [HttpPost]
+      /*  [HttpPost]
         public JsonResult ReplyToBinhLuan(string mabinhluan, string phanhoi)
         {
             if (string.IsNullOrEmpty(mabinhluan))
@@ -47,7 +47,7 @@ namespace DD.Controllers
             }
 
             return Json(new { success = false, message = "Không tìm thấy bình luận" });
-        }
+        }*/
 
         [HttpPost]
         public ActionResult DeleteBinhLuan(string mabinhluan)
