@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="thuaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="thua1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BinhLuan">
           <Key>
             <PropertyRef Name="MaBinhLuan" />
@@ -15,6 +15,14 @@
           <Property Name="NoiDung" Type="text" Nullable="false" />
           <Property Name="NgayBinhLuan" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'thua1.dbo.CHITIETDATHANG' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CHITIETDATHANG">
+          <Property Name="MaDonHang" Type="int" />
+          <Property Name="MaSanPham" Type="int" />
+          <Property Name="SoLuong" Type="int" />
+          <Property Name="DonGia" Type="decimal" Precision="9" Scale="2" />
+        </EntityType>-->
         <EntityType Name="CuaHang">
           <Key>
             <PropertyRef Name="MaCuaHang" />
@@ -30,6 +38,20 @@
           </Key>
           <Property Name="MaCuaHang" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="MaKhuyenMai" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DONHANG">
+          <Key>
+            <PropertyRef Name="MaDonHang" />
+          </Key>
+          <Property Name="MaDonHang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaKH" Type="int" Nullable="false" />
+          <Property Name="HoTen" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DienThoai" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="NgayDat" Type="datetime" Nullable="false" />
+          <Property Name="NgayGiao" Type="datetime" Nullable="false" />
+          <Property Name="TinhTrangGiaoHang" Type="int" Nullable="false" />
+          <Property Name="DaThanhToan" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="KhuyenMai">
           <Key>
@@ -94,7 +116,7 @@
           <Property Name="Diem" Type="int" Nullable="false" />
           <Property Name="CapBac" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK__BinhLuan__MaKH__3B40CD36">
+        <Association Name="FK__BinhLuan__MaKH__6477ECF3">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -106,7 +128,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__MaSanP__3C34F16F">
+        <Association Name="FK__BinhLuan__MaSanP__656C112C">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -118,7 +140,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CuaHang__AdminID__1CBC4616">
+        <!--Errors Found During Generation:
+error 6004: The table 'thua1.dbo.CHITIETDATHANG' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__CHITIETDA__MaDon__6EF57B66" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'thua1.dbo.CHITIETDATHANG' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__CHITIETDA__MaSan__6FE99F9F" />-->
+        <Association Name="FK__CuaHang__AdminID__5070F446">
           <End Role="QuanTriVien" Type="Self.QuanTriVien" Multiplicity="0..1" />
           <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="*" />
           <ReferentialConstraint>
@@ -130,7 +158,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CuaHang_K__MaCua__2739D489">
+        <Association Name="FK__CuaHang_K__MaCua__5AEE82B9">
           <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="1" />
           <End Role="CuaHang_KhuyenMai" Type="Self.CuaHang_KhuyenMai" Multiplicity="*" />
           <ReferentialConstraint>
@@ -142,7 +170,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CuaHang_K__MaKhu__282DF8C2">
+        <Association Name="FK__CuaHang_K__MaKhu__5BE2A6F2">
           <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="1" />
           <End Role="CuaHang_KhuyenMai" Type="Self.CuaHang_KhuyenMai" Multiplicity="*" />
           <ReferentialConstraint>
@@ -154,7 +182,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KhuyenMai__MaSan__245D67DE">
+        <Association Name="FK__KhuyenMai__MaSan__5812160E">
           <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="0..1" />
           <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="*" />
           <ReferentialConstraint>
@@ -166,7 +194,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SanPhamKh__MaSan__2180FB33">
+        <Association Name="FK__SanPhamKh__MaSan__5535A963">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
           <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="*" />
           <ReferentialConstraint>
@@ -178,7 +206,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TichDiem__MaKH__2CF2ADDF">
+        <Association Name="FK__TichDiem__MaKH__60A75C0F">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="TichDiem" Type="Self.TichDiem" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -190,45 +218,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="thuaModelStoreContainer">
+        <EntityContainer Name="thua1ModelStoreContainer">
           <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CuaHang" EntityType="Self.CuaHang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CuaHang_KhuyenMai" EntityType="Self.CuaHang_KhuyenMai" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DONHANG" EntityType="Self.DONHANG" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KhuyenMai" EntityType="Self.KhuyenMai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NguoiDung" EntityType="Self.NguoiDung" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuanTriVien" EntityType="Self.QuanTriVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanPham" EntityType="Self.SanPham" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SanPhamKhuyenMai" EntityType="Self.SanPhamKhuyenMai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TichDiem" EntityType="Self.TichDiem" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__BinhLuan__MaKH__3B40CD36" Association="Self.FK__BinhLuan__MaKH__3B40CD36">
+          <AssociationSet Name="FK__BinhLuan__MaKH__6477ECF3" Association="Self.FK__BinhLuan__MaKH__6477ECF3">
             <End Role="NguoiDung" EntitySet="NguoiDung" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__MaSanP__3C34F16F" Association="Self.FK__BinhLuan__MaSanP__3C34F16F">
+          <AssociationSet Name="FK__BinhLuan__MaSanP__656C112C" Association="Self.FK__BinhLuan__MaSanP__656C112C">
             <End Role="SanPham" EntitySet="SanPham" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__CuaHang__AdminID__1CBC4616" Association="Self.FK__CuaHang__AdminID__1CBC4616">
+          <AssociationSet Name="FK__CuaHang__AdminID__5070F446" Association="Self.FK__CuaHang__AdminID__5070F446">
             <End Role="QuanTriVien" EntitySet="QuanTriVien" />
             <End Role="CuaHang" EntitySet="CuaHang" />
           </AssociationSet>
-          <AssociationSet Name="FK__CuaHang_K__MaCua__2739D489" Association="Self.FK__CuaHang_K__MaCua__2739D489">
+          <AssociationSet Name="FK__CuaHang_K__MaCua__5AEE82B9" Association="Self.FK__CuaHang_K__MaCua__5AEE82B9">
             <End Role="CuaHang" EntitySet="CuaHang" />
             <End Role="CuaHang_KhuyenMai" EntitySet="CuaHang_KhuyenMai" />
           </AssociationSet>
-          <AssociationSet Name="FK__CuaHang_K__MaKhu__282DF8C2" Association="Self.FK__CuaHang_K__MaKhu__282DF8C2">
+          <AssociationSet Name="FK__CuaHang_K__MaKhu__5BE2A6F2" Association="Self.FK__CuaHang_K__MaKhu__5BE2A6F2">
             <End Role="KhuyenMai" EntitySet="KhuyenMai" />
             <End Role="CuaHang_KhuyenMai" EntitySet="CuaHang_KhuyenMai" />
           </AssociationSet>
-          <AssociationSet Name="FK__KhuyenMai__MaSan__245D67DE" Association="Self.FK__KhuyenMai__MaSan__245D67DE">
+          <AssociationSet Name="FK__KhuyenMai__MaSan__5812160E" Association="Self.FK__KhuyenMai__MaSan__5812160E">
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMai" />
             <End Role="KhuyenMai" EntitySet="KhuyenMai" />
           </AssociationSet>
-          <AssociationSet Name="FK__SanPhamKh__MaSan__2180FB33" Association="Self.FK__SanPhamKh__MaSan__2180FB33">
+          <AssociationSet Name="FK__SanPhamKh__MaSan__5535A963" Association="Self.FK__SanPhamKh__MaSan__5535A963">
             <End Role="SanPham" EntitySet="SanPham" />
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMai" />
           </AssociationSet>
-          <AssociationSet Name="FK__TichDiem__MaKH__2CF2ADDF" Association="Self.FK__TichDiem__MaKH__2CF2ADDF">
+          <AssociationSet Name="FK__TichDiem__MaKH__60A75C0F" Association="Self.FK__TichDiem__MaKH__60A75C0F">
             <End Role="NguoiDung" EntitySet="NguoiDung" />
             <End Role="TichDiem" EntitySet="TichDiem" />
           </AssociationSet>
@@ -237,7 +266,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="thuaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="thua1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="BinhLuan">
           <Key>
             <PropertyRef Name="MaBinhLuan" />
@@ -247,8 +276,8 @@
           <Property Name="MaSanPham" Type="Int32" Nullable="false" />
           <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NgayBinhLuan" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__BinhLuan__MaKH__3B40CD36" FromRole="BinhLuan" ToRole="NguoiDung" />
-          <NavigationProperty Name="SanPham" Relationship="Self.FK__BinhLuan__MaSanP__3C34F16F" FromRole="BinhLuan" ToRole="SanPham" />
+          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__BinhLuan__MaKH__6477ECF3" FromRole="BinhLuan" ToRole="NguoiDung" />
+          <NavigationProperty Name="SanPham" Relationship="Self.FK__BinhLuan__MaSanP__656C112C" FromRole="BinhLuan" ToRole="SanPham" />
         </EntityType>
         <EntityType Name="CuaHang">
           <Key>
@@ -257,8 +286,22 @@
           <Property Name="MaCuaHang" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AdminID" Type="Int32" />
-          <NavigationProperty Name="QuanTriVien" Relationship="Self.FK__CuaHang__AdminID__1CBC4616" FromRole="CuaHang" ToRole="QuanTriVien" />
+          <NavigationProperty Name="QuanTriVien" Relationship="Self.FK__CuaHang__AdminID__5070F446" FromRole="CuaHang" ToRole="QuanTriVien" />
           <NavigationProperty Name="KhuyenMais" Relationship="Self.CuaHang_KhuyenMai" FromRole="CuaHang" ToRole="KhuyenMai" />
+        </EntityType>
+        <EntityType Name="DONHANG">
+          <Key>
+            <PropertyRef Name="MaDonHang" />
+          </Key>
+          <Property Name="MaDonHang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaKH" Type="Int32" Nullable="false" />
+          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiaChi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayDat" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NgayGiao" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TinhTrangGiaoHang" Type="Int32" Nullable="false" />
+          <Property Name="DaThanhToan" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="KhuyenMai">
           <Key>
@@ -271,7 +314,7 @@
           <Property Name="NgayKetThuc" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="MaSanPhamKM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="SanPhamKhuyenMai" Relationship="Self.FK__KhuyenMai__MaSan__245D67DE" FromRole="KhuyenMai" ToRole="SanPhamKhuyenMai" />
+          <NavigationProperty Name="SanPhamKhuyenMai" Relationship="Self.FK__KhuyenMai__MaSan__5812160E" FromRole="KhuyenMai" ToRole="SanPhamKhuyenMai" />
           <NavigationProperty Name="CuaHangs" Relationship="Self.CuaHang_KhuyenMai" FromRole="KhuyenMai" ToRole="CuaHang" />
         </EntityType>
         <EntityType Name="NguoiDung">
@@ -287,8 +330,8 @@
           <Property Name="SoDienThoai" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="TenDangNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="BinhLuans" Relationship="Self.FK__BinhLuan__MaKH__3B40CD36" FromRole="NguoiDung" ToRole="BinhLuan" />
-          <NavigationProperty Name="TichDiem" Relationship="Self.FK__TichDiem__MaKH__2CF2ADDF" FromRole="NguoiDung" ToRole="TichDiem" />
+          <NavigationProperty Name="BinhLuans" Relationship="Self.FK__BinhLuan__MaKH__6477ECF3" FromRole="NguoiDung" ToRole="BinhLuan" />
+          <NavigationProperty Name="TichDiem" Relationship="Self.FK__TichDiem__MaKH__60A75C0F" FromRole="NguoiDung" ToRole="TichDiem" />
         </EntityType>
         <EntityType Name="QuanTriVien">
           <Key>
@@ -297,7 +340,7 @@
           <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TenDangNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MatKhau" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CuaHangs" Relationship="Self.FK__CuaHang__AdminID__1CBC4616" FromRole="QuanTriVien" ToRole="CuaHang" />
+          <NavigationProperty Name="CuaHangs" Relationship="Self.FK__CuaHang__AdminID__5070F446" FromRole="QuanTriVien" ToRole="CuaHang" />
         </EntityType>
         <EntityType Name="SanPham">
           <Key>
@@ -309,8 +352,8 @@
           <Property Name="Gia" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LoaiSanPham" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="BinhLuans" Relationship="Self.FK__BinhLuan__MaSanP__3C34F16F" FromRole="SanPham" ToRole="BinhLuan" />
-          <NavigationProperty Name="SanPhamKhuyenMais" Relationship="Self.FK__SanPhamKh__MaSan__2180FB33" FromRole="SanPham" ToRole="SanPhamKhuyenMai" />
+          <NavigationProperty Name="BinhLuans" Relationship="Self.FK__BinhLuan__MaSanP__656C112C" FromRole="SanPham" ToRole="BinhLuan" />
+          <NavigationProperty Name="SanPhamKhuyenMais" Relationship="Self.FK__SanPhamKh__MaSan__5535A963" FromRole="SanPham" ToRole="SanPhamKhuyenMai" />
         </EntityType>
         <EntityType Name="SanPhamKhuyenMai">
           <Key>
@@ -321,8 +364,8 @@
           <Property Name="MoTaKhuyenMai" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="HinhAnh" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MaSanPham" Type="Int32" />
-          <NavigationProperty Name="KhuyenMais" Relationship="Self.FK__KhuyenMai__MaSan__245D67DE" FromRole="SanPhamKhuyenMai" ToRole="KhuyenMai" />
-          <NavigationProperty Name="SanPham" Relationship="Self.FK__SanPhamKh__MaSan__2180FB33" FromRole="SanPhamKhuyenMai" ToRole="SanPham" />
+          <NavigationProperty Name="KhuyenMais" Relationship="Self.FK__KhuyenMai__MaSan__5812160E" FromRole="SanPhamKhuyenMai" ToRole="KhuyenMai" />
+          <NavigationProperty Name="SanPham" Relationship="Self.FK__SanPhamKh__MaSan__5535A963" FromRole="SanPhamKhuyenMai" ToRole="SanPham" />
         </EntityType>
         <EntityType Name="TichDiem">
           <Key>
@@ -331,9 +374,9 @@
           <Property Name="MaKH" Type="Int32" Nullable="false" />
           <Property Name="Diem" Type="Int32" Nullable="false" />
           <Property Name="CapBac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__TichDiem__MaKH__2CF2ADDF" FromRole="TichDiem" ToRole="NguoiDung" />
+          <NavigationProperty Name="NguoiDung" Relationship="Self.FK__TichDiem__MaKH__60A75C0F" FromRole="TichDiem" ToRole="NguoiDung" />
         </EntityType>
-        <Association Name="FK__BinhLuan__MaKH__3B40CD36">
+        <Association Name="FK__BinhLuan__MaKH__6477ECF3">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -345,7 +388,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__MaSanP__3C34F16F">
+        <Association Name="FK__BinhLuan__MaSanP__656C112C">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
@@ -357,7 +400,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__CuaHang__AdminID__1CBC4616">
+        <Association Name="FK__CuaHang__AdminID__5070F446">
           <End Role="QuanTriVien" Type="Self.QuanTriVien" Multiplicity="0..1" />
           <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="*" />
           <ReferentialConstraint>
@@ -369,7 +412,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__KhuyenMai__MaSan__245D67DE">
+        <Association Name="FK__KhuyenMai__MaSan__5812160E">
           <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="0..1" />
           <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="*" />
           <ReferentialConstraint>
@@ -381,7 +424,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TichDiem__MaKH__2CF2ADDF">
+        <Association Name="FK__TichDiem__MaKH__60A75C0F">
           <End Role="NguoiDung" Type="Self.NguoiDung" Multiplicity="1" />
           <End Role="TichDiem" Type="Self.TichDiem" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -393,7 +436,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SanPhamKh__MaSan__2180FB33">
+        <Association Name="FK__SanPhamKh__MaSan__5535A963">
           <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1" />
           <End Role="SanPhamKhuyenMai" Type="Self.SanPhamKhuyenMai" Multiplicity="*" />
           <ReferentialConstraint>
@@ -409,36 +452,37 @@
           <End Role="CuaHang" Type="Self.CuaHang" Multiplicity="*" />
           <End Role="KhuyenMai" Type="Self.KhuyenMai" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="thuaEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="thua1Entities3" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BinhLuans" EntityType="Self.BinhLuan" />
           <EntitySet Name="CuaHangs" EntityType="Self.CuaHang" />
+          <EntitySet Name="DONHANGs" EntityType="Self.DONHANG" />
           <EntitySet Name="KhuyenMais" EntityType="Self.KhuyenMai" />
           <EntitySet Name="NguoiDungs" EntityType="Self.NguoiDung" />
           <EntitySet Name="QuanTriViens" EntityType="Self.QuanTriVien" />
           <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
           <EntitySet Name="SanPhamKhuyenMais" EntityType="Self.SanPhamKhuyenMai" />
           <EntitySet Name="TichDiems" EntityType="Self.TichDiem" />
-          <AssociationSet Name="FK__BinhLuan__MaKH__3B40CD36" Association="Self.FK__BinhLuan__MaKH__3B40CD36">
+          <AssociationSet Name="FK__BinhLuan__MaKH__6477ECF3" Association="Self.FK__BinhLuan__MaKH__6477ECF3">
             <End Role="NguoiDung" EntitySet="NguoiDungs" />
             <End Role="BinhLuan" EntitySet="BinhLuans" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__MaSanP__3C34F16F" Association="Self.FK__BinhLuan__MaSanP__3C34F16F">
+          <AssociationSet Name="FK__BinhLuan__MaSanP__656C112C" Association="Self.FK__BinhLuan__MaSanP__656C112C">
             <End Role="SanPham" EntitySet="SanPhams" />
             <End Role="BinhLuan" EntitySet="BinhLuans" />
           </AssociationSet>
-          <AssociationSet Name="FK__CuaHang__AdminID__1CBC4616" Association="Self.FK__CuaHang__AdminID__1CBC4616">
+          <AssociationSet Name="FK__CuaHang__AdminID__5070F446" Association="Self.FK__CuaHang__AdminID__5070F446">
             <End Role="QuanTriVien" EntitySet="QuanTriViens" />
             <End Role="CuaHang" EntitySet="CuaHangs" />
           </AssociationSet>
-          <AssociationSet Name="FK__KhuyenMai__MaSan__245D67DE" Association="Self.FK__KhuyenMai__MaSan__245D67DE">
+          <AssociationSet Name="FK__KhuyenMai__MaSan__5812160E" Association="Self.FK__KhuyenMai__MaSan__5812160E">
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMais" />
             <End Role="KhuyenMai" EntitySet="KhuyenMais" />
           </AssociationSet>
-          <AssociationSet Name="FK__TichDiem__MaKH__2CF2ADDF" Association="Self.FK__TichDiem__MaKH__2CF2ADDF">
+          <AssociationSet Name="FK__TichDiem__MaKH__60A75C0F" Association="Self.FK__TichDiem__MaKH__60A75C0F">
             <End Role="NguoiDung" EntitySet="NguoiDungs" />
             <End Role="TichDiem" EntitySet="TichDiems" />
           </AssociationSet>
-          <AssociationSet Name="FK__SanPhamKh__MaSan__2180FB33" Association="Self.FK__SanPhamKh__MaSan__2180FB33">
+          <AssociationSet Name="FK__SanPhamKh__MaSan__5535A963" Association="Self.FK__SanPhamKh__MaSan__5535A963">
             <End Role="SanPham" EntitySet="SanPhams" />
             <End Role="SanPhamKhuyenMai" EntitySet="SanPhamKhuyenMais" />
           </AssociationSet>
@@ -452,9 +496,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="thuaModelStoreContainer" CdmEntityContainer="thuaEntities1">
+        <EntityContainerMapping StorageEntityContainer="thua1ModelStoreContainer" CdmEntityContainer="thua1Entities3">
           <EntitySetMapping Name="BinhLuans">
-            <EntityTypeMapping TypeName="thuaModel.BinhLuan">
+            <EntityTypeMapping TypeName="thua1Model.BinhLuan">
               <MappingFragment StoreEntitySet="BinhLuan">
                 <ScalarProperty Name="MaBinhLuan" ColumnName="MaBinhLuan" />
                 <ScalarProperty Name="MaKH" ColumnName="MaKH" />
@@ -465,7 +509,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CuaHangs">
-            <EntityTypeMapping TypeName="thuaModel.CuaHang">
+            <EntityTypeMapping TypeName="thua1Model.CuaHang">
               <MappingFragment StoreEntitySet="CuaHang">
                 <ScalarProperty Name="MaCuaHang" ColumnName="MaCuaHang" />
                 <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
@@ -473,8 +517,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DONHANGs">
+            <EntityTypeMapping TypeName="thua1Model.DONHANG">
+              <MappingFragment StoreEntitySet="DONHANG">
+                <ScalarProperty Name="MaDonHang" ColumnName="MaDonHang" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="DienThoai" ColumnName="DienThoai" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="NgayGiao" ColumnName="NgayGiao" />
+                <ScalarProperty Name="TinhTrangGiaoHang" ColumnName="TinhTrangGiaoHang" />
+                <ScalarProperty Name="DaThanhToan" ColumnName="DaThanhToan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="KhuyenMais">
-            <EntityTypeMapping TypeName="thuaModel.KhuyenMai">
+            <EntityTypeMapping TypeName="thua1Model.KhuyenMai">
               <MappingFragment StoreEntitySet="KhuyenMai">
                 <ScalarProperty Name="MaKhuyenMai" ColumnName="MaKhuyenMai" />
                 <ScalarProperty Name="TenKhuyenMai" ColumnName="TenKhuyenMai" />
@@ -487,7 +546,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NguoiDungs">
-            <EntityTypeMapping TypeName="thuaModel.NguoiDung">
+            <EntityTypeMapping TypeName="thua1Model.NguoiDung">
               <MappingFragment StoreEntitySet="NguoiDung">
                 <ScalarProperty Name="MaKH" ColumnName="MaKH" />
                 <ScalarProperty Name="TenKH" ColumnName="TenKH" />
@@ -502,7 +561,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="QuanTriViens">
-            <EntityTypeMapping TypeName="thuaModel.QuanTriVien">
+            <EntityTypeMapping TypeName="thua1Model.QuanTriVien">
               <MappingFragment StoreEntitySet="QuanTriVien">
                 <ScalarProperty Name="AdminID" ColumnName="AdminID" />
                 <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
@@ -511,7 +570,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SanPhams">
-            <EntityTypeMapping TypeName="thuaModel.SanPham">
+            <EntityTypeMapping TypeName="thua1Model.SanPham">
               <MappingFragment StoreEntitySet="SanPham">
                 <ScalarProperty Name="MaSanPham" ColumnName="MaSanPham" />
                 <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
@@ -523,7 +582,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SanPhamKhuyenMais">
-            <EntityTypeMapping TypeName="thuaModel.SanPhamKhuyenMai">
+            <EntityTypeMapping TypeName="thua1Model.SanPhamKhuyenMai">
               <MappingFragment StoreEntitySet="SanPhamKhuyenMai">
                 <ScalarProperty Name="MaSanPhamKM" ColumnName="MaSanPhamKM" />
                 <ScalarProperty Name="TenSanPham" ColumnName="TenSanPham" />
@@ -534,7 +593,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TichDiems">
-            <EntityTypeMapping TypeName="thuaModel.TichDiem">
+            <EntityTypeMapping TypeName="thua1Model.TichDiem">
               <MappingFragment StoreEntitySet="TichDiem">
                 <ScalarProperty Name="MaKH" ColumnName="MaKH" />
                 <ScalarProperty Name="Diem" ColumnName="Diem" />
@@ -542,7 +601,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CuaHang_KhuyenMai" TypeName="thuaModel.CuaHang_KhuyenMai" StoreEntitySet="CuaHang_KhuyenMai">
+          <AssociationSetMapping Name="CuaHang_KhuyenMai" TypeName="thua1Model.CuaHang_KhuyenMai" StoreEntitySet="CuaHang_KhuyenMai">
             <EndProperty Name="CuaHang">
               <ScalarProperty Name="MaCuaHang" ColumnName="MaCuaHang" />
             </EndProperty>

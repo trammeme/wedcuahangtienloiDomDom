@@ -7,124 +7,127 @@
 }
 <style>
     body {
-        background-color: #003366; /* Nền xanh lá */
-        color: black; /* Chữ trắng */
-        font-family: Arial, sans-serif; /* Phông chữ */
+        background-color: #003366;
+        color:  beige;
+        font-family: Arial, sans-serif;
     }
 
-    .form-horizontal {
-        background-color: rgba(255, 255, 255, 0.9); /* Nền trắng trong suốt cho khung */
+    .container {
+        max-width: 600px; /* Giới hạn chiều rộng tối đa */
+        margin-top: 50px; /* Thêm khoảng cách trên */
         padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Đổ bóng */
     }
 
     h4 {
-        color: snow; /* Tiêu đề màu đỏ */
-        font-size: 28px; /* Kích thước tiêu đề lớn */
+        color: #f44336; /* Màu cho tiêu đề */
+        font-size: 32px; /* Kích thước chữ lớn hơn */
+        text-align: center; /* Căn giữa */
+        margin-bottom: 20px; /* Thêm khoảng cách phía dưới */
+    }
+
+    .dl-horizontal dt {
+        width: 200px; /* Kích thước cho phần tiêu đề */
+        float: left; /* Đặt tiêu đề bên trái */
+        clear: left; /* Dọn dẹp các tùy chọn bên trái */
     }
 
     .btn {
-        background-color: #f44336; /* Nút màu đỏ */
-        color: white; /* Chữ nút màu trắng */
+        background-color: #f44336;
+        color: white;
+        display: block;
+        margin: 20px auto; /* Căn giữa nút */
     }
 
         .btn:hover {
-            background-color: #c62828; /* Màu nút khi hover */
+            background-color: #c62828; /* Màu khi di chuột */
+            transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
         }
 
     .text-danger {
-        color: red; /* Màu cho thông báo lỗi */
+        color: red;
     }
 </style>
 <!DOCTYPE html>
 
-<html>
+<html lang="vi">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi Tiết Người Dùng</title>
 </head>
 <body>
-    <div>
-        <h4>NguoiDung</h4>
+    <div class="container">
+        <h4>Chi Tiết Người Dùng</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
-                @Html.DisplayNameFor(model => model.MaKH)
+                Mã Khách Hàng
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.MaKH)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.TenKH)
+                Tên Khách Hàng
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.TenKH)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.Email)
+                Email
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.Email)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.GioiTinh)
+                Giới Tính
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.GioiTinh)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.ThangSinh)
+                Tháng Sinh
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.ThangSinh)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.DiaChi)
+                Địa Chỉ
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.DiaChi)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.SoDienThoai)
+                Số Điện Thoại
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.SoDienThoai)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.TenDangNhap)
+                Tên Đăng Nhập
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.TenDangNhap)
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.MatKhau)
+                Mật Khẩu
             </dt>
-
             <dd>
                 @Html.DisplayFor(model => model.MatKhau)
             </dd>
-
         </dl>
+
+        <p>
+            <a href="@Url.Action("Index", "Admin")" class="btn">Quay về menu chính</a>
+        </p>
     </div>
-    <p>
-        <a href="@Url.Action("Index", "Admin")" class="btn">Quay về menu chính</a>
-    </p>
 </body>
 </html>

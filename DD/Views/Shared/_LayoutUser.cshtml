@@ -6,14 +6,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMFbG06z3aO5pAo8L7RA5H5gE5gksqLuz9p8F9D" crossorigin="anonymous">
+    <style>
+        /* Thêm CSS ở đây như ví dụ trên */
+    </style>
 </head>
 <body>
     @Html.Partial("MenuPartial")
 
-    <div>
-
+    <main>
         @RenderSection("Slider", required: false)
         @RenderBody()
-    </div>
+    </main>
+
+    @RenderSection("Scripts", required: false) <!-- Thêm dòng này vào cuối body -->
+    @{ Html.RenderAction("Footer", "Home"); }
 </body>
 </html>

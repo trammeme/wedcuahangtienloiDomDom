@@ -2,8 +2,72 @@
 
 @{
     ViewBag.Title = "Danh Sách Sản Phẩm Khuyến Mãi";
- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
+
+}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    /* Đặt kiểu cho các nút chung */
+    .btn {
+        border: none;
+        padding: 10px 20px; /* Thiết lập padding để các nút có chiều rộng và chiều cao đồng đều */
+        font-size: 16px; /* Thiết lập font-size đồng nhất */
+        font-weight: bold; /* Làm chữ đậm để dễ nhìn */
+        text-align: center; /* Căn giữa văn bản trong nút */
+        cursor: pointer;
+        border-radius: 30px; /* Tạo góc bo tròn đẹp cho nút */
+        text-decoration: none;
+        display: inline-block; /* Đảm bảo nút không bị ảnh hưởng bởi các yếu tố khác */
+        line-height: 1.5; /* Điều chỉnh chiều cao dòng để văn bản không bị chật */
+        margin: 5px; /* Tạo khoảng cách giữa các nút */
+        transition: all 0.3s ease; /* Hiệu ứng chuyển động khi hover */
     }
+
+    /* Nút màu xanh (Thêm sản phẩm) */
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border: 2px solid #28a745; /* Đặt viền cùng màu */
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838; /* Thay đổi màu viền khi hover */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ khi hover */
+        }
+
+    /* Nút màu đỏ (Xóa) */
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: 2px solid #dc3545; /* Đặt viền cùng màu */
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333; /* Thay đổi màu viền khi hover */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ khi hover */
+        }
+
+    /* Nút màu vàng (Sửa) */
+    .btn-edit {
+        background-color: #ffc107;
+        color: white;
+        border: 2px solid #ffc107; /* Đặt viền cùng màu */
+    }
+
+        .btn-edit:hover {
+            background-color: #e0a800;
+            border-color: #e0a800; /* Thay đổi màu viền khi hover */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ khi hover */
+        }
+
+    /* Bảo đảm link không có gạch chân */
+    a {
+        text-decoration: none;
+    }
+</style>
 
 <h2>Danh Sách Sản Phẩm Khuyến Mãi</h2>
 
@@ -26,16 +90,16 @@
                 <td>@item.MoTaKhuyenMai</td>
                 <td>
 
-                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
+                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" />
                 </td>
                 <td>
-                    <!-- Thêm các thao tác như sửa, xóa nếu cần -->
-                    <a href="@Url.Action("Edit", new { id = item.MaSanPhamKM })">Sửa</a> |
-                    <a href="@Url.Action("Delete", new { id = item.MaSanPhamKM })">Xóa</a>
+                    <a href="@Url.Action("Edit", new { id = item.MaSanPhamKM })" class="btn-edit">Sửa</a> |
+                    <a href="@Url.Action("Delete", new { id = item.MaSanPhamKM })" class="btn-danger">Xóa</a>
                 </td>
+
             </tr>
         }
     </tbody>
 </table>
 
-<a href="@Url.Action("Create", "SanPhamKhuyenMai")" class="btn btn-success">Thêm sản phẩm khuyến mãi mới</a>
+<a href="@Url.Action("Create", "SanPhamKhuyenMai")" class="btn-success">Thêm sản phẩm khuyến mãi mới</a>

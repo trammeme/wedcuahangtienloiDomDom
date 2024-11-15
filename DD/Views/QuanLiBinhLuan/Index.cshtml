@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<DD.Models.BinhLuan>
 @{
     ViewBag.Title = "Quản Lý Bình Luận";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
+
 }
 
 <h2>Quản Lý Bình Luận</h2>
@@ -27,10 +29,8 @@
             <th>Mã Sản Phẩm</th>
             <th>Mã Khách Hàng</th>
             <th>Nội Dung</th>
-            <th>Ngày Bình Luận</th>
-            <th>Phản Hồi</th>
-            <th>Ngày Phản Hồi</th>
-            <th>Hành Động</th>
+            <th>Ngày Bình Luận</th> <!-- Add the new column here -->
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -45,26 +45,15 @@
                     <td>@item.MaSanPham</td>
                     <td>@item.MaKH</td>
                     <td>@item.NoiDung</td>
-                    <td>@item.NgayBinhLuan.ToShortDateString()</td>
-                    <td class="reply-content">
-                        <span class="reply-text">@item.PhanHoi</span>
-                        <textarea class="form-control reply-editor" style="display: none;">@item.PhanHoi</textarea>
-                    </td>
-                    <td class="reply-date">
-                        @(item.NgayPhanHoi.HasValue ? item.NgayPhanHoi.Value.ToString("dd/MM/yyyy HH:mm") : "")
-                    </td>
+                    <td>@item.NgayBinhLuan</td>
                     <td>
-                        <button class="btn btn-primary btn-reply" data-comment-id="@item.MaBinhLuan">
-                            @(string.IsNullOrEmpty(item.PhanHoi) ? "Trả lời" : "Sửa phản hồi")
-                        </button>
                         <button class="btn btn-success btn-save-reply" style="display: none;" data-comment-id="@item.MaBinhLuan">
                             Lưu
                         </button>
                         <button class="btn btn-secondary btn-cancel-reply" style="display: none;" data-comment-id="@item.MaBinhLuan">
                             Hủy
                         </button>
-                        <form action="@Url.Action("DeleteBinhLuan", "QuanLiBinhLuan")" method="post" style="display: inline-block;"
-                              onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
+                        <form action="@Url.Action("DeleteBinhLuan", "QuanLiBinhLuan")" method="post" style="display: inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
                             <input type="hidden" name="mabinhluan" value="@item.MaBinhLuan" />
                             <button type="submit" class="btn btn-danger">Xóa</button>
                         </form>

@@ -10,7 +10,7 @@ using System.Data.Entity.Validation;
 namespace DD.Controllers
 { public class QLKhuyenMaiController : Controller
         {
-        thuaEntities1 db = new thuaEntities1();
+        camlyEntities1 db = new camlyEntities1();
 
             public ActionResult Index()
             {
@@ -22,10 +22,8 @@ namespace DD.Controllers
         {
             return View();
         }
-        // Xử lý khi form được gửi
 
 
-        // POST: SanPhamKhuyenMai/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(KhuyenMaiViewModel model)
@@ -47,11 +45,10 @@ namespace DD.Controllers
 
                     db.KhuyenMais.Add(KM);
                     db.SaveChanges();
-                    return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm
+                    return RedirectToAction(nameof(Index)); 
                 }
                 catch (DbEntityValidationException ex)
                 {
-                    // Lặp qua các lỗi và thêm vào ModelState để hiển thị
                     foreach (var validationErrors in ex.EntityValidationErrors)
                     {
                         foreach (var validationError in validationErrors.ValidationErrors)
@@ -61,7 +58,6 @@ namespace DD.Controllers
                     }
                 }
             }
-            // Nếu có lỗi, view sẽ hiển thị lỗi validation
             return View(model);
         }
 
@@ -100,7 +96,6 @@ namespace DD.Controllers
                 {
                     db.KhuyenMais.Remove(khuyenMai);
                     db.SaveChanges();
-                    // Optional: inform the user that deletion was successful  
                 }
                 else
                 {
@@ -135,7 +130,6 @@ namespace DD.Controllers
                 var KhuyenMai = db.KhuyenMais.Find(model.MaKhuyenMai);
                 if (KhuyenMai != null)
                 {
-                    // Kiểm tra masanphamKM có tồn tại trong bảng SanPhamKhuyenMai
                     var sanPham = db.SanPhamKhuyenMais.Find(model.MaSanPhamKM);
                     if (sanPham == null)
                     {

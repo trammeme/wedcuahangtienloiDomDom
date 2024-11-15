@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Quản Lý Tích Điểm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
 }
 
 <h2>Quản Lý Tích Điểm</h2>
@@ -15,6 +16,7 @@
             <th>Số Điện Thoại</th>
             <th>Điểm Tích Lũy</th>
             <th>Cấp Thành Viên</th>
+            <th>Hành Động</th> <!-- Cột cho hành động xóa điểm -->
         </tr>
     </thead>
     <tbody>
@@ -26,45 +28,27 @@
                 <td>@user.Email</td>
                 <td>@user.SoDienThoai</td>
                 <td>@user.Diem</td>
+                <td>@user.CapBac</td> <!-- Display the automatically assigned CapBac -->
                 <td>
-                    <button class="btn btn-success" onclick="capThanhVien('@user.MaKH', @user.Diem)">Cấp Thành Viên</button>
+                    <!-- Nút Xóa Điểm -->
+                    <button onclick="xoaDiem(@user.MaKH)">Xóa điểm</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    function capThanhVien(maKH, diem) {
-        let capBac = "";
-
-        // Xác định cấp bậc dựa trên điểm
-        if (diem >= 500) {
-            capBac = "Kim Cương";
-        } else if (diem >= 200) {
-            capBac = "Vàng";
-        } else if (diem >= 100) {
-            capBac = "Bạc";
-        } else {
-            alert('Điểm tích lũy không đủ để cấp thành viên.');
-            return;
-        }
-
-        // Gọi AJAX để cấp thành viên
+<script>function xoaDiem(maKH) {
         $.ajax({
-            url: '@Url.Action("CapThanhVien", "QuanLyTichDiem")',
+            url: '/QuanLyTichDiem/XoaDiem',
             type: 'POST',
-            data: { maKH: maKH, capBac: capBac },
+            data: { maKH: maKH },
             success: function (response) {
                 if (response.success) {
-                    alert('Cấp thành viên thành công cho mã khách hàng: ' + maKH + ' - Cấp bậc: ' + capBac);
+                    alert(response.message);
+                    location.reload(); // Tải lại trang để cập nhật lại dữ liệu
                 } else {
-                    alert('Cấp thành viên không thành công. Vui lòng kiểm tra lại.');
+                    alert(response.message);
                 }
-            },
-            error: function () {
-                alert('Đã xảy ra lỗi. Vui lòng thử lại.');
             }
         });
     }

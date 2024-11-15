@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Tìm Kiếm Sản Phẩm";
+}
+
+<h1>Tìm Kiếm Sản Phẩm</h1>
+
+<div>
+    <input type="text" id="search-input" placeholder="Nhập tên sản phẩm" />
+    <select id="category">
+        <option value="tất cả">Tất cả</option>
+        <option value="món chính">Món chính</option>
+        <option value="tráng miệng">Tráng miệng</option>
+    </select>
+    <select id="price-range">
+        <option value="">Tất cả</option>
+        <option value="dưới 50k">Dưới 50k</option>
+        @{
+            ViewBag.Title = "Tìm kiếm sản phẩm";
+        }
+
+        <h2>Tìm kiếm sản phẩm</h2>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Tìm sản phẩm..." />
+            <select id="categorySelect">
+                <option value="tất cả">Tất cả</option>
+                <option value="loại1">Loại 1</option>
+                <option value="loại2">Loại 2</option>
+            </select>
+            <select id="priceRangeSelect">
+                <option value="">Chọn khoảng giá</option>
+                <option value="dưới 50k">Dưới 50k</option>
+                <option value="50k-100k">50k-100k</option>
+                <option value="trên 100k">Trên 100k</option>
+            </select>
+            <button onclick="performSearch()">Tìm kiếm</button>
+        </div>
+
+        <div id="searchResults"></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+
+    function performSearch() {
+        var searchInput = document.getElementById('searchInput').value;
+        var category = document.getElementById('categorySelect').value;
+        var priceRange = document.getElementById('priceRangeSelect').value;
+
+        $.ajax({
+            url: '@Url.Action("Search", "Home")',
+            type: 'GET',
+            data: {
+                searchInput: searchInput,
+                category: category,
+                priceRange: priceRange
+            },
+            success: function (data) {
+                var resultsContainer = $('#searchResults');
+                resultsContainer.empty(); // Xóa kết quả cũ
+
+                if (data.length > 0) {
+                    data.forEach(function (item) {
+                        resultsContainer.append('<div>' + item.Name + ' - ' + item.Price + ' - ' + item.Category + '</div>');
+                    });
+                } else {
+                    resultsContainer.append('<div>Không tìm thấy sản phẩm nào</div>');
+                }
+            },
+            error: function (error) {
+                console.error("Có lỗi xảy ra:", error);
+            }
+        });
+    }
+        </script>
+        <option value="50k-100k">50k-100k</option>
+        <option value="trên 100k">Trên 100k</option>
+    </select>
+    <button onclick="performSearch()">Tìm Kiếm</button>
+</div>
+
+<div id="results"></div>
+
+<script>
+    async function performSearch() {
+        const searchInput = document.getElementById("search-input").value;
+        const category = document.getElementById("category").value;
+        const priceRange = document.getElementById("price-range").value;
+
+        try {
+            const response = await fetch(`/Home/Search?searchInput=${encodeURIComponent(searchInput)}&category=${encodeURIComponent(category)}&priceRange=${encodeURIComponent(priceRange)}`);
+            const results = await response.json();
+            displayResults(results);
+        } catch (error) {
+            console.error("Error fetching search results:", error);
+        }
+    }
+
+    function displayResults(results) {
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = ''; // Xóa nội dung cũ
+
+        if (results.length === 0) {
+            resultsDiv.textContent = "Không tìm thấy sản phẩm nào.";
+            return;
+        }
+
+        results.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.textContent = `${item.Name} - ${item.Price}₫ (${item.Category})`;
+            resultsDiv.appendChild(itemDiv);
+        });
+    }
+</script>

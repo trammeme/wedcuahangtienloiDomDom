@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fd67bdbe14684c4380720e6f278a2190" Name="Diagram1">
+        <EntityTypeShape EntityType="camlyModel.CHITIETDATHANG" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="camlyModel.DONHANG" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="camlyModel.NguoiDung" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="camlyModel.SanPham" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="camlyModel.FK__CHITIETDA__MaDon__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="camlyModel.FK__CHITIETDA__MaSan__5441852A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="camlyModel.KhuyenMai" Width="1.5" PointX="5.25" PointY="9.25" />
+        <EntityTypeShape EntityType="camlyModel.QuanTriVien" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="camlyModel.SanPhamKhuyenMai" Width="1.5" PointX="3" PointY="9.375" />
+        <EntityTypeShape EntityType="camlyModel.TichDiem" Width="1.5" PointX="5" PointY="5.375" />
+        <AssociationConnector Association="camlyModel.FK__KhuyenMai__MaSan__6C190EBB" />
+        <AssociationConnector Association="camlyModel.FK__TichDiem__MaKH__5CD6CB2B" />
+        <AssociationConnector Association="camlyModel.FK__SanPhamKh__MaSan__6383C8BA" />
+        <EntityTypeShape EntityType="camlyModel.BinhLuan" Width="1.5" PointX="8" PointY="7.25" />
+        <EntityTypeShape EntityType="camlyModel.CuaHang" Width="1.5" PointX="7.625" PointY="4.375" />
+        <AssociationConnector Association="camlyModel.FK__BinhLuan__MaKH__7D439ABD" />
+        <AssociationConnector Association="camlyModel.FK__BinhLuan__MaSanP__7E37BEF6" />
+        <AssociationConnector Association="camlyModel.FK__CuaHang__AdminID__71D1E811" />
+        <AssociationConnector Association="camlyModel.CuaHang_KhuyenMai" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

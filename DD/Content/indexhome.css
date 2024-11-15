@@ -67,7 +67,11 @@
     flex-wrap: wrap;
     justify-content: flex-start;
 }
-
+.product {
+    border: none; /* Bỏ viền */
+    padding: 0; /* Bỏ khoảng cách bên trong */
+    margin: 0; /* Bỏ khoảng cách bên ngoài */
+}
 .product-card {
     background: #fff;
     border-radius: 15px;
@@ -109,43 +113,26 @@
 }
 
 #productDetail {
-    border: 1px solid #ccc;
     padding: 20px;
     background-color: #fff;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     z-index: 1000;
     display: none; /* Mặc định ẩn */
-    width: 50%; /* Đảm bảo modal có kích thước phù hợp */
-    max-width: 600px; /* Giới hạn kích thước tối đa */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); /* Thêm hiệu ứng bóng đổ */
+    width: 25%; /* Đảm bảo modal có kích thước phù hợp */
+    max-width: 6000px; /* Giới hạn kích thước tối đa */
+    height:600px;
 }
 
 /* CSS cho modal nền */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    animation: fadeIn 0.3s;
+  
 }
 
 /* CSS cho nội dung modal */
 .modal-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 30px;
-    width: 90%;
-    max-width: 700px;
-    border-radius: 20px;
-    position: relative;
-    animation: slideIn 0.4s;
+   
 }
 
 @keyframes fadeIn {
@@ -256,4 +243,120 @@
     .promotion-card img {
         width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng */
         height: auto; /* Giữ tỷ lệ hình ảnh */
+    }
+.cart-summary {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+    .cart-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.checkout-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+    .checkout-button:hover {
+        background-color: #218838;
+    }
+
+.quantity-button {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 2px 8px;
+    cursor: pointer;
+}
+/* Thêm vào phần style của bạn */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+.product-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Khoảng cách giữa các nút */
+}
+
+.add-to-favorites {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff6b6b; /* Màu nền của nút yêu thích */
+    border: none;
+    border-radius: var(--border-radius);
+    color: white; /* Màu chữ */
+    padding: 0.5rem 1rem; /* Padding cho nút */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Thêm hiệu ứng chuyển màu */
+}
+
+    .add-to-favorites:hover {
+        background-color: #ff4c4c; /* Màu khi hover */
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    }
+
+    .add-to-favorites:focus {
+        outline: none; /* Bỏ đường viền khi nút được chọn */
     }

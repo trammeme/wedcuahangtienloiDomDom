@@ -12,14 +12,15 @@ namespace DD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BanTinMoiNgay
+    public partial class CHITIETDATHANG
     {
-        public string tieude { get; set; }
-        public string noidung { get; set; }
-        public System.DateTime ngay { get; set; }
-        public System.TimeSpan gio { get; set; }
-        public Nullable<int> adminID { get; set; }
+        public int MaChiTiet { get; set; }
+        public Nullable<int> MaDonHang { get; set; }
+        public Nullable<int> MaSanPham { get; set; }
+        public Nullable<int> SoLuong { get; set; }
+        public Nullable<decimal> DonGia { get; set; }
     
-        public virtual QuanTriVien QuanTriVien { get; set; }
+        public virtual DONHANG DONHANG { get; set; }
+        public virtual SanPham SanPham { get; set; }
     }
 }

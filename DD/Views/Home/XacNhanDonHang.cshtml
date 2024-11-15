@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DD.Models.GioHang>
+
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4">XÁC NHẬN ĐƠN HÀNG</h2>
+    <h4 class="text-center text-muted mb-5">
+        Đơn hàng của quý khách đã được chúng tôi ghi nhận, chúng tôi sẽ liên hệ quý khách trong thời gian sớm nhất và giao hàng đúng hẹn.
+    </h4>
+
+    <!-- Thông báo điểm thưởng -->
+   
+
+    <div class="text-center">
+        @Html.ActionLink("VỀ TRANG CHỦ", "Index", "Home", null, new { @class = "btn btn-primary px-5 py-2" })
+    </div>
+</div>
+
+<style>
+    /* Tùy chỉnh kiểu chữ cho tiêu đề */
+    h2 {
+        font-weight: bold;
+        font-size: 2rem;
+        color: #2563eb; /* Màu xanh dương tươi sáng */
+    }
+
+    /* Kiểu chữ cho đoạn mô tả */
+    h4 {
+        font-size: 1.2rem;
+        color: #6b7280; /* Màu xám nhạt */
+        line-height: 1.6;
+        max-width: 80%;
+        margin: auto;
+    }
+
+    /* Tùy chỉnh cho thông báo điểm thưởng */
+    .alert-info {
+        font-size: 1.1rem;
+        color: #2563eb;
+        background-color: #e0f2fe;
+        border-color: #2563eb;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    /* Tùy chỉnh button */
+    .btn-primary {
+        background-color: #2563eb;
+        border-color: #2563eb;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        padding: 12px 30px;
+        text-transform: uppercase;
+        border-radius: 25px;
+    }
+
+        /* Hiệu ứng hover cho button */
+        .btn-primary:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+        }
+
+    /* Căn giữa nội dung */
+    .text-center {
+        text-align: center;
+    }
+</style>

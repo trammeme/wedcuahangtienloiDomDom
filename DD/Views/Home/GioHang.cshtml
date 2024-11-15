@@ -1,0 +1,73 @@
+﻿@model List<DD.Models.GioHang>
+
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Giỏ Hàng</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Hình Ảnh</th>
+
+            <th>Số Lượng</th>
+            <th>Giá</th>
+            <th>Thành Tièn</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.sTenSanPham</td>
+                <td>@item.sTenSanPham</td>
+                <td>
+                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" />
+                </td>
+                <td>
+                    @using (Html.BeginForm("CapNhatDonHang", "Home", new { iMaSanPham = item.iMaSanPham }, FormMethod.Post))
+                    {
+                        <input type="number" min="1" name="txtSoLuong" value="@item.iSoLuong" class="form-control" />
+                        <button type="submit" class="btn btn-primary btn-sm mt-2">Cập nhật</button>
+                    }
+                </td>
+                <td>@string.Format("{0:#,##0}", item.dGia)</td>
+                <td>@string.Format("{0:#,##0}", item.dThanhTien)</td>
+               
+                <td>
+                    <a href="@Url.Action("XoaSPKhoiGioHang", new { iMaSanPham = item.iMaSanPham })" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">
+                <strong>Tổng số lượng:</strong>
+            </td>
+            <td>
+                @string.Format("{0:#,##0}", ViewBag.TongSoLuong)
+            </td>
+            <td colspan="2" class="text-right">
+                <strong>Tổng tiền:</strong>
+            </td>
+            <td colspan="3">
+                @string.Format("{0:#,##0}", ViewBag.TongTien) VNĐ
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="back-to-home">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay về trang chủ</a>
+</div>
+<div class="text-center mt-3">
+    @Html.ActionLink("ĐẶT HÀNG", "DatHang", "Home", null, new { @class = "btn btn-success btn-lg" })
+</div>

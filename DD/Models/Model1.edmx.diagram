@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3d95b8adc2ad4809a805aed0318f5ba5" Name="Diagram1">
+        <EntityTypeShape EntityType="thua1Model.BinhLuan" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.CuaHang" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.DONHANG" Width="1.5" PointX="5.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.KhuyenMai" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.NguoiDung" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.QuanTriVien" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.SanPham" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.SanPhamKhuyenMai" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="thua1Model.TichDiem" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="thua1Model.FK__BinhLuan__MaKH__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="thua1Model.FK__BinhLuan__MaSanP__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="thua1Model.FK__CuaHang__AdminID__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="thua1Model.FK__KhuyenMai__MaSan__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="thua1Model.FK__TichDiem__MaKH__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="thua1Model.FK__SanPhamKh__MaSan__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="thua1Model.CuaHang_KhuyenMai" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

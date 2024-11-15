@@ -1,0 +1,52 @@
+﻿@model DD.Models.SanPham
+
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detailsp</title>
+</head>
+<body>
+    <div>
+        <h4>Thông Tin Sản Phẩm</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.TenSanPham)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TenSanPham)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MoTa)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MoTa)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Gia)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gia)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HinhAnh)
+            </dt>
+            <dd>
+                <img src="@Url.Content(Model.HinhAnh)" alt="Hình ảnh sản phẩm" />
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("VỀ TRANG CHỦ", "Index", "Home", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("THÊM VÀO GIỎ HÀNG", "ThemGioHang", "Home", new { id = Model.MaSanPham }, new { @class = "btn btn-success" })
+    </p>
+</body>
+</html>
+@section Slider {
+    @Html.Action("Slider", "Home")
+}

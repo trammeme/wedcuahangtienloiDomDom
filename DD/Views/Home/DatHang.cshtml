@@ -1,0 +1,146 @@
+﻿@using DD.Models
+@{
+    ViewBag.Title = "DatHang";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger text-center my-4">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table table-bordered text-center mb-4">
+    <thead class="thead-light">
+        <tr>
+            <th>Tên Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Đơn Giá</th>
+            <th>Thành Tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.sTenSanPham</td>
+                <td>@item.iSoLuong</td>
+                <td>@string.Format("{0:#,##0}", item.dGia)</td>
+                <td>@string.Format("{0:#,##0}", item.dThanhTien)</td>
+            </tr>
+
+        }
+        <tr>
+            <td colspan="3" class="text-right font-weight-bold text-danger">
+                Số lượng sản phẩm:
+                @string.Format("{0:#,##0}", ViewBag.TongSoLuong ?? 0)
+            </td>
+            <td class="font-weight-bold text-danger">
+                Tổng tiền: @string.Format("{0:#,##0}", ViewBag.TongTien ?? 0) VNĐ
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4 text-primary">THÔNG TIN ĐẶT HÀNG</h2>
+
+    @using (Html.BeginForm("DatHang", "Home", FormMethod.Post, new { @class = "p-4 border rounded shadow-sm bg-white" }))
+    {
+        <div class="form-group mb-3">
+            <label class="fw-bold">Họ tên khách hàng:</label>
+            <div class="form-control-plaintext">
+                @((Session["user"] as DD.Models.NguoiDung)?.TenKH)
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="fw-bold">Địa chỉ:</label>
+            <input type="text" name="diaChi" class="form-control" value="@((Session["user"] as DD.Models.NguoiDung)?.DiaChi)" required placeholder="Nhập địa chỉ của bạn" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="fw-bold">Điện thoại:</label>
+            <input type="tel" name="soDienThoai" class="form-control" required placeholder="Nhập số điện thoại 10 số"
+                   pattern="[0-9]{10}" title="Vui lòng nhập số điện thoại 10 số" />
+        </div>
+        <div class="form-group mb-3">
+            <label class="fw-bold">Email:</label>
+            <input type="email" name="email" class="form-control" value="@((Session["user"] as DD.Models.NguoiDung)?.Email)" required placeholder="Nhập email của bạn" />
+        </div>
+        <div class="form-group mb-3">
+            <label class="fw-bold">Ngày đặt:</label>
+            <div class="form-control-plaintext">
+                @DateTime.Now.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="fw-bold">Ngày giao:</label>
+            <input type="date" name="ngayGiao" class="form-control" required
+                   min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
+                   max="@DateTime.Now.AddDays(30).ToString("yyyy-MM-dd")" />
+        </div>
+
+        <div class="back-to-home">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay về trang chủ</a>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-4 py-2 mt-3">ĐẶT HÀNG</button>
+        </div>
+    }
+</div>
+
+<style>
+    .container h2 {
+        color: #2563eb;
+        font-weight: bold;
+    }
+
+    .form-group label {
+        color: #333;
+    }
+
+    .form-control-plaintext {
+        color: #555;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #2563eb;
+        border-color: #2563eb;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #1e40af;
+            transform: translateY(-2px);
+        }
+
+    .alert {
+        border-radius: 5px;
+        max-width: 500px;
+        margin: auto;
+    }
+
+    table {
+        margin: auto;
+        width: 80%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+</style>

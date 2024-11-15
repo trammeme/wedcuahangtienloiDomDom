@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -10,24 +11,21 @@ namespace DD.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly thuaEntities1 db = new thuaEntities1();
+        private readonly camlyEntities1 db = new camlyEntities1();
+      
 
-        // GET: Account/Register
         public ActionResult Register()
         {
             return View();
         }
         public ActionResult Profile()
         {
-            // Giả sử bạn đã lưu ID của người sử dụng trong Session khi họ đăng nhập  
             var user = (NguoiDung)Session["User"];
             if (user != null)
             {
-                // Trả về thông tin người dùng cho view  
                 return View(user);
             }
 
-            // Nếu không có thông tin người dùng trong session, chuyển hướng về trang đăng nhập  
             return RedirectToAction("Login");
         }
 
@@ -36,17 +34,13 @@ namespace DD.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra xem email đã tồn tại chưa
                 if (db.NguoiDungs.Any(u => u.Email == user.Email))
                 {
                     ModelState.AddModelError("Email", "Email đã được sử dụng. Vui lòng nhập email khác.");
                     return View(user);
                 }
 
-                // Mã hóa mật khẩu trước khi lưu
-                user.MatKhau = HashPassword(user.MatKhau); // Giả định bạn có hàm HashPassword
-
-                // Tạo đối tượng NguoiDung
+                user.MatKhau = HashPassword(user.MatKhau); 
                 var nguoiDung = new NguoiDung
                 {
                     TenDangNhap = user.TenDangNhap,
@@ -62,7 +56,6 @@ namespace DD.Controllers
                 db.NguoiDungs.Add(nguoiDung);
                 db.SaveChanges();
 
-                // Tạo mã QR cho người dùng
                 string customerData = nguoiDung.Email;
                 var qrCodeImage = GenerateQRCode(customerData);
                 SaveQRCodeImage(nguoiDung.TenDangNhap, qrCodeImage);
@@ -115,22 +108,34 @@ namespace DD.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra tài khoản quản trị viên
                 if (db.QuanTriViens.Any(a => a.TenDangNhap == model.Username && a.MatKhau == model.Password))
                 {
                     return RedirectToAction("Index", "Admin");
                 }
 
-                // Kiểm tra người dùng trong cơ sở dữ liệu
                 var user = db.NguoiDungs.AsNoTracking().FirstOrDefault(u => u.TenDangNhap == model.Username && u.MatKhau == model.Password);
 
                 if (user != null)
                 {
-                    // Thiết lập phiên người dùng
                     Session["User"] = user;
                     Session["TenKhachHang"] = user.TenKH;
-
+                    Session["Email"] = user.Email;
+                    Session["PhoneNumber"] = user.SoDienThoai;
+                    Session["ThangSinh"] = user.ThangSinh;
+                    Session["GioiTinh"] = user.GioiTinh;
                     // Tạo QR code chỉ nếu chưa tồn tại
+                    // Lấy điểm tích lũy từ bảng TichDiem
+                    var tichDiem = db.TichDiems.AsNoTracking().FirstOrDefault(td => td.MaKH == user.MaKH);
+                    if (tichDiem != null)
+                    {
+                        Session["Diem"] = tichDiem.Diem;
+                        Session["CapBac"] = tichDiem.CapBac;
+
+                    }
+                    else
+                    {
+                        Session["Diem"] = 0; // Nếu không có điểm tích lũy, đặt mặc định là 0
+                    }
                     string qrCodeFileName = $"{user.TenDangNhap}.png";
                     Session["QRCodePath"] = qrCodeFileName;
 
@@ -149,25 +154,23 @@ namespace DD.Controllers
                 ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không chính xác.");
             }
 
-            // Trả về view với ModelState có lỗi nếu không hợp lệ
             return View(model);
         }
 
-  
-    public ActionResult Logout()
+
+        public ActionResult Logout()
         {
-            Session.Clear(); // Xóa tất cả session
+            Session.Clear();
             TempData["Message"] = "Bạn đã đăng xuất thành công.";
-            return RedirectToAction("Login", "Acccount");
+            return RedirectToAction("Index", "Home");
         }
 
         private string HashPassword(string password)
         {
-            // Thêm mã hóa cho mật khẩu (sử dụng BCrypt.Net hoặc tương tự)
-            // ví dụ: return BCrypt.Net.BCrypt.HashPassword(password);
-            return password; // Thay thế bằng phương thức mã hóa thực
+
+            return password;
+
         }
 
     }
-
 }

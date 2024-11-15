@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -12,7 +13,10 @@ namespace DD.Models
                 public string Email { get; set; }
                 public int? ThangSinh { get; set; } // Có thể nullable nếu cần
                 public int Diem { get; set; }
-                public string SoDienThoai { get; set; } // Thêm thuộc tính SoDienThoai
-            }
-        }
+        public string CapBac { get; set; }
+        public string SoDienThoai { get; set; } // Thêm thuộc tính SoDienThoai
+        public List<DD.Models.DONHANG> DonHangs { get; set; }
+
+    }
+}
     

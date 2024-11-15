@@ -3,62 +3,111 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chúc mừng sinh nhật!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #FF69B4;
+            color: #ffffff;
+        }
+
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+            .content p {
+                line-height: 1.6;
+                margin: 0 0 20px;
+                text-align: center;
+                color: #333333;
+            }
+
+        .voucher {
+            background-color: #FFF5EE;
+            border: 2px dashed #FF69B4;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+            .voucher h2 {
+                color: #FF69B4;
+                margin: 0 0 10px;
+            }
+
+            .voucher p {
+                margin: 10px 0;
+            }
+
+        .btn {
+            background-color: #FF69B4;
+            color: #ffffff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #ff1493; /* Darker pink on hover */
+            }
+
+        .footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666666;
+        }
+    </style>
 </head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
-    <table role="presentation" style="width: 100%; border-collapse: collapse;">
-        <tr>
-            <td style="padding: 0;">
-                <table role="presentation" style="width: 600px; margin: 0 auto; background-color: #ffffff; border-collapse: collapse;">
-                    <!-- Header với hình ảnh -->
-                    <tr>
-                        <td style="text-align: center; padding: 20px;">
-                            <img src="/api/placeholder/600/200" alt="Happy Birthday Banner" style="max-width: 100%; height: auto;" />
-                        </td>
-                    </tr>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Chúc mừng sinh nhật [Tên khách hàng]! 🎉</h1>
+            <img src="/api/placeholder/600/200" alt="Happy Birthday Banner" style="max-width: 100%; height: auto; border-radius: 10px;" />
+        </div>
 
-                    <!-- Nội dung chính -->
-                    <tr>
-                        <td style="padding: 40px 30px;">
-                            <h1 style="color: #FF69B4; margin: 0 0 20px 0; font-size: 24px; text-align: center;">
-                                🎉 Chúc mừng sinh nhật [Tên khách hàng]! 🎉
-                            </h1>
+        <div class="content">
+            <p>Chúng tôi rất vui mừng được gửi đến bạn những lời chúc tốt đẹp nhất nhân dịp sinh nhật của bạn!</p>
+            <p>Để tri ân sự đồng hành của bạn, chúng tôi xin gửi tặng bạn voucher giảm giá đặc biệt:</p>
 
-                            <p style="margin: 0 0 20px 0; line-height: 1.5; text-align: center;">
-                                Chúng tôi rất vui mừng được gửi đến bạn những lời chúc tốt đẹp nhất nhân dịp sinh nhật của bạn!
-                            </p>
+            <div class="voucher">
+                <h2>Voucher sinh nhật</h2>
+                <p style="font-size: 24px; font-weight: bold;">Giảm 20%</p>
+                <p>Mã: HPBD[MÃ_KH]2024</p>
+                <p style="font-size: 12px;">Có hiệu lực đến hết tháng sinh nhật của bạn</p>
+            </div>
 
-                            <p style="margin: 0 0 20px 0; line-height: 1.5; text-align: center;">
-                                Để tri ân sự đồng hành của bạn, chúng tôi xin gửi tặng bạn voucher giảm giá đặc biệt:
-                            </p>
+            <p>
+                <a href="#" class="btn">Mua sắm ngay</a>
+            </p>
+        </div>
 
-                            <!-- Voucher box -->
-                            <div style="background-color: #FFF5EE; border: 2px dashed #FF69B4; padding: 20px; margin: 20px 0; text-align: center;">
-                                <h2 style="color: #FF69B4; margin: 0 0 10px 0;">Voucher sinh nhật</h2>
-                                <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">Giảm 20%</p>
-                                <p style="margin: 10px 0;">Mã: HPBD[MÃ_KH]2024</p>
-                                <p style="font-size: 12px; margin: 10px 0;">Có hiệu lực đến hết tháng sinh nhật của bạn</p>
-                            </div>
-
-                            <p style="margin: 20px 0; text-align: center;">
-                                <a href="#" style="background-color: #FF69B4; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px;">Mua sắm ngay</a>
-                            </p>
-                        </td>
-                    </tr>
-
-                    <!-- Footer -->
-                    <tr>
-                        <td style="background-color: #f5f5f5; padding: 20px; text-align: center;">
-                            <p style="margin: 0; font-size: 12px; color: #666666;">
-                                © 2024 [Tên công ty]. Mọi quyền được bảo lưu.<br>
-                                Địa chỉ: [Địa chỉ công ty]<br>
-                                Email: [Email] | Hotline: [Số điện thoại]
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+    </div>
 </body>
 </html>
