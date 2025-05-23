@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DD.Models.ThongKeDonHangViewModel>
+
+@{
+    ViewBag.Title = "Thống kê đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Thống kê đơn hàng theo ngày</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Ngày</th>
+                <th>Số đơn hàng</th>
+                <th>Tổng tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Ngay.ToString("dd/MM/yyyy")</td>
+                    <td>@item.SoLuong</td>
+                    <td>@item.TongTien.ToString("N0") đ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không có dữ liệu thống kê.</p>
+}

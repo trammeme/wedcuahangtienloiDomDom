@@ -2,54 +2,262 @@
 
 @{
     ViewBag.Title = "Quản Lý Tích Điểm";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Quản Lý Tích Điểm</h2>
+<h2>Quản lý tích điểm khách hàng</h2>
 
-<table class="table">
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<!-- Nút thưởng điểm sinh nhật và gửi nhắc nhở hàng loạt -->
+<div class="mb-3">
+    <button class="btn btn-success mr-2" onclick="awardBirthdayPoints()">Thưởng điểm sinh nhật (hàng loạt)</button>
+    <button class="btn btn-warning" onclick="sendExpiryReminders()">Gửi nhắc nhở điểm hết hạn (hàng loạt)</button>
+</div>
+
+<!-- Bảng danh sách khách hàng -->
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>Mã Khách Hàng</th>
-            <th>Tên Khách Hàng</th>
+            <th>Mã KH</th>
+            <th>Tên khách hàng</th>
             <th>Email</th>
-            <th>Số Điện Thoại</th>
-            <th>Điểm Tích Lũy</th>
-            <th>Cấp Thành Viên</th>
-            <th>Hành Động</th> <!-- Cột cho hành động xóa điểm -->
+            <th>Số điện thoại</th>
+            <th>Điểm</th>
+            <th>Cấp bậc</th>
+            <th>Ngày hết hạn</th>
+            <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@user.MaKH</td>
-                <td>@user.TenKH</td>
-                <td>@user.Email</td>
-                <td>@user.SoDienThoai</td>
-                <td>@user.Diem</td>
-                <td>@user.CapBac</td> <!-- Display the automatically assigned CapBac -->
+                <td>@item.MaKH</td>
+                <td>@item.TenKH</td>
+                <td>@item.Email</td>
+                <td>@item.SoDienThoai</td>
+                <td>@item.Diem</td>
+                <td>@item.CapBac</td>
+                <td>@(item.NgayHetHan?.ToString("dd/MM/yyyy") ?? "Không có")</td>
                 <td>
-                    <!-- Nút Xóa Điểm -->
-                    <button onclick="xoaDiem(@user.MaKH)">Xóa điểm</button>
+                    <button class="btn btn-primary btn-sm" onclick="showUpdatePointsModal(@item.MaKH, '@item.TenKH', @item.Diem)">Cập nhật điểm</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletePoints(@item.MaKH, '@item.TenKH')">Xóa điểm</button>
+                    <a href="@Url.Action("LichSuTichDiem", "QuanLyTichDiem", new { maKH = item.MaKH })" class="btn btn-info btn-sm">Xem lịch sử</a>
+                    @if (item.ThangSinh == DateTime.Today.Month)
+                    {
+                        <button class="btn btn-success btn-sm mt-1" onclick="awardBirthdayPoints(@item.MaKH)">Thưởng sinh nhật</button>
+                    }
+                    @if (item.NgayHetHan <= DateTime.Today.AddDays(30) && item.NgayHetHan >= DateTime.Today)
+                    {
+                        <button class="btn btn-warning btn-sm mt-1" onclick="sendExpiryReminder(@item.MaKH)">Nhắc nhở hết hạn</button>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<script>function xoaDiem(maKH) {
-        $.ajax({
-            url: '/QuanLyTichDiem/XoaDiem',
-            type: 'POST',
-            data: { maKH: maKH },
-            success: function (response) {
-                if (response.success) {
-                    alert(response.message);
-                    location.reload(); // Tải lại trang để cập nhật lại dữ liệu
-                } else {
-                    alert(response.message);
-                }
+
+<!-- Modal để cập nhật điểm -->
+<div class="modal fade" id="updatePointsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật điểm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updatePointsForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="maKH" name="maKH" />
+                    <div class="form-group">
+                        <label>Tên khách hàng</label>
+                        <p id="tenKH"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Điểm hiện tại</label>
+                        <p id="diemHienTai"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Điểm thay đổi (dương để thêm, âm để trừ)</label>
+                        <input type="number" class="form-control" id="diem" name="diem" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Lý do</label>
+                        <input type="text" class="form-control" id="lyDo" name="lyDo" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="submitUpdatePoints()">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        // Hiển thị modal cập nhật điểm
+        function showUpdatePointsModal(maKH, tenKH, diem) {
+            $('#maKH').val(maKH);
+            $('#tenKH').text(tenKH);
+            $('#diemHienTai').text(diem);
+            $('#diem').val('');
+            $('#lyDo').val('');
+            $('#updatePointsModal').modal('show');
+        }
+
+        // Gửi yêu cầu cập nhật điểm
+        function submitUpdatePoints() {
+            var maKH = $('#maKH').val();
+            var diem = $('#diem').val();
+            var lyDo = $('#lyDo').val();
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            if (!diem || !lyDo) {
+                alert('Vui lòng điền đầy đủ thông tin.');
+                return;
             }
-        });
-    }
-</script>
+
+            $.ajax({
+                url: '@Url.Action("CapNhatDiem", "QuanLyTichDiem")',
+                type: 'POST',
+                data: { maKH: maKH, diem: diem, lyDo: lyDo, __RequestVerificationToken: token },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Cập nhật điểm thành công! Điểm mới: ' + response.diem + ', Cấp bậc: ' + response.capBac);
+                        location.reload();
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                }
+            });
+        }
+
+        // Xóa điểm
+        function deletePoints(maKH, tenKH) {
+            if (confirm('Bạn có chắc muốn xóa toàn bộ điểm của khách hàng ' + tenKH + '?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("XoaDiem", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { maKH: maKH, __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+
+        // Thưởng điểm sinh nhật cho một khách hàng
+        function awardBirthdayPoints(maKH) {
+            if (confirm('Bạn có muốn thưởng điểm sinh nhật cho khách hàng này?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("AwardBirthdayPoints", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { maKH: maKH, __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Thưởng điểm sinh nhật thành công!');
+                            location.reload();
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+
+        // Thưởng điểm sinh nhật hàng loạt
+        function awardBirthdayPoints() {
+            if (confirm('Bạn có muốn thưởng điểm sinh nhật cho tất cả khách hàng trong tháng này?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("AwardBirthdayPoints", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+
+        // Gửi nhắc nhở hết hạn cho một khách hàng
+        function sendExpiryReminder(maKH) {
+            if (confirm('Bạn có muốn gửi email nhắc nhở điểm hết hạn cho khách hàng này?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("SendExpiryReminders", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { maKH: maKH, __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Gửi nhắc nhở thành công!');
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+
+        // Gửi nhắc nhở hết hạn hàng loạt
+        function sendExpiryReminders() {
+            if (confirm('Bạn có muốn gửi email nhắc nhở điểm hết hạn cho tất cả khách hàng có điểm sắp hết hạn?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("SendExpiryReminders", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+    </script>
+}

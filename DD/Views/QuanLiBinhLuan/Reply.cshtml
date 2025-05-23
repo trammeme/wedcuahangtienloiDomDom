@@ -1,0 +1,49 @@
+﻿@model DD.Models.BinhLuan
+
+@{
+    ViewBag.Title = "Phản Hồi Bình Luận";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
+}
+
+<h2>Phản Hồi Bình Luận</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>BinhLuan</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MaBinhLuan)  <!-- Giờ đây model là một BinhLuan, nên MaBinhLuan sẽ hoạt động -->
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NoiDung, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.NoiDung, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhanHoi, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.PhanHoi, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PhanHoi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Gửi Phản Hồi" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

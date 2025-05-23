@@ -3,80 +3,128 @@
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-<link rel="stylesheet" href="~/css/khuyenmai.css"> <!-- Liên kết tới file CSS của bạn -->
 
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 <style>
-    /* Định dạng cho bảng */
-    .table {
+    /* Giữ nguyên CSS hiện tại của bạn */
+    .custom-table {
         width: 100%;
-        margin-top: 20px;
         border-collapse: collapse;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 20px 0;
+        font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
     }
 
-        .table thead th {
-            background-color: #f8f9fa;
-            color: #333;
-            padding: 10px;
-            text-align: left;
-            border-bottom: 2px solid #dee2e6;
-        }
+    .custom-table thead {
+        background: linear-gradient(135deg, #1e90ff, #007bff);
+        color: #ffffff;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+    }
 
-        .table tbody td {
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6;
-        }
+    .custom-table th {
+        padding: 15px;
+        text-align: left;
+        font-size: 13px;
+    }
 
-        /* Định dạng cho ảnh trong bảng */
-        .table img {
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-    /* Định dạng cho các nút */
-    .btn {
-        margin: 10px 5px;
-        padding: 10px 20px;
-        color: #fff;
-        background-color: #28a745;
-        border: none;
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: bold;
+    .custom-table tbody tr {
+        border-bottom: 1px solid #e9ecef;
         transition: background-color 0.3s ease;
     }
 
-        .btn:hover {
-            background-color: #218838;
-        }
-
-    /* Định dạng cho các liên kết xóa/sửa */
-    .link-edit {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: bold;
-        margin-right: 10px;
+    .custom-table tbody tr:hover {
+        background-color: #f8f9fa;
     }
 
-        .link-edit:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-</style>
-<h2>Danh sách khuyến mãi</h2>
+    .custom-table td {
+        padding: 12px 15px;
+        font-size: 14px;
+        color: #343a40;
+        vertical-align: middle;
+    }
 
-<table class="table">
+    .custom-table img {
+        width: 80px;
+        height: auto;
+        border-radius: 6px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .custom-table img:hover {
+        transform: scale(1.15);
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .action-btn i {
+        margin-right: 5px;
+    }
+
+    .action-btn-primary {
+        background: linear-gradient(90deg, #17a2b8, #007bff);
+        color: #ffffff;
+    }
+
+    .action-btn-primary:hover {
+        background: linear-gradient(90deg, #138496, #0056b3);
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+    }
+
+    @@media (max-width: 768px) {
+        .custom-table {
+            font-size: 12px;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 10px;
+        }
+
+        .custom-table img {
+            width: 60px;
+        }
+
+        .action-btn {
+            font-size: 12px;
+            padding: 6px 10px;
+            margin-right: 6px;
+        }
+    }
+</style>
+
+<!-- Thêm Font Awesome để dùng icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<table class="custom-table">
     <thead>
         <tr>
-            <th>Mã khuyến mãi</th>
-            <th>Tên khuyến mãi</th>
-
-            <th>Mô tả</th>
-            <th>Thời gian bắt đầu</th>
-            <th>Thời gian kết thúc</th>
-            <th>Mã sản phẩm KM</th>
-            <th>Hình ảnh</th>
-            <th>Hành động</th>
+            <th>Mã Khuyến Mãi</th>
+            <th>Tên Khuyến Mãi</th>
+            <th>Mô Tả</th>
+            <th>Ngày Bắt Đầu</th>
+            <th>Ngày Kết Thúc</th>
+            <th>Mã Sản Phẩm</th>
+            <th>Hình Ảnh</th>
+            <th>Thao Tác</th>
         </tr>
     </thead>
     <tbody>
@@ -85,24 +133,27 @@
             <tr>
                 <td>@item.MaKhuyenMai</td>
                 <td>@item.TenKhuyenMai</td>
-
                 <td>@item.MoTa</td>
-                <td>@item.NgayBatDau.ToString("dd/MM/yyyy")</td>
-                <td>@item.NgayKetThuc.ToString("dd/MM/yyyy")</td>
+                <td>@item.NgayBatDau</td>
+                <td>@item.NgayKetThuc</td>
                 <td>@item.MaSanPhamKM</td>
-
                 <td>
-                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" /> <!-- Có thể thêm style để điều chỉnh kích thước -->
+                    @if (!string.IsNullOrEmpty(item.HinhAnh))
+                    {
+                        <img src="@Url.Content("~/Content/Image/sale/" + item.HinhAnh)" alt="Ảnh khuyến mãi" />
+                    }
                 </td>
-                <td>
-
-                    <a href="@Url.Action("Delete", new { id = item.MaKhuyenMai })" class="link-edit">Xóa </a>
-                    <a href="@Url.Action("Edit", new { id = item.MaKhuyenMai })" class="link-edit">Sửa</a>
-
+                <td class="action-links">
+                    @Html.ActionLink(" Sửa", "Edit", new { id = item.MaKhuyenMai }, new { @class = "action-btn action-btn-primary" })
+                    @Html.ActionLink(" Thêm", "Create", new { id = item.MaKhuyenMai }, new { @class = "action-btn action-btn-primary" })
+                    @using (Html.BeginForm("DeleteConfirmed", "QLKhuyenMai", FormMethod.Post, new { onsubmit = "return confirm('Bạn có chắc chắn muốn xóa?');" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.MaKhuyenMai" />
+                        <button type="submit" class="action-btn action-btn-primary">Xóa</button>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<a href="@Url.Action("Create", "QLKhuyenMai")" class="btn btn-success">Thêm khuyến mãi mới</a>

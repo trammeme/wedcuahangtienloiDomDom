@@ -7,18 +7,18 @@ namespace DD.Models
 {
     public class GioHang
     {
-        thua1Entities3 db = new thua1Entities3();
+        sqlcuahangnghiepvuEntities1 db = new sqlcuahangnghiepvuEntities1();
 
         public int iMaSanPham { get; set; }
         public string sTenSanPham { get; set; }
         public string HinhAnh { get; set; }
-        public decimal dGia { get; set; }  // Đổi từ double sang decimal
+        public decimal? dGia { get; set; }
         public int iSoLuong { get; set; }
-        public int dThanhVien { get; set; }
+        public string LoaiSanPham { get; set; }
 
-        public decimal dThanhTien  // Đổi từ double sang decimal
+        public decimal dThanhTien
         {
-            get { return iSoLuong * dGia; }
+            get { return iSoLuong * (dGia ?? 0); }
         }
 
         public GioHang(int ms)
@@ -27,8 +27,9 @@ namespace DD.Models
             SanPham s = db.SanPhams.Single(n => n.MaSanPham == iMaSanPham);
             sTenSanPham = s.TenSanPham;
             HinhAnh = s.HinhAnh;
-            dGia = s.Gia;  // Không cần Parse vì đã cùng kiểu decimal
+            dGia = s.Gia;
             iSoLuong = 1;
+            LoaiSanPham = s.LoaiSanPham; // Gán thêm ở đây
         }
     }
 }

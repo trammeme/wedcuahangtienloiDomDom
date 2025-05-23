@@ -18,6 +18,7 @@ namespace DD.Models
         public DONHANG()
         {
             this.CHITIETDATHANGs = new HashSet<CHITIETDATHANG>();
+            this.ThanhToans = new HashSet<ThanhToan>();
         }
     
         public int MaDonHang { get; set; }
@@ -32,5 +33,9 @@ namespace DD.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIETDATHANG> CHITIETDATHANGs { get; set; }
+        public virtual NguoiDung NguoiDung { get; set; }
+        public virtual TinhTrangGiaoHang TinhTrangGiaoHang1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ThanhToan> ThanhToans { get; set; }
     }
 }

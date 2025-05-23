@@ -13,10 +13,10 @@ namespace DD.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class thua1Entities3 : DbContext
+    public partial class CuaHangTienLoi1Entities1 : DbContext
     {
-        public thua1Entities3()
-            : base("name=thua1Entities3")
+        public CuaHangTienLoi1Entities1()
+            : base("name=CuaHangTienLoi1Entities1")
         {
         }
     
@@ -26,15 +26,17 @@ namespace DD.Models
         }
     
         public virtual DbSet<BinhLuan> BinhLuans { get; set; }
-        public DbSet<CHITIETDATHANG> CHITIETDATHANG { get; set; }
-
+        public virtual DbSet<CHITIETDATHANG> CHITIETDATHANGs { get; set; }
         public virtual DbSet<CuaHang> CuaHangs { get; set; }
         public virtual DbSet<DONHANG> DONHANGs { get; set; }
         public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
+        public virtual DbSet<LichSuTichDiem> LichSuTichDiems { get; set; }
         public virtual DbSet<NguoiDung> NguoiDungs { get; set; }
         public virtual DbSet<QuanTriVien> QuanTriViens { get; set; }
         public virtual DbSet<SanPham> SanPhams { get; set; }
         public virtual DbSet<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        public virtual DbSet<ThanhToan> ThanhToans { get; set; }
         public virtual DbSet<TichDiem> TichDiems { get; set; }
+        public virtual DbSet<TinhTrangGiaoHang> TinhTrangGiaoHangs { get; set; }
     }
 }

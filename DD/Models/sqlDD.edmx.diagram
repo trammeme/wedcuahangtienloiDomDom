@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cfe2add5dcb24414b8f7d0b271591741" Name="Diagram1">
+        <EntityTypeShape EntityType="CuaHangDDModel.BinhLuan" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.CuaHang" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.KhuyenMai" Width="1.5" PointX="8.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.LichSuTichDiem" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.LoaiSanPham" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.NguoiDung" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.QuanTriVien" Width="1.5" PointX="3.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.SanPham" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangDDModel.TichDiem" Width="1.5" PointX="5.25" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="CuaHangDDModel.FK__BinhLuan__MaKH__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.FK__BinhLuan__MaSanP__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.FK__CuaHang__AdminID__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.FK__KhuyenMai__MaSan__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.FK__LichSuTich__MaKH__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.FK__SanPham__MaLoaiS__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.FK__TichDiem__MaKH__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangDDModel.CuaHang_KhuyenMai" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

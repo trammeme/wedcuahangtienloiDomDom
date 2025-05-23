@@ -1,0 +1,100 @@
+﻿@model IEnumerable<DD.Models.DONHANG>
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Quản lý đơn hàng";
+    int stt = (ViewBag.Page - 1) * ViewBag.PageSize + 1;
+}
+
+<h2>Danh sách đơn hàng</h2>
+<form method="get" action="@Url.Action("Index")" class="form-inline mb-3">
+    <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Tìm kiếm..." />
+    <select name="tinhTrang" class="form-control ml-2">
+        <option value="">-- Tất cả trạng thái --</option>
+        @foreach (var item in (SelectList)ViewBag.TinhTrangGiaoHangList)
+        {
+            <option value="@item.Value" @(item.Value == Convert.ToString(ViewBag.TinhTrang) ? "selected" : "")>@item.Text</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-primary ml-2">Lọc</button>
+</form>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Mã ĐH</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Ngày giao</th>
+            <th>Thanh toán</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@stt++</td>
+                <td>@item.MaDonHang</td>
+                <td>@item.HoTen</td>
+                <td>@item.NgayDat.ToString("dd/MM/yyyy")</td>
+                <td>@item.NgayGiao.ToString("dd/MM/yyyy")</td>
+                <td>@(item.DaThanhToan ? "Đã thanh toán" : "Chưa thanh toán")</td>
+                <td>
+                    <a href="@Url.Action("Detail", new { id = item.MaDonHang })" class="btn btn-info btn-sm btn-show-modal">Chi tiết</a>
+                    <a href="@Url.Action("Edit", new { id = item.MaDonHang })" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="@Url.Action("ThongKe", "QuanLyDonHang")" class="btn btn-success mb-3">Xem thống kê</a>
+
+                    <a href="@Url.Action("Delete", new { id = item.MaDonHang })" class="btn btn-danger btn-sm btn-show-modal">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Phân trang -->
+<div>
+    @{
+        int totalPages = (int)Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize);
+    }
+
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, search = ViewBag.Search })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <span class="spinner-border"></span> Đang tải...
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.btn-show-modal').click(function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $('#ajaxModal .modal-content').html('<div class="modal-body text-center"><span class="spinner-border"></span> Đang tải...</div>');
+                $('#ajaxModal').modal('show');
+
+                $.get(url, function (data) {
+                    $('#ajaxModal .modal-content').html(data);
+                });
+            });
+        });
+    </script>
+}

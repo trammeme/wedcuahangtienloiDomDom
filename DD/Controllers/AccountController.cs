@@ -11,9 +11,15 @@ namespace DD.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly camlyEntities1 db = new camlyEntities1();
-      
+        private readonly sqlcuahangnghiepvuEntities1 db = new sqlcuahangnghiepvuEntities1();
 
+        [HttpGet]
+        public JsonResult CheckLoginStatus()
+        {
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+            return Json(new { isAuthenticated }, JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult Register()
         {
             return View();

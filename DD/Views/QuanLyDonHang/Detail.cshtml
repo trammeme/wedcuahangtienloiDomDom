@@ -1,0 +1,34 @@
+﻿@model DD.Models.DONHANG
+
+
+<div class="modal-body">
+    <h4>Chi tiết đơn hàng - Mã: @Model.MaDonHang</h4>
+    <p><strong>Khách hàng:</strong> @Model.NguoiDung.TenKH</p>
+    <p><strong>Địa chỉ:</strong> @Model.NguoiDung.DiaChi</p>
+    <p><strong>Điện thoại:</strong> @Model.NguoiDung.SoDienThoai</p>
+    <p><strong>Ngày đặt:</strong> @Model.NgayDat.ToString("dd/MM/yyyy")</p>
+    <p><strong>Ngày giao:</strong> @Model.NgayGiao?.ToString("dd/MM/yyyy")</p>
+    <p><strong>Trạng thái:</strong> @(Model.TinhTrangGiaoHang1?.TenTinhTrang ?? "Không xác định")</p>
+    <p><strong>Thanh toán:</strong> @(Model.DaThanhToan ? "Đã thanh toán" : "Chưa thanh toán")</p>
+
+    <h5>Chi tiết sản phẩm</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CHITIETDATHANGs)
+            {
+                <tr>
+                    <td>@(item.SanPham != null ? item.SanPham.TenSanPham : "Không xác định")</td>
+                    <td>@item.SoLuong</td>
+                    <td>@string.Format("{0:N0} đ", item.DonGia)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

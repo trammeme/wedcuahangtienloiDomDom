@@ -17,6 +17,7 @@ namespace DD.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public KhuyenMai()
         {
+            this.LichSuKhuyenMais = new HashSet<LichSuKhuyenMai>();
             this.CuaHangs = new HashSet<CuaHang>();
         }
     
@@ -25,10 +26,15 @@ namespace DD.Models
         public string MoTa { get; set; }
         public System.DateTime NgayBatDau { get; set; }
         public System.DateTime NgayKetThuc { get; set; }
-        public string MaSanPhamKM { get; set; }
+        public int MaSanPhamKM { get; set; }
         public string HinhAnh { get; set; }
+        public Nullable<decimal> MucGiamGia { get; set; }
+        public string DieuKienApDung { get; set; }
+        public string TrangThaiKhuyenMai { get; set; }
     
         public virtual SanPhamKhuyenMai SanPhamKhuyenMai { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LichSuKhuyenMai> LichSuKhuyenMais { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CuaHang> CuaHangs { get; set; }
     }

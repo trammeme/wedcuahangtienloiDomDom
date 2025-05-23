@@ -1,56 +1,219 @@
 ﻿@model DD.Models.User
-<link rel="stylesheet" href="~/Content/dangki.css">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #87CEEB; /* Màu xanh nhạt */
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
 
-<div class="container">
-    <div class="form-container">
-        <h2>Đăng Ký Người Dùng</h2>
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 15px;
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+        }
 
-        @using (Html.BeginForm())
-        {
-            <div class="form-group">
-                @Html.Label("Tên khách hàng")
-                @Html.TextBoxFor(model => model.TenKH, new { @class = "form-control" })
-            </div>
+        .form-container {
+            width: 100%;
+            max-width: 800px; /* Tăng chiều rộng để chứa 2 cột */
+            padding: 30px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+            box-sizing: border-box;
+        }
 
-            <div class="form-group">
-                @Html.Label("Email")
-                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-            </div>
+        @@keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-            <div class="form-group">
-                @Html.Label("Tháng sinh")
-                @Html.TextBoxFor(model => model.ThangSinh, new { @class = "form-control" })
-            </div>
+        .form-container h2 {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #1E90FF;
+            text-transform: uppercase; /* In hoa tiêu đề */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
 
-            <div class="form-group">
-                @Html.Label("Giới tính")
-                @Html.TextBoxFor(model => model.GioiTinh, new { @class = "form-control" })
-            </div>
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 cột bằng nhau */
+            gap: 20px; /* Khoảng cách giữa các cột */
+            text-align: left;
+        }
 
-            <div class="form-group">
-                @Html.Label("Địa chỉ")
-                @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control" })
-            </div>
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-            <div class="form-group">
-                @Html.Label("Số điện thoại")
-                @Html.TextBoxFor(model => model.SoDienThoai, new { @class = "form-control" })
-            </div>
+        .form-group label {
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
 
-            <div class="form-group">
-                @Html.Label("Tên đăng nhập")
-                @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control" })
-            </div>
+        .form-control {
+            transition: all 0.3s ease-in-out;
+            border: 1px solid #1E90FF; /* Viền mỏng giống ảnh */
+            border-radius: 5px; /* Bo góc nhẹ */
+            font-size: 1em;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
 
-            <div class="form-group">
-                @Html.Label("Mật khẩu")
-                @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control" })
-            </div>
+        .form-control:focus {
+            border-color: #00B7EB;
+            box-shadow: 0 0 8px rgba(0, 183, 235, 0.5);
+            outline: none;
+        }
 
-            <div class="text-center">
-                <input type="submit" value="Đăng Ký" class="btn btn-primary" />
-            </div>        }
+        .btn-primary {
+            background-color: #1E90FF;
+            color: #fff;
+            font-size: 1.3em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-primary:hover {
+            background-color: #00B7EB;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 183, 235, 0.5);
+        }
+
+        .form-links {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .form-links a {
+            color: #1E90FF;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin: 0 10px;
+        }
+
+        .form-links a:hover {
+            text-decoration: underline;
+            color: #00B7EB;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr; /* Chuyển về 1 cột trên mobile */
+            }
+            .container {
+                padding: 0 10px;
+            }
+            .form-container {
+                max-width: 90%;
+                padding: 20px;
+            }
+            .form-container h2 {
+                font-size: 2em;
+            }
+            .form-group label {
+                font-size: 1em;
+            }
+            .form-control {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+            .btn-primary {
+                font-size: 1.2em;
+                padding: 8px 15px;
+            }
+            .form-links a {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Đăng Ký Người Dùng</h2>
+
+            @using (Html.BeginForm())
+            {
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="TenKH">Tên khách hàng</label>
+                        @Html.TextBoxFor(model => model.TenKH, new { @class = "form-control", id = "TenKH" })
+                    </div>
+                    <div class="form-group">
+                        <label for="DiaChi">Địa chỉ</label>
+                        @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control", id = "DiaChi" })
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "Email" })
+                    </div>
+                    <div class="form-group">
+                        <label for="SoDienThoai">Số điện thoại</label>
+                        @Html.TextBoxFor(model => model.SoDienThoai, new { @class = "form-control", id = "SoDienThoai" })
+                    </div>
+                    <div class="form-group">
+                        <label for="ThangSinh">Tháng sinh</label>
+                        @Html.TextBoxFor(model => model.ThangSinh, new { @class = "form-control", id = "ThangSinh" })
+                    </div>
+                    <div class="form-group">
+                        <label for="TenDangNhap">Tên đăng nhập</label>
+                        @Html.TextBoxFor(model => model.TenDangNhap, new { @class = "form-control", id = "TenDangNhap" })
+                    </div>
+                    <div class="form-group">
+                        <label for="GioiTinh">Giới tính</label>
+                        @Html.TextBoxFor(model => model.GioiTinh, new { @class = "form-control", id = "GioiTinh" })
+                    </div>
+                    <div class="form-group">
+                        <label for="MatKhau">Mật khẩu</label>
+                        @Html.PasswordFor(model => model.MatKhau, new { @class = "form-control", id = "MatKhau" })
+                    </div>
+                </div>
+                <div class="text-center">
+                    <input type="submit" value="Đăng Ký" class="btn btn-primary" />
+                </div>
+                <div class="form-links">
+                    <a href="#">Quên mật khẩu?</a>
+                </div>
+            }
+        </div>
     </div>
-</div>
 
-<script src="~/Content/dangki.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        // Có thể thêm logic JavaScript nếu cần (ví dụ: validation)
+    </script>
+</body>
+</html></html>

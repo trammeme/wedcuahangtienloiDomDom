@@ -1,106 +1,229 @@
-﻿@model IEnumerable<DD.Models.BinhLuan>
+﻿@model IEnumerable<DD.Models.BinhLuanViewModel>
 @{
     ViewBag.Title = "Quản Lý Bình Luận";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
-
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Quản Lý Bình Luận</h2>
+<style>
+    .container-fluid {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+    }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["Error"]
-    </div>
-}
+    .table th, .table td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Success"]
-    </div>
-}
+    .table th {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+    }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>STT</th>
-            <th>Mã Bình Luận</th>
-            <th>Mã Sản Phẩm</th>
-            <th>Mã Khách Hàng</th>
-            <th>Nội Dung</th>
-            <th>Ngày Bình Luận</th> <!-- Add the new column here -->
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Any())
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+        transition: background-color 0.2s;
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+
+    .btn-action {
+        margin-right: 5px;
+    }
+
+    .reply-text {
+        word-wrap: break-word;
+        max-width: 100%;
+    }
+
+    .reply-editor {
+        resize: vertical;
+        min-height: 60px;
+        margin-top: 5px;
+    }
+
+    .text-primary {
+        color: #007bff !important;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .badge {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    .filter-form {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container-fluid">
+    <h2 class="h4 mb-4 text-primary font-weight-bold">Quản Lý Bình Luận</h2>
+
+    <!-- Thông báo bình luận mới -->
+    @if (ViewBag.SoBinhLuanMoi != null && ViewBag.SoBinhLuanMoi > 0)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Bạn có <strong>@ViewBag.SoBinhLuanMoi</strong> bình luận mới chưa phản hồi!
+            <span class="badge bg-danger">@ViewBag.SoBinhLuanMoi</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Thông báo thành công hoặc lỗi -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Form lọc theo ngày -->
+    <div class="filter-form">
+        @using (Html.BeginForm("Index", "QuanLiBinhLuan", FormMethod.Get, new { @class = "form-inline" }))
         {
-            int stt = 1;
-            foreach (var item in Model)
+            <div class="form-group mb-2">
+                <label for="filterDate" class="mr-2">Lọc theo ngày:</label>
+                <input type="date" name="filterDate" id="filterDate" class="form-control" value="@ViewBag.FilterDate" />
+                <button type="submit" class="btn btn-primary btn-sm ml-2 shadow-sm">Lọc</button>
+            </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <a href="@Url.Action("Create")" class="btn btn-primary btn-sm shadow-sm">Thêm Bình Luận</a>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">STT</th>
+                <th>Mã Bình Luận</th>
+                <th>Mã Sản Phẩm</th>
+                <th>Tên Khách Hàng</th>
+                <th>Nội Dung</th>
+                <th>Đánh Giá</th>
+                <th>Ngày Bình Luận</th>
+                <th>Phản Hồi</th>
+                <th>Ngày Phản Hồi</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Select((x, index) => new { x, index }))
             {
-                <tr id="comment-row-@item.MaBinhLuan">
-                    <td>@stt</td>
-                    <td>@item.MaBinhLuan</td>
-                    <td>@item.MaSanPham</td>
-                    <td>@item.MaKH</td>
-                    <td>@item.NoiDung</td>
-                    <td>@item.NgayBinhLuan</td>
+                <tr id="comment-row-@item.x.MaBinhLuan">
+                    <td class="text-center">@(item.index + 1)</td>
+                    <td>@Html.DisplayFor(modelItem => item.x.MaBinhLuan)</td>
+                    <td>@Html.DisplayFor(modelItem => item.x.MaSanPham)</td>
                     <td>
-                        <button class="btn btn-success btn-save-reply" style="display: none;" data-comment-id="@item.MaBinhLuan">
-                            Lưu
-                        </button>
-                        <button class="btn btn-secondary btn-cancel-reply" style="display: none;" data-comment-id="@item.MaBinhLuan">
-                            Hủy
-                        </button>
-                        <form action="@Url.Action("DeleteBinhLuan", "QuanLiBinhLuan")" method="post" style="display: inline-block;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
-                            <input type="hidden" name="mabinhluan" value="@item.MaBinhLuan" />
-                            <button type="submit" class="btn btn-danger">Xóa</button>
-                        </form>
+                        @Html.DisplayFor(modelItem => item.x.TenKhachHang)
+                        @if (!string.IsNullOrEmpty(item.x.Email))
+                        {
+                            <span>(@Html.DisplayFor(modelItem => item.x.Email))</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.x.NoiDung)</td>
+                    <td class="text-center">@Html.DisplayFor(modelItem => item.x.DanhGia)</td>
+                    <td>@Html.DisplayFor(modelItem => item.x.NgayBinhLuan)</td>
+                    <td>
+                        <span class="reply-text">@Html.DisplayFor(modelItem => item.x.PhanHoi)</span>
+                        <textarea class="reply-editor form-control" style="display: none;" rows="2">@Html.DisplayFor(modelItem => item.x.PhanHoi)</textarea>
+                    </td>
+                    <td class="reply-date">@Html.DisplayFor(modelItem => item.x.NgayPhanHoi)</td>
+                    <td>
+                        <a href="@Url.Action("Reply", new { id = item.x.MaBinhLuan })" class="btn btn-info btn-sm btn-action shadow-sm">Phản Hồi</a>
+                        <!-- Nút Xóa -->
+                        <button type="button" class="btn btn-danger btn-sm btn-action shadow-sm btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="@item.x.MaBinhLuan">Xóa</button>
                     </td>
                 </tr>
-                stt++;
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="9" class="text-center">Chưa có bình luận nào.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+    <!-- Modal để nhập lý do xóa -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Xóa Bình Luận</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("Delete", "QuanLiBinhLuan", FormMethod.Post, new { id = "deleteForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <input type="hidden" name="maBinhLuan" id="maBinhLuan" />
+                        <div class="form-group">
+                            <label for="lyDoXoa">Lý do xóa:</label>
+                            <textarea class="form-control" id="lyDoXoa" name="lyDoXoa" rows="3" required></textarea>
+                        </div>
+                        <p>Bạn có chắc chắn muốn xóa bình luận này? Hành động này không thể hoàn tác.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script>
-
-
         $(document).ready(function () {
-            // Click event for reply/edit button
+            // Xử lý nút Xóa để gán mã bình luận vào modal
+            $('.btn-delete').click(function () {
+                var maBinhLuan = $(this).data('id');
+                $('#maBinhLuan').val(maBinhLuan);
+            });
+
             $('.btn-reply').click(function () {
                 var commentId = $(this).data('comment-id');
                 var row = $('#comment-row-' + commentId);
 
-                // Show/hide elements
                 row.find('.reply-text').hide();
                 row.find('.reply-editor').show();
                 row.find('.btn-reply').hide();
                 row.find('.btn-save-reply, .btn-cancel-reply').show();
             });
 
-            // Click event for cancel button
             $('.btn-cancel-reply').click(function () {
                 var commentId = $(this).data('comment-id');
                 var row = $('#comment-row-' + commentId);
 
-                // Reset and hide elements
                 row.find('.reply-editor').hide().val(row.find('.reply-text').text());
                 row.find('.reply-text').show();
                 row.find('.btn-reply').show();
                 row.find('.btn-save-reply, .btn-cancel-reply').hide();
             });
 
-            // Click event for save button
             $('.btn-save-reply').click(function () {
                 var commentId = $(this).data('comment-id');
                 var row = $('#comment-row-' + commentId);
@@ -115,14 +238,11 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            // Update UI
                             row.find('.reply-text').text(replyText).show();
                             row.find('.reply-editor').hide();
                             row.find('.btn-reply').text('Sửa phản hồi').show();
                             row.find('.btn-save-reply, .btn-cancel-reply').hide();
                             row.find('.reply-date').text(response.ngayPhanHoi);
-
-                            // Show success message
                             alert('Phản hồi đã được cập nhật thành công!');
                         } else {
                             alert('Lỗi: ' + response.message);

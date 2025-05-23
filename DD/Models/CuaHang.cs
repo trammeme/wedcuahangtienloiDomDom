@@ -21,8 +21,11 @@ namespace DD.Models
         }
     
         public string MaCuaHang { get; set; }
+        public string TenCuaHang { get; set; }
         public string DiaChi { get; set; }
-        public Nullable<int> AdminID { get; set; }
+        public string SoDienThoai { get; set; }
+        public int AdminID { get; set; }
+        public Nullable<System.DateTime> NgayTao { get; set; }
     
         public virtual QuanTriVien QuanTriVien { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

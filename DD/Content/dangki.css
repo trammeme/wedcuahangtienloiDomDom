@@ -1,61 +1,131 @@
 ﻿body {
-    background-color: #001f3f; /* Màu nền xanh đậm */
-    font-family: 'Pacifico', cursive;
-    color: #ff6347;
+    background-color: #87CEEB; /* Màu xanh nhạt */
+    font-family: 'Poppins', sans-serif;
+    color: #1E90FF;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow-x: hidden; /* Ngăn tràn ngang */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px; /* Giới hạn chiều rộng tối đa của container */
+    padding: 0 15px; /* Padding mặc định của Bootstrap */
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box; /* Đảm bảo padding không làm tràn */
 }
 
 .form-container {
     width: 100%;
-    max-width: 400px; /* Giảm chiều rộng tối đa */
-    padding: 15px; /* Giảm padding */
-    border-radius: 8px;
-    background-color: #fff; /* Thêm màu nền cho form để nổi bật */
+    max-width: 400px; /* Chiều rộng tối đa của form */
+    padding: 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
     text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+    box-sizing: border-box; /* Đảm bảo padding không làm tràn */
 }
 
-.form-control {
-    transition: border-color 0.3s ease-in-out;
-    border: 1px solid #ced4da;
-    font-size: 1em;
-    padding: 5px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-.btn-primary {
-    background-color: #FFDC00;
-    color: #001f3f;
-    font-size: 1.5em;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 20px;
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-.label-custom {
-    font-size: 1.8em;
-    color: #007bff;
-    font-weight: bold;
-    margin-bottom: 10px;
+.form-container h2 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    color: #1E90FF;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
-    margin-bottom: 20px;
-    text-align: left; /* Để căn trái nhãn cho dễ đọc */
+    margin-bottom: 15px; /* Giảm margin để tiết kiệm không gian */
+    text-align: left;
+}
+
+    .form-group label {
+        font-size: 1.1em;
+        color: #1E90FF;
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+.form-control {
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #1E90FF;
+    border-radius: 10px;
+    font-size: 1em;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box; /* Đảm bảo padding không làm tràn */
+    background-color: #f9f9f9;
+}
+
+    .form-control:focus {
+        border-color: #00B7EB;
+        box-shadow: 0 0 10px rgba(0, 183, 235, 0.5);
+        outline: none;
+        background-color: #fff;
+    }
+
+.btn-primary {
+    background-color: #1E90FF;
+    color: #fff;
+    font-size: 1.4em;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .btn-primary:hover {
+        background-color: #00B7EB;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 183, 235, 0.5);
+    }
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px; /* Giảm padding trên mobile */
+    }
+
+    .form-container {
+        max-width: 90%; /* Chiếm 90% chiều rộng trên mobile */
+        padding: 15px;
+    }
+
+        .form-container h2 {
+            font-size: 1.8em;
+        }
+
+    .form-group label {
+        font-size: 1em;
+    }
+
+    .form-control {
+        font-size: 0.9em;
+        padding: 6px;
+    }
+
+    .btn-primary {
+        font-size: 1.2em;
+        padding: 8px 15px;
+    }
 }

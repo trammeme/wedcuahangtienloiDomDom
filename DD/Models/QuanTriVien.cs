@@ -21,8 +21,11 @@ namespace DD.Models
         }
     
         public int AdminID { get; set; }
+        public string HoTen { get; set; }
+        public string Email { get; set; }
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
+        public Nullable<System.DateTime> NgayTao { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CuaHang> CuaHangs { get; set; }

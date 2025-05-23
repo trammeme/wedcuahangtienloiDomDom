@@ -9,8 +9,64 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMFbG06z3aO5pAo8L7RA5H5gE5gksqLuz9p8F9D" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
-        /* Thêm CSS ở đây như ví dụ trên */
+        /* CSS cho footer */
+        .footer {
+            background-color: #1E3A8A; /* Màu xanh dương đậm */
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .footer-section {
+            text-align: center;
+        }
+
+            .footer-section h3 {
+                margin: 0 0 10px 0;
+                font-size: 18px;
+            }
+
+            .footer-section p {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+
+        .footer-bottom {
+            background-color: #0A2F6B; /* Màu xanh dương nhạt hơn cho phần dưới */
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: white;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+            padding-bottom: 60px; /* Điều chỉnh giá trị tùy theo chiều cao của footer */
+        }
+
+        footer {
+            flex-shrink: 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +77,32 @@
         @RenderBody()
     </main>
 
-    @RenderSection("Scripts", required: false) <!-- Thêm dòng này vào cuối body -->
-    @{ Html.RenderAction("Footer", "Home"); }
+    <!-- Thêm footer vào đây -->
+    <footer>
+        <div class="footer">
+            <div class="footer-section">
+                <h3>Thông tin</h3>
+                <p> Dương Tô Quỳnh Như </p>
+                <p>Nguyễn Ngọc Phương Trâm</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liên hệ</h3>
+                <p>Địa chỉ: 123 Đường ABC, Quận XYZ</p>
+                <p>Điện thoại: (079) 8006700</p>
+                <p>Email: tram08667@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Thông tin bảo hành</h3>
+                <p>Cửa hàng tiên lõi DomDom mang đến sự tiện ích tốt nhất</p>
+                <p>cho khách hàng!</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 TRANG WEB CỦA HÀNG TIÊN LÕI DOMDOM.</p>
+            <p>Tất cả các quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

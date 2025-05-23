@@ -16,18 +16,24 @@
     {
         foreach (var product in Model)
         {
-<div class="product-card">
-    <img src="@product.HinhAnh" alt="@product.TenSanPham" />
-    <h4>@product.TenSanPham</h4>
-    <p class="price">Giá: @product.Gia</p>
-    <button class="remove-from-favorites" data-product-id="@product.MaSanPham">Xóa</button>
-    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
-        <input type="hidden" name="id" value="@product.MaSanPham" />
-        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
-    </form>
+            string imagePath = product.LoaiSanPham == "doan"
+                ? Url.Content("~/Content/Image/food/" + product.HinhAnh)
+                : product.LoaiSanPham == "thucuong"
+                    ? Url.Content("~/Content/Image/drink/" + product.HinhAnh)
+                    : Url.Content("~/Content/Image/tool/" + product.HinhAnh);
 
-</div>
+            <div class="product-card">
+                <img src="@imagePath" alt="@product.TenSanPham" />
+                <h4>@product.TenSanPham</h4>
+                <p class="price">Giá: @product.Gia</p>
+                <button class="remove-from-favorites" data-product-id="@product.MaSanPham">Xóa</button>
+                <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                    <input type="hidden" name="id" value="@product.MaSanPham" />
+                    <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                </form>
+            </div>
         }
+
     }
 </div>
 

@@ -12,22 +12,30 @@
             <th>STT</th>
             <th>Tên Sản Phẩm</th>
             <th>Hình Ảnh</th>
-
             <th>Số Lượng</th>
             <th>Giá</th>
-            <th>Thành Tièn</th>
+            <th>Thành Tiền</th>
+            <th>Thao tác</th>
         </tr>
     </thead>
 
-
     <tbody>
+        @{
+            int stt = 1;
+        }
         @foreach (var item in Model)
         {
+            string imagePath = item.LoaiSanPham == "doan"
+                ? Url.Content("~/Content/Image/food/" + item.HinhAnh)
+                : item.LoaiSanPham == "thucuong"
+                    ? Url.Content("~/Content/Image/drink/" + item.HinhAnh)
+                    : Url.Content("~/Content/Image/tool/" + item.HinhAnh);
+
             <tr>
-                <td>@item.sTenSanPham</td>
+                <td>@(stt++)</td>
                 <td>@item.sTenSanPham</td>
                 <td>
-                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" />
+                    <img src="@imagePath" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" />
                 </td>
                 <td>
                     @using (Html.BeginForm("CapNhatDonHang", "Home", new { iMaSanPham = item.iMaSanPham }, FormMethod.Post))
@@ -38,29 +46,19 @@
                 </td>
                 <td>@string.Format("{0:#,##0}", item.dGia)</td>
                 <td>@string.Format("{0:#,##0}", item.dThanhTien)</td>
-               
                 <td>
                     <a href="@Url.Action("XoaSPKhoiGioHang", new { iMaSanPham = item.iMaSanPham })" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
-
             </tr>
         }
-
     </tbody>
+
     <tfoot>
         <tr>
-            <td colspan="3" class="text-right">
-                <strong>Tổng số lượng:</strong>
-            </td>
-            <td>
-                @string.Format("{0:#,##0}", ViewBag.TongSoLuong)
-            </td>
-            <td colspan="2" class="text-right">
-                <strong>Tổng tiền:</strong>
-            </td>
-            <td colspan="3">
-                @string.Format("{0:#,##0}", ViewBag.TongTien) VNĐ
-            </td>
+            <td colspan="3" class="text-right"><strong>Tổng số lượng:</strong></td>
+            <td>@string.Format("{0:#,##0}", ViewBag.TongSoLuong)</td>
+            <td colspan="2" class="text-right"><strong>Tổng tiền:</strong></td>
+            <td colspan="1">@string.Format("{0:#,##0}", ViewBag.TongTien) VNĐ</td>
         </tr>
     </tfoot>
 </table>
@@ -68,6 +66,7 @@
 <div class="back-to-home">
     <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Quay về trang chủ</a>
 </div>
+
 <div class="text-center mt-3">
     @Html.ActionLink("ĐẶT HÀNG", "DatHang", "Home", null, new { @class = "btn btn-success btn-lg" })
 </div>

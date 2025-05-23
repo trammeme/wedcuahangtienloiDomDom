@@ -10,6 +10,7 @@ namespace DD.Models
 
     public class KhuyenMaiViewModel
     {
+        public string FullImagePath => string.IsNullOrEmpty(HinhAnh) ? null : $"~/Image/sale/{HinhAnh}";
         [Required(ErrorMessage = "Mã khuyến mãi là bắt buộc.")]
         [StringLength(50, ErrorMessage = "Mã khuyến mãi không được vượt quá 50 ký tự.")]
         public string MaKhuyenMai { get; set; }

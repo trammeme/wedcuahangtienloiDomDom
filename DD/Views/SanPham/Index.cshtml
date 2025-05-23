@@ -1,87 +1,114 @@
 ﻿@model IEnumerable<DD.Models.SanPham>
 @{
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Đặt layout cho trang
+    ViewBag.Title = "Danh Sách Sản Phẩm";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int page = ViewBag.Page ?? 1;
+    int pageSize = ViewBag.PageSize ?? 10;
+    int totalPages = ViewBag.TotalPages ?? 1;
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Danh Sách Sản Phẩm</title>
-    <style>
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
 
-            .table th, .table td {
-                padding: 8px;
-                border: 1px solid #ddd;
-            }
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
-        .btn-delete {
-            color: white;
-            background-color: #dc3545;
-            padding: 5px 10px;
-            text-decoration: none;
-            margin: 2px;
-            display: inline-block;
-        }
+<h2>Danh Sách Sản Phẩm</h2>
 
-        .link-edit {
-            color: white;
-            background-color: #14559e;
-            padding: 5px 10px;
-            text-decoration: none;
-            margin: 2px;
-            display: inline-block;
-        }
-    </style>
-</head>
-<body>
-    <h2>Danh Sách Sản Phẩm</h2>
-    <p>
-        @Html.ActionLink("Thêm Sản Phẩm Mới", "Create", null, new { @class = "link-edit" })
-    </p>
-    <table class="table">
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<p>Tổng số sản phẩm: @ViewBag.TotalRecords</p>
+
+<table class="table table-bordered">
+    <thead>
         <tr>
             <th>Mã Sản Phẩm</th>
             <th>Tên Sản Phẩm</th>
-            <th>Mô Tả</th>
-            <th>Giá</th>
-            <th>Hình Ảnh</th>
             <th>Loại Sản Phẩm</th>
-            <th>Hành Động</th>
+            <th>Giá</th>
+            <th>Số Lượng Tồn</th>
+            <th>Hình Ảnh</th>
+            <th>Thao Tác</th>
         </tr>
-        @foreach (var item in Model)
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr id="sanpham-@item.MaSanPham">
+
+                    <td>@item.MaSanPham</td>
+                    <td>@item.TenSanPham</td>
+                    <td>@item.LoaiSanPham</td>
+                    <td>@item.Gia</td>
+                    <td>@item.SoLuongTon</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="@Url.Content("~/Image/" + item.HinhAnh)" alt="@item.TenSanPham" style="width: 100px; height: auto;" />
+
+                        }
+                        else
+                        {
+                            <span>Không có hình</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.MaSanPham }, new { @class = "btn btn-primary btn-sm" })
+
+                        @using (Html.BeginForm("DeleteConfirmed", "SanPham", FormMethod.Post, new { onsubmit = "return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');", @style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("MaSanPham", item.MaSanPham)
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.MaSanPham)</td>
-                <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
-                <td>@Html.DisplayFor(modelItem => item.MoTa)</td>
-                <td>@string.Format("{0:N0}", item.Gia) VNĐ</td>
-                <td>
-                    <img src="@Url.Content(item.HinhAnh)" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;" />
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.LoaiSanPham)</td>
-                <td>
-                    @using (Html.BeginForm("Delete", "SanPham", new { id = item.MaSanPham }, FormMethod.Post, new { style = "display:inline;" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <a href="@Url.Action("Edit", new { id = item.MaSanPham })" class="link-edit">Sửa</a>
-                        <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
-                            Xóa
-                        </button>
-                    }
-                </td>
+                <td colspan="7">Không có sản phẩm nào.</td>
             </tr>
         }
-    </table>
+    </tbody>
+</table>
 
-    @if (TempData["Error"] != null)
+<!-- Phân trang -->
+<div class="pagination">
+    @if (page > 1)
     {
-        <div style="color: red; margin-top: 10px;">
-            @TempData["Error"]
-        </div>
+        @Html.ActionLink("Trang trước", "Index", new { page = page - 1, pageSize }, new { @class = "btn btn-secondary" })
     }
-</body>
-</html>
+    <span>Trang @page / @totalPages</span>
+    @if (page < totalPages)
+    {
+        @Html.ActionLink("Trang sau", "Index", new { page = page + 1, pageSize }, new { @class = "btn btn-secondary" })
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Thêm Sản Phẩm Mới", "Create", null, new { @class = "btn btn-success" })
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script>
+        $(document).ready(function () {
+            var anchorId = '@TempData["AnchorId"]';
+            if (anchorId) {
+                var element = document.getElementById(anchorId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    </script>
+}
+

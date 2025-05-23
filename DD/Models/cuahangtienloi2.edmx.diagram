@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="364aa17e06aa407a92010d85f29a905e" Name="Diagram1">
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.BinhLuan" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.CHITIETDATHANG" Width="1.5" PointX="8.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.CuaHang" Width="1.5" PointX="3" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.DONHANG" Width="1.5" PointX="6" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.KhuyenMai" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.LichSuTichDiem" Width="1.5" PointX="3" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.NguoiDung" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.QuanTriVien" Width="1.5" PointX="0.75" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.SanPham" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.SanPhamKhuyenMai" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.ThanhToan" Width="1.5" PointX="8.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.TichDiem" Width="1.5" PointX="3" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi2Model.TinhTrangGiaoHang" Width="1.5" PointX="3.75" PointY="4.375" IsExpanded="true" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__BinhLuan__MaKH__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__BinhLuan__MaSanP__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__CHITIETDA__MaDon__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__CHITIETDA__MaSan__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__CuaHang__AdminID__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__DONHANG__MaKH__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__DONHANG__TinhTra__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__ThanhToan__MaDon__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__KhuyenMai__MaSan__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__LichSuTich__MaKH__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__TichDiem__MaKH__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.FK__SanPhamKh__MaSan__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi2Model.CuaHang_KhuyenMai" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

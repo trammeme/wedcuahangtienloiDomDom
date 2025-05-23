@@ -20,11 +20,13 @@ namespace DD.Models
             this.KhuyenMais = new HashSet<KhuyenMai>();
         }
     
-        public string MaSanPhamKM { get; set; }
+        public int MaSanPhamKM { get; set; }
         public string TenSanPham { get; set; }
         public string MoTaKhuyenMai { get; set; }
         public string HinhAnh { get; set; }
-        public Nullable<int> MaSanPham { get; set; }
+        public int MaSanPham { get; set; }
+        public Nullable<int> SoLuongKhuyenMai { get; set; }
+        public string TrangThaiSPKM { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<KhuyenMai> KhuyenMais { get; set; }

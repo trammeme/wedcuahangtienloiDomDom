@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,4 +11,4 @@ namespace DD.Models
         public DONHANG DonHang { get; set; }
         public List<CharEnumerator> ChiTietDonHangs { get; set; }
     }
-}
+}*/

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6ab51caecc9b41cdbcfd8620a35a0240" Name="Diagram1">
+        <EntityTypeShape EntityType="sqlthuModel.BinhLuan" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.CHITIETDATHANG" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.CuaHang" Width="1.5" PointX="3" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.DONHANG" Width="1.5" PointX="6" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.KhuyenMai" Width="1.5" PointX="5.25" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.LichSuTichDiem" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.NguoiDung" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.QuanTriVien" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.SanPham" Width="1.5" PointX="0.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.SanPhamKhuyenMai" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.ThanhToan" Width="1.5" PointX="8.25" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.TichDiem" Width="1.5" PointX="3" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlthuModel.TinhTrangGiaoHang" Width="1.5" PointX="3.75" PointY="4.25" IsExpanded="true" />
+        <AssociationConnector Association="sqlthuModel.FK__BinhLuan__AdminI__2B0A656D" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__BinhLuan__MaKH__29221CFB" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__BinhLuan__MaSanP__2A164134" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__CHITIETDA__MaDon__3A4CA8FD" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__CHITIETDA__MaSan__3B40CD36" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__CuaHang__AdminID__0F624AF8" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__DONHANG__MaKH__2FCF1A8A" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__DONHANG__TinhTra__30C33EC3" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__ThanhToan__MaDon__339FAB6E" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__KhuyenMai__MaSan__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__LichSuTich__MaKH__245D67DE" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__TichDiem__MaKH__208CD6FA" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.FK__SanPhamKh__MaSan__17036CC0" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlthuModel.CuaHang_KhuyenMai" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="sqlthuModel.BinhLuan1" Width="1.5" PointX="15.625" PointY="9.375" />
+        <EntityTypeShape EntityType="sqlthuModel.CHITIETDATHANG1" Width="1.5" PointX="12.625" PointY="8.625" />
+        <EntityTypeShape EntityType="sqlthuModel.CuaHang1" Width="1.5" PointX="12.625" PointY="1.125" />
+        <EntityTypeShape EntityType="sqlthuModel.KhuyenMai1" Width="1.5" PointX="14.875" PointY="5" />
+        <EntityTypeShape EntityType="sqlthuModel.QuanTriVien1" Width="1.5" PointX="10.375" PointY="1.125" />
+        <EntityTypeShape EntityType="sqlthuModel.SanPham1" Width="1.5" PointX="10.375" PointY="4.75" />
+        <EntityTypeShape EntityType="sqlthuModel.SanPhamKhuyenMai1" Width="1.5" PointX="12.625" PointY="5.25" />
+        <EntityTypeShape EntityType="sqlthuModel.TichDiem1" Width="1.5" PointX="3" PointY="1.375" />
+        <AssociationConnector Association="sqlthuModel.FK__BinhLuan__AdminI__69FBBC1F" />
+        <AssociationConnector Association="sqlthuModel.FK__BinhLuan__MaKH__681373AD" />
+        <AssociationConnector Association="sqlthuModel.FK__BinhLuan__MaSanP__690797E6" />
+        <AssociationConnector Association="sqlthuModel.FK__CHITIETDA__MaDon__793DFFAF" />
+        <AssociationConnector Association="sqlthuModel.FK__CHITIETDA__MaSan__7A3223E8" />
+        <AssociationConnector Association="sqlthuModel.FK__CuaHang__AdminID__4E53A1AA" />
+        <AssociationConnector Association="sqlthuModel.FK__KhuyenMai__MaSan__59C55456" />
+        <AssociationConnector Association="sqlthuModel.FK__TichDiem__MaKH__5F7E2DAC" />
+        <AssociationConnector Association="sqlthuModel.FK__SanPhamKh__MaSan__55F4C372" />
+        <AssociationConnector Association="sqlthuModel.CuaHang_KhuyenMai1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

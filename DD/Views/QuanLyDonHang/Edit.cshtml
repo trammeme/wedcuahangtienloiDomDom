@@ -1,0 +1,46 @@
+﻿@model DD.Models.DONHANG
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+   
+}
+<div class="modal-header">
+    <h5 class="modal-title">Cập nhật đơn hàng - Mã: @Model.MaDonHang</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+@using (Html.BeginForm("Edit", "QuanLyDonHang", FormMethod.Post, new { @id = "editForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        @Html.Hidden("MaDonHang", Model.MaDonHang)
+
+        <div class="form-group">
+            <label>Khách hàng:</label>
+            <input class="form-control" value="@Model.HoTen" disabled />
+        </div>
+
+        <div class="form-group">
+            <label>Trạng thái giao hàng:</label>
+            @Html.DropDownList("TinhTrangGiaoHang", (IEnumerable<SelectListItem>)ViewBag.TinhTrangGiaoHangList, "Chọn trạng thái", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" name="DaThanhToan" value="true" @(Model.DaThanhToan ? "checked" : "") />
+            <label class="form-check-label">Đã thanh toán</label>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+    </div>
+}
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+

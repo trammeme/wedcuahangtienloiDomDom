@@ -19,6 +19,7 @@ namespace DD.Models
         public Nullable<int> MaSanPham { get; set; }
         public Nullable<int> SoLuong { get; set; }
         public Nullable<decimal> DonGia { get; set; }
+        public Nullable<decimal> GiamGia { get; set; }
     
         public virtual DONHANG DONHANG { get; set; }
         public virtual SanPham SanPham { get; set; }

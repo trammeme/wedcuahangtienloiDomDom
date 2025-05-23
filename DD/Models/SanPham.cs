@@ -17,23 +17,31 @@ namespace DD.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SanPham()
         {
-            this.CHITIETDATHANGs = new HashSet<CHITIETDATHANG>();
-            this.SanPhamKhuyenMais = new HashSet<SanPhamKhuyenMai>();
             this.BinhLuans = new HashSet<BinhLuan>();
+            this.CHITIETDATHANGs = new HashSet<CHITIETDATHANG>();
+            this.LichSuTonKhoes = new HashSet<LichSuTonKho>();
+            this.SanPhamKhuyenMais = new HashSet<SanPhamKhuyenMai>();
         }
     
         public int MaSanPham { get; set; }
         public string TenSanPham { get; set; }
         public string MoTa { get; set; }
         public decimal Gia { get; set; }
+        public int SoLuongTon { get; set; }
         public string HinhAnh { get; set; }
         public string LoaiSanPham { get; set; }
+        public Nullable<System.DateTime> HanSuDung { get; set; }
+        public string TrangThai { get; set; }
+        public Nullable<System.DateTime> NgayTao { get; set; }
+        public Nullable<System.DateTime> NgayCapNhat { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CHITIETDATHANG> CHITIETDATHANGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
+        public virtual ICollection<LichSuTonKho> LichSuTonKhoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        public virtual ICollection<SanPhamKhuyenMai> SanPhamKhuyenMais { get; set; }
     }
 }

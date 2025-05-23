@@ -6,11 +6,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace DD.Controllers
 { public class QLKhuyenMaiController : Controller
         {
-        camlyEntities1 db = new camlyEntities1();
+        sqlcuahangnghiepvuEntities1 db = new sqlcuahangnghiepvuEntities1();
 
             public ActionResult Index()
             {
@@ -26,69 +27,63 @@ namespace DD.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(KhuyenMaiViewModel model)
+        public ActionResult Create(KhuyenMaiViewModel model, HttpPostedFileBase HinhAnhFile)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    string fileName = null;
+
+                    if (HinhAnhFile != null && HinhAnhFile.ContentLength > 0)
+                    {
+                        fileName = Path.GetFileName(HinhAnhFile.FileName);
+
+                        // Tạo đường dẫn tới thư mục lưu hình ảnh
+                        string path = Path.Combine(Server.MapPath("~/Content/Image/sale"), fileName);
+
+                        // Lưu hình ảnh vào thư mục
+                        HinhAnhFile.SaveAs(path);
+                    }
+
+                    // Kiểm tra mã sản phẩm có tồn tại không
+                    int maSP;
+                    if (!int.TryParse(model.MaSanPhamKM, out maSP) || db.SanPhamKhuyenMais.Find(maSP) == null)
+                    {
+                        ModelState.AddModelError("MaSanPhamKM", "Mã sản phẩm không tồn tại.");
+                        return View(model);
+                    }
+
                     var KM = new KhuyenMai
                     {
                         MaKhuyenMai = model.MaKhuyenMai,
-                        TenKhuyenMai = model.TenKhuyenMai, // Gán giá trị cho TenKhuyenMai
+                        TenKhuyenMai = model.TenKhuyenMai,
                         MoTa = model.MoTa,
                         NgayBatDau = model.NgayBatDau,
-                        NgayKetThuc=model.NgayKetThuc,
-                        MaSanPhamKM = model.MaSanPhamKM,
-                        HinhAnh = model.HinhAnh
+                        NgayKetThuc = model.NgayKetThuc,
+                        MaSanPhamKM = maSP,
+                        HinhAnh = fileName
                     };
 
                     db.KhuyenMais.Add(KM);
                     db.SaveChanges();
-                    return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction("Index");
                 }
-                catch (DbEntityValidationException ex)
+                catch (Exception ex)
                 {
-                    foreach (var validationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
+                    ModelState.AddModelError("", "Lỗi lưu dữ liệu: " + ex.Message);
                 }
             }
+
             return View(model);
         }
 
 
 
-        public ActionResult Delete(string id)
-        {
-            System.Diagnostics.Debug.WriteLine($"Delete method called with id: {id}");
-
-            var khuyenMai = db.KhuyenMais.Find(id);
-            if (khuyenMai == null)
-            {
-                return HttpNotFound();
-            }
-            var viewModel = new KhuyenMaiViewModel
-            {
-                MaKhuyenMai = khuyenMai.MaKhuyenMai,
-                MoTa = khuyenMai.MoTa,
-                NgayBatDau = khuyenMai.NgayBatDau,
-                NgayKetThuc = khuyenMai.NgayKetThuc,
-                MaSanPhamKM = khuyenMai.MaSanPhamKM,
-                HinhAnh = khuyenMai.HinhAnh
-            };
-            return View(viewModel);
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            System.Diagnostics.Debug.WriteLine($"DeleteConfirmed called with id: {id}");
-
             try
             {
                 var khuyenMai = db.KhuyenMais.Find(id);
@@ -97,19 +92,16 @@ namespace DD.Controllers
                     db.KhuyenMais.Remove(khuyenMai);
                     db.SaveChanges();
                 }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"Khuyen mai with id {id} not found.");
-                }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error during deletion: {ex.Message}");
-                ModelState.AddModelError("", "Unable to delete the item. Please try again later.");
+                // Ghi log hoặc xử lý lỗi
+                System.Diagnostics.Debug.WriteLine($"Lỗi: {ex.Message}");
             }
 
             return RedirectToAction("Index");
         }
+
 
 
         public ActionResult Edit(string id)
@@ -128,27 +120,49 @@ namespace DD.Controllers
             if (ModelState.IsValid)
             {
                 var KhuyenMai = db.KhuyenMais.Find(model.MaKhuyenMai);
-                if (KhuyenMai != null)
+                if (KhuyenMai == null)
                 {
-                    var sanPham = db.SanPhamKhuyenMais.Find(model.MaSanPhamKM);
-                    if (sanPham == null)
-                    {
-                        ModelState.AddModelError("MaSanPhamKM", "Mã sản phẩm không tồn tại.");
-                        return View(model);
-                    }
+                    return HttpNotFound();
+                }
 
-                    KhuyenMai.MaSanPhamKM = model.MaSanPhamKM;
-                    KhuyenMai.MoTa = model.MoTa;
-                    KhuyenMai.NgayBatDau = model.NgayBatDau;
-                    KhuyenMai.NgayKetThuc = model.NgayKetThuc;
-                    KhuyenMai.HinhAnh = $"~/Images/khuyenmai/{model.HinhAnh}"; // Cập nhật hình ảnh
+                var sanPham = db.SanPhamKhuyenMais.Find(model.MaSanPhamKM);
+                if (sanPham == null)
+                {
+                    ModelState.AddModelError("MaSanPhamKM", "Mã sản phẩm không tồn tại.");
+                    return View(model);
+                }
 
+                // Xác thực NgayBatDau và NgayKetThuc
+                if (model.NgayKetThuc < model.NgayBatDau)
+                {
+                    ModelState.AddModelError("NgayKetThuc", "Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.");
+                    return View(model);
+                }
+
+                // Cập nhật các thuộc tính
+                KhuyenMai.MaSanPhamKM = model.MaSanPhamKM;
+                KhuyenMai.MoTa = model.MoTa;
+                KhuyenMai.NgayBatDau = model.NgayBatDau;
+                KhuyenMai.NgayKetThuc = model.NgayKetThuc;
+
+                // Cập nhật HinhAnh chỉ khi có giá trị mới
+                if (!string.IsNullOrEmpty(model.HinhAnh))
+                {
+                    KhuyenMai.HinhAnh = Path.GetFileName(model.HinhAnh);
+                }
+
+
+                try
+                {
                     db.SaveChanges();
-                    return RedirectToAction(nameof(Index)); // Chuyển hướng về danh sách sản phẩm
+                }
+                catch (DbUpdateException ex)
+                {
+                    Console.WriteLine(ex.InnerException?.Message);
+                    throw;
                 }
             }
             return View(model);
         }
-
     }
 }

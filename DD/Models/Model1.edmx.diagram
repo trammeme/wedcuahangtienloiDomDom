@@ -4,23 +4,33 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3d95b8adc2ad4809a805aed0318f5ba5" Name="Diagram1">
-        <EntityTypeShape EntityType="thua1Model.BinhLuan" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.CuaHang" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.DONHANG" Width="1.5" PointX="5.75" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.KhuyenMai" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.NguoiDung" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.QuanTriVien" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.SanPham" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.SanPhamKhuyenMai" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="thua1Model.TichDiem" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
-        <AssociationConnector Association="thua1Model.FK__BinhLuan__MaKH__6477ECF3" ManuallyRouted="false" />
-        <AssociationConnector Association="thua1Model.FK__BinhLuan__MaSanP__656C112C" ManuallyRouted="false" />
-        <AssociationConnector Association="thua1Model.FK__CuaHang__AdminID__5070F446" ManuallyRouted="false" />
-        <AssociationConnector Association="thua1Model.FK__KhuyenMai__MaSan__5812160E" ManuallyRouted="false" />
-        <AssociationConnector Association="thua1Model.FK__TichDiem__MaKH__60A75C0F" ManuallyRouted="false" />
-        <AssociationConnector Association="thua1Model.FK__SanPhamKh__MaSan__5535A963" ManuallyRouted="false" />
-        <AssociationConnector Association="thua1Model.CuaHang_KhuyenMai" ManuallyRouted="false" />
+      <Diagram DiagramId="bb906ecb3eb14ace91f9d2295bb18bb2" Name="Diagram1">
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.BinhLuan" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.CHITIETDATHANG" Width="1.5" PointX="8.25" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.CuaHang" Width="1.5" PointX="3" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.DONHANG" Width="1.5" PointX="6" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.KhuyenMai" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.LichSuTichDiem" Width="1.5" PointX="3" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.NguoiDung" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.QuanTriVien" Width="1.5" PointX="0.75" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.SanPham" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.SanPhamKhuyenMai" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.ThanhToan" Width="1.5" PointX="8.25" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.TichDiem" Width="1.5" PointX="3" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CuaHangTienLoi1Model.TinhTrangGiaoHang" Width="1.5" PointX="3.75" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__BinhLuan__MaKH__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__BinhLuan__MaSanP__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__CHITIETDA__MaDon__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__CHITIETDA__MaSan__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__CuaHang__AdminID__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__DONHANG__MaKH__75A278F5" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__DONHANG__TinhTra__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__ThanhToan__MaDon__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__KhuyenMai__MaSan__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__LichSuTich__MaKH__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__TichDiem__MaKH__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.FK__SanPhamKh__MaSan__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="CuaHangTienLoi1Model.CuaHang_KhuyenMai" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

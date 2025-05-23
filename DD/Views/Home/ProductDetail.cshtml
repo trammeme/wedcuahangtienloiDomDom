@@ -1,13 +1,23 @@
 ﻿@model DD.Models.SanPham
 
-<div id="productDetailModal" class="modal">
+<div id="productDetailModal" class="modal product-detail-modal">
     <div class="modal-content">
         <h3>Chi tiết sản phẩm</h3>
-        <img id="detailImage" src="@Model.HinhAnh" alt="Product Image" class="product-image" />
+       @{
+            string imagePath = string.IsNullOrEmpty(Model.HinhAnh)
+                ? "~/Content/Image/default.jpg"
+                : Model.LoaiSanPham switch
+                {
+                    "doan" => $"~/Content/Image/food/{Model.HinhAnh}",
+                    "thucuong" => $"~/Content/Image/drink/{Model.HinhAnh}",
+                    _ => $"~/Content/Image/tool/{Model.HinhAnh}"
+                };
+        }
+
+        <img id="detailImage" src="@Url.Content(imagePath)" alt="Product Image" class="product-image" onerror="this.src='/Content/Image/default.jpg'; this.onerror=null;" />
         <h4 id="detailName" class="product-name">@Model.TenSanPham</h4>
         <p id="detailDescription" class="product-description">@Model.MoTa</p>
         <p id="detailPrice" class="product-price">@Model.Gia.ToString("C")</p>
-
         <!-- Bình luận -->
         <div class="comments-section" data-product-id="@Model.MaSanPham">
             <h2>Bình luận</h2>
@@ -19,10 +29,30 @@
                     {
                         foreach (var comment in productComments)
                         {
-                            <div class="comment">
+                            <div class="comment" data-comment-id="@comment.MaBinhLuan">
                                 <strong class="comment-author">@comment.NguoiDung.TenKH</strong>
                                 <p class="comment-content">@comment.NoiDung</p>
+                                <div class="comment-rating">
+                                    Đánh giá:
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <span class="star @(i <= comment.DanhGia ? "selected" : "")">★</span>
+                                    }
+                                </div>
                                 <small>Ngày: @(Convert.ToDateTime(comment.NgayBinhLuan).ToString("dd/MM/yyyy HH:mm"))</small>
+
+                                <!-- Hiển thị phản hồi (của admin hoặc người dùng) nếu có -->
+                                <!-- Hiển thị phản hồi từ admin nếu có -->
+                                @if (!string.IsNullOrEmpty(comment.PhanHoi))
+                                {
+                                    <div class="admin-reply">
+                                        <strong class="admin-name">Admin</strong>
+                                        <p class="reply-content">@comment.PhanHoi</p>
+                                        <small>Ngày phản hồi: @(comment.NgayPhanHoi.HasValue ? comment.NgayPhanHoi.Value.ToString("dd/MM/yyyy HH:mm") : "Chưa phản hồi")</small>
+                                    </div>
+                                }
+                               
+                                                            
                             </div>
                         }
                     }
@@ -47,26 +77,105 @@
                 <input type="hidden" name="masanpham" value="@Model.MaSanPham" />
 
                 <div class="form-group">
+                    <label for="noiDung">Bình luận của bạn:</label>
                     <textarea name="noiDung" class="form-control" rows="5" placeholder="Viết bình luận của bạn ở đây..." required></textarea>
                 </div>
 
+                <div class="form-group rating-group">
+                    <label>Đánh giá:</label>
+                    <div class="rating-stars" id="ratingStars">
+                        <input type="hidden" name="danhGia" id="ratingValue" value="0" />
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <input type="radio" id="star@i" name="rating" value="@i" required />
+                            <label for="star@i" title="@i sao">★</label>
+                        }
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">Gửi Bình Luận</button>
             }
         </div>
-    </div>
 
-    <div class="back-to-home">
-        <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Quay về trang chủ</a>
+        <div class="back-to-home">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Quay về trang chủ</a>
+        </div>
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+        // Xử lý chọn sao
+        $('#ratingStars label').on('click', function () {
+            var value = $(this).prev('input').val();
+            $('#ratingValue').val(value);
+            $('#ratingStars label').removeClass('selected');
+            $(this).addClass('selected').prevAll('label').addClass('selected');
+        });
+
+        // Xử lý hover
+        $('#ratingStars label').hover(
+            function () {
+                $(this).addClass('hover').prevAll('label').addClass('hover');
+            },
+            function () {
+                if (!$('input[name="rating"]:checked').length) {
+                    $('#ratingStars label').removeClass('hover');
+                }
+            }
+        );
+
+        // Xử lý submit form bình luận gốc
         $('#commentForm').on('submit', function (e) {
             e.preventDefault();
+            var form = $(this);
+            var rating = $('#ratingValue').val();
+            if (rating === "0") {
+                $('#message').show().html("Vui lòng chọn số sao.").css("color", "red");
+                return;
+            }
 
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    $('#message').show().html(response.message).css("color", response.success ? "green" : "red");
+                    if (response.success) {
+                        $('#comment-result').append(`
+                            <div class="comment" data-comment-id="${response.commentId}">
+                                <strong class="comment-author">${response.authorName}</strong>
+                                <p class="comment-content">${response.content}</p>
+                                <div class="comment-rating">
+                                    Đánh giá: ${Array(5).fill().map((_, i) => `<span class="star ${i < response.rating ? 'selected' : ''}">★</span>`).join('')}
+                                </div>
+                                <small>Ngày: ${response.date}</small>
+                               
+                            </div>
+                        `);
+                        form[0].reset();
+                        $('#ratingValue').val('0');
+                        $('#ratingStars label').removeClass('selected');
+                        $('#message').fadeOut(5000);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#message').show().html("Có lỗi xảy ra, vui lòng thử lại.").css("color", "red");
+                    console.log("Lỗi AJAX:", xhr.responseText, status, error);
+                }
+            });
+        });
+
+        // Xử lý toggle form phản hồi người dùng
+        $(document).on('click', '.reply-toggle', function () {
+            var commentId = $(this).data('comment-id');
+            var form = $(this).closest('.comment').find('.user-reply-form');
+            form.toggle();
+        });
+
+        // Xử lý submit form phản hồi người dùng
+        $(document).on('submit', '.replyForm', function (e) {
+            e.preventDefault();
             var form = $(this);
             $.ajax({
                 url: form.attr('action'),
@@ -74,29 +183,33 @@
                 data: form.serialize(),
                 success: function (response) {
                     $('#message').show().html(response.message).css("color", response.success ? "green" : "red");
-
                     if (response.success) {
-                        $('#comment-result').append(`
-                            <div class="comment">
-                                <strong class="comment-author">${response.authorName}</strong>
-                                <p class="comment-content">${response.content}</p>
-                                <small>Ngày: ${response.date}</small>
+                        var parentComment = form.closest('.comment');
+                        parentComment.append(`
+                            <div class="user-reply">
+                                <strong class="user-name">${response.authorName}</strong>
+                                <p class="reply-content">${response.content}</p>
+                                <small>Ngày phản hồi: ${response.date}</small>
                             </div>
                         `);
-                        form[0].reset();
+                        form.find('textarea').val('');
+                        form.hide();
+                        $(parentComment).find('.reply-toggle').hide();
+                        $('#message').fadeOut(5000);
                     }
                 },
-                error: function () {
+                error: function (xhr, status, error) {
                     $('#message').show().html("Có lỗi xảy ra, vui lòng thử lại.").css("color", "red");
+                    console.log("Lỗi AJAX:", xhr.responseText, status, error);
                 }
             });
         });
     });
 </script>
 
-
 <style>
     <style >
+
     .modal {
         display: flex;
         justify-content: center;
@@ -113,7 +226,7 @@
 
 
     .product-image {
-        max-width: 100%;
+        max-width: 30%;
         border-radius: 8px;
         margin-bottom: 15px;
     }
@@ -225,5 +338,88 @@
 
         .btn-primary:hover {
             background-color: #2980b9;
+        }
+
+    .rating-stars {
+        display: inline-flex;
+        gap: 5px;
+        margin-top: 8px;
+    }
+
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+
+        .rating-stars label {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+            .rating-stars label:hover,
+            .rating-stars label.selected {
+                color: #f1c40f;
+            }
+
+                .rating-stars label:hover ~ label,
+                .rating-stars label.selected ~ label {
+                    color: #ccc;
+                }
+
+    .comment-rating .star {
+        font-size: 20px;
+        color: #ccc;
+        transition: color 0.3s;
+    }
+
+        .comment-rating .star.selected {
+            color: #f1c40f;
+        }
+        .admin-reply {
+            background-color: #dff0d8;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #3c763d;
+        }
+
+        .admin-name {
+            color: #3c763d;
+            font-weight: bold;
+            }
+        .user-reply {
+            background-color: #e9ecef;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #6c757d;
+        }
+
+        .user-name {
+            color: #6c757d;
+            font-weight: bold;
+        }
+
+        .reply-content {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .user-reply-form {
+            margin-top: 10px;
+        }
+
+        .reply-textarea {
+            margin-bottom: 10px;
+        }
+
+        .reply-submit {
+            width: 100%;
+        }
+
+        .reply-toggle {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #3498db;
+            text-decoration: underline;
         }
 </style>

@@ -1,0 +1,25 @@
+﻿@model DD.Models.DONHANG
+
+<div class="modal-header">
+    <h5 class="modal-title">Xác nhận xóa đơn hàng</h5>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+<div class="modal-body">
+    <p>Bạn có chắc chắn muốn xóa đơn hàng <strong>@Model.MaDonHang</strong> của khách hàng <strong>@Model.HoTen</strong> không?</p>
+</div>
+<div class="modal-footer">
+    @using (Html.BeginForm("DeleteConfirmed", "QuanLyDonHang", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("id", Model.MaDonHang)
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+    }
+</div>
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+

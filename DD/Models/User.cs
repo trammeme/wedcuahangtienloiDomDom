@@ -19,6 +19,9 @@ namespace DD.Models
             public string TenDangNhap { get; set; }
             public string MatKhau { get; set; }
         public List<DD.Models.NguoiDung> DonHangs { get; set; }
+        public NguoiDung NguoiDung { get; set; }
+        public bool IsActive => !string.IsNullOrEmpty(NguoiDung.Email); // Giả lập logic
+
 
     }
 }

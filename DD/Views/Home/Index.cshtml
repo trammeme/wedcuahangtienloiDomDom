@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
     var doAn = Model.SanPhams.Where(s => s.LoaiSanPham == "doan").ToList();
     var thucUong = Model.SanPhams.Where(s => s.LoaiSanPham == "thucuong").ToList();
+    var doDung = Model.SanPhams.Where(s => s.LoaiSanPham == "dungcu").ToList();
     <link rel="stylesheet" href="~/Content/indexhome.css">
     var successMessage = TempData["SuccessMessage"] as string;
     var errorMessage = TempData["ErrorMessage"] as string;
@@ -28,114 +29,178 @@
 @section Slider {
     @Html.Action("Slider", "Home")
 }
+
 <div class="container">
     <div class="sidebar">
         <div class="logo">
             <img src="~/Images/lgo/logo.jpg" alt="Mini Stop Logo" />
         </div>
         <h2>Thông tin sản phẩm</h2>
-        <a href="javascript:void(0);" onclick="showSection('doan')">Đồ ăn</a>
-        <a href="javascript:void(0);" onclick="showSection('thucuong')">Thức uống</a>
+        <a href="javascript:void(0);" onclick="showSection('Thực phẩm')">Đồ ăn</a>
+        <a href="javascript:void(0);" onclick="showSection('Đồ uống')">Thức uống</a>
+        <a href="javascript:void(0);" onclick="showSection('Đồ dùng')">Đồ dùng</a>
         <a href="javascript:void(0);" onclick="showSection('tatCaSanPham')">Tất cả sản phẩm</a>
         <h2><a href="javascript:void(0);" onclick="showSection('khuyenMaiSection')">Các khuyến mãi và ưu đãi</a></h2>
-
     </div>
 
-
     <div class="content">
-        <div id="khuyenMaiSection" class="product-section">
+        <div id="khuyenMaiSection" class="product-section" style="display:none;">
             <h2>Thông tin khuyến mãi</h2>
             <div class="promotion-container">
                 <div class="promotion-flex">
-                    @foreach (var km in Model.KhuyenMais)
+                    @if (Model.KhuyenMais == null || !Model.KhuyenMais.Any())
                     {
-                        <div class="promotion-card" onclick="showPromotionDetail('@Url.Content(km.HinhAnh)', '@km.TenKhuyenMai', '@km.MoTa', '@km.NgayBatDau.ToString("dd/MM/yyyy")', '@km.NgayKetThuc.ToString("dd/MM/yyyy")')">
-                            <img src="@Url.Content(km.HinhAnh)" alt="@km.TenKhuyenMai" />
-                            <h4>@km.TenKhuyenMai</h4>
-                            <p>Thời gian: @km.NgayBatDau.ToString("dd/MM/yyyy") - @km.NgayKetThuc.ToString("dd/MM/yyyy")</p>
-                        </div>
+                        <p>Không có khuyến mãi nào hiện tại.</p>
+                    }
+                    else
+                    {
+                        foreach (var km in Model.KhuyenMais)
+                        {
+                            <div class="promotion-card" onclick="showPromotionDetail('/Content/Image/sale/@km.HinhAnh', '@km.TenKhuyenMai', '@km.MoTa', '@km.NgayBatDau.ToString("dd/MM/yyyy")', '@km.NgayKetThuc.ToString("dd/MM/yyyy")')">
+                                <img src="/Content/Image/sale/@km.HinhAnh" alt="@km.TenKhuyenMai" onerror="this.src='/Content/Image/default-promo.jpg'; this.onerror=null;" />
+                                <h4>@km.TenKhuyenMai</h4>
+                                <p>Thời gian: @km.NgayBatDau.ToString("dd/MM/yyyy") - @km.NgayKetThuc.ToString("dd/MM/yyyy")</p>
+                               
+                            </div>
+                        }
                     }
                 </div>
             </div>
         </div>
 
-
-        <div id="doan" class="product-section" style="display: none;">
+        <div id="Thực phẩm" class="product-section" style="display:none;">
             <h3>Đồ ăn</h3>
-            <div class="row text-center">
-                @foreach (var item in doAn) // thucAn là danh sách thực phẩm của bạn
-                {
-                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-                        <div class="thumbnail">
-                            <img src="@item.HinhAnh" alt="@item.TenSanPham" />
-                            <div class="caption">
-                                <h4 style="min-height:70px;">
-                                    <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
-                                </h4>
-                                <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
-                                <div class="product-buttons">
-                                    <!-- Nút yêu thích -->
-                                    <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
-                                        <i class="fas fa-heart"></i> <!-- Biểu tượng yêu thích -->
-                                    </button>
-                                    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
-                                        <input type="hidden" name="id" value="@item.MaSanPham" />
-                                        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
-                                    </form>
+            @if (doAn == null || !doAn.Any())
+            {
+                <p>Không có sản phẩm nào trong mục Đồ ăn.</p>
+                <p>Debug: Số lượng sản phẩm trong doAn = @doAn.Count</p>
+            }
+            else
+            {
+                <div class="row text-center">
+                    @foreach (var item in doAn)
+                    {
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+                            <div class="thumbnail">
+                                <img src="~/Content/Image/food/@item.HinhAnh" alt="@item.TenSanPham" onerror="this.src='/Content/Image/default.jpg'; this.onerror=null;" />
+                                <div class="caption">
+                                    <h4 style="min-height:70px;">
+                                        <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
+                                    </h4>
+                                    <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
+                                    <div class="product-buttons">
+                                        <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                                            <input type="hidden" name="id" value="@item.MaSanPham" />
+                                            <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>
+            }
         </div>
 
-        <div id="thucuong" class="product-section" style="display:none;">
-            <h3>Thức uống</h3>
-            <div class="product-container">
-                @foreach (var item in thucUong)
-                {
-                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
-                        <div class="thumbnail">
-                            <img src="@item.HinhAnh" alt="@item.TenSanPham" />
-                            <div class="caption">
-                                <h4 style="min-height:70px;">
-                                    <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
-                                </h4>
-                                <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
-                                <div class="product-buttons">
-                                    <!-- Nút yêu thích -->
-                                    <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
-                                        <i class="fas fa-heart"></i> <!-- Biểu tượng yêu thích -->
-                                    </button>
-                                    <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
-                                        <input type="hidden" name="id" value="@item.MaSanPham" />
-                                        <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
-                                    </form>
+        <div id="Đồ dùng" class="product-section" style="display:none;">
+            <h3>Đồ dùng</h3>
+            @if (doDung == null || !doDung.Any())
+            {
+                <p>Không có sản phẩm nào trong mục Đồ dùng.</p>
+                <p>Debug: Số lượng sản phẩm trong doDung = @doDung.Count</p>
+            }
+            else
+            {
+                <p>Debug: Số lượng sản phẩm trong doDung = @doDung.Count</p>
+                <div class="row text-center">
+                    @foreach (var item in doDung)
+                    {
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+                            <div class="thumbnail">
+                                <img src="~/Content/Image/tool/@item.HinhAnh" alt="@item.TenSanPham" onerror="this.src='/Content/Image/default.jpg'; this.onerror=null;" />
+                                <div class="caption">
+                                    <h4 style="min-height:70px;">
+                                        <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
+                                    </h4>
+                                    <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
+                                    <div class="product-buttons">
+                                        <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                                            <input type="hidden" name="id" value="@item.MaSanPham" />
+                                            <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>
+            }
         </div>
-        <div id="tatCaSanPham" class="product-section" style="display:none;">
+
+        <div id="Đồ uống" class="product-section" style="display:none;">
+            <h3>Thức uống</h3>
+            @if (thucUong == null || !thucUong.Any())
+            {
+                
+            }
+            else
+            {
+                <div class="row text-center">
+                    @foreach (var item in thucUong)
+                    {
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
+                            <div class="thumbnail">
+                                <img src="~/Content/Image/drink/@item.HinhAnh" alt="@item.TenSanPham" onerror="this.src='/Content/Image/default.jpg'; this.onerror=null;" />
+                                <div class="caption">
+                                    <h4 style="min-height:70px;">
+                                        <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
+                                    </h4>
+                                    <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
+                                    <div class="product-buttons">
+                                        <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
+                                            <input type="hidden" name="id" value="@item.MaSanPham" />
+                                            <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div id="tatCaSanPham" class="product-section">
             <h3>Tất cả sản phẩm</h3>
             <div class="row text-center">
                 @foreach (var item in Model.SanPhams)
                 {
+                    string imagePath = item.LoaiSanPham switch
+                    {
+                        "doan" => $"~/Content/Image/food/{item.HinhAnh}",
+                        "thucuong" => $"~/Content/Image/drink/{item.HinhAnh}",
+                        _ => $"~/Content/Image/tool/{item.HinhAnh}"
+                    };
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xs-6">
                         <div class="thumbnail">
-                            <img src="@item.HinhAnh" alt="@item.TenSanPham" />
+                            <img src="@Url.Content(imagePath)" alt="@item.TenSanPham" onerror="this.src='/Content/Image/default.jpg'; this.onerror=null;" />
                             <div class="caption">
                                 <h4 style="min-height:70px;">
                                     <a href="@Url.Action("ProductDetail", "Home", new { id = item.MaSanPham })">@item.TenSanPham</a>
                                 </h4>
                                 <p class="price">Giá: @item.Gia.ToString("N0") VNĐ</p>
                                 <div class="product-buttons">
-                                    <!-- Nút yêu thích -->
                                     <button class="add-to-favorites" data-product-id="@item.MaSanPham" data-product-name="@item.TenSanPham">
-                                        <i class="fas fa-heart"></i> <!-- Biểu tượng trái tim từ Font Awesome -->
+                                        <i class="fas fa-heart"></i>
                                     </button>
                                     <form id="add-to-cart-form" action="@Url.Action("ThemGioHang", "Home")" method="post">
                                         <input type="hidden" name="id" value="@item.MaSanPham" />
@@ -147,120 +212,106 @@
                     </div>
                 }
             </div>
-
-            <!-- Modal cho chi tiết sản phẩm -->
-            <div id="productDetail" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
-                <div class="modal-content">
-                    <span class="close" onclick="hideDetail()" style="cursor: pointer;">&times;</span>
-                    <img id="detailImage" src="" alt="Hình ảnh sản phẩm" style="width: 100%; height: auto;" />
-                    <h4 id="detailName"></h4>
-                    <p id="detailDescription"></p>
-                    <p id="detailPrice"></p>
-                </div>
-            </div>
-
-            <!-- Modal cho chi tiết khuyến mãi -->
-            <div id="promotionModal" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
-                <div class="modal-content">
-                    <span class="close" onclick="hidePromotionDetail()" style="cursor: pointer;">&times;</span>
-                    <img id="promotionImage" src="" alt="Hình ảnh khuyến mãi" style="width: 100%; height: auto;" />
-                    <h4 id="promotionName"></h4>
-                    <p id="promotionDescription"></p>
-                    <p id="promotionTime"></p>
-                </div>
-            </div>
-
-            <!-- Gọi Partial View cho chi tiết sản phẩm -->
-            @Html.Partial("ProductDetail", Model.SanPhams.FirstOrDefault())
-
-
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
+        <!-- Modal cho chi tiết sản phẩm -->
+        <div id="productDetail" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+            <div class="modal-content">
+                <span class="close" onclick="hideDetail()" style="cursor: pointer;">×</span>
+                <img id="detailImage" src="" alt="Hình ảnh sản phẩm" style="width: 100%; height: auto;" />
+                <h4 id="detailName"></h4>
+                <p id="detailDescription"></p>
+                <p id="detailPrice"></p>
+            </div>
+        </div>
 
+        <!-- Modal cho chi tiết khuyến mãi -->
+        <div id="promotionModal" class="modal" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+            <div class="modal-content">
+                <span class="close" onclick="hidePromotionDetail()" style="cursor: pointer;">×</span>
+                <img id="promotionImage" src="" alt="Hình ảnh khuyến mãi" style="width: 100%; height: auto;" />
+                <h4 id="promotionName"></h4>
+                <p id="promotionDescription"></p>
+                <p id="promotionTime"></p>
+            </div>
+        </div>
 
-            // Hàm ẩn modal chi tiết sản phẩm
-            function hideDetail() {
-                document.getElementById('productDetail').style.display = 'none';
+        <!-- Gọi Partial View cho chi tiết sản phẩm -->
+        @Html.Partial("ProductDetail", Model.SanPhams.FirstOrDefault())
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function hideDetail() {
+            document.getElementById('productDetail').style.display = 'none';
+        }
+
+        function showPromotionDetail(image, name, description, startTime, endTime) {
+            var modal = document.getElementById('promotionModal');
+            document.getElementById('promotionImage').src = image || '/Content/Image/sale/default-promo.jpg';
+            document.getElementById('promotionName').innerText = name || 'Không có tên';
+            document.getElementById('promotionDescription').innerText = description || 'Không có mô tả';
+            document.getElementById('promotionTime').innerText = `Thời gian: ${startTime || ''} - ${endTime || ''}`;
+            modal.style.display = 'block';
+        }
+
+        function hidePromotionDetail() {
+            var modal = document.getElementById('promotionModal');
+            modal.style.display = 'none';
+        }
+
+        function showSection(sectionId) {
+            var sections = document.getElementsByClassName('product-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].style.display = 'none';
             }
 
-            // Hàm hiển thị chi tiết khuyến mãi
-            function showPromotionDetail(image, name, description, startTime, endTime) {
-                var modal = document.getElementById('promotionModal');
-                document.getElementById('promotionImage').src = image;
-                document.getElementById('promotionName').innerText = name;
-                document.getElementById('promotionDescription').innerText = description;
-                document.getElementById('promotionTime').innerText = "Thời gian: " + startTime + " - " + endTime;
-                modal.style.display = 'block'; // Hiển thị modal
+            var selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
             }
+        }
 
-            // Hàm ẩn modal chi tiết khuyến mãi
-            function hidePromotionDetail() {
-                var modal = document.getElementById('promotionModal');
-                modal.style.display = 'none';
+        // Hiển thị section "Tất cả sản phẩm" mặc định khi tải trang
+        document.addEventListener('DOMContentLoaded', function () {
+            showSection('tatCaSanPham');
+        });
+
+        window.onclick = function (event) {
+            var productModal = document.getElementById('productDetail');
+            var promotionModal = document.getElementById('promotionModal');
+            if (event.target == productModal) {
+                hideDetail();
             }
-
-            // Hàm hiển thị các section sản phẩm
-            function showSection(sectionId) {
-                var sections = document.getElementsByClassName('product-section');
-                for (var i = 0; i < sections.length; i++) {
-                    sections[i].style.display = 'none'; // Ẩn tất cả các section
-                }
-
-                // Hiển thị section được chọn
-                var selectedSection = document.getElementById(sectionId);
-                if (selectedSection) {
-                    selectedSection.style.display = 'block'; // Hiển thị section
-                }
+            if (event.target == promotionModal) {
+                hidePromotionDetail();
             }
+        }
 
-            // Thêm sự kiện đóng modal khi nhấn bên ngoài
-            window.onclick = function (event) {
-                var productModal = document.getElementById('productDetail');
-                var promotionModal = document.getElementById('promotionModal');
-                if (event.target == productModal) {
-                    hideDetail();
-                }
-                if (event.target == promotionModal) {
-                    hidePromotionDetail();
-                }
-            }
-        </script>
-        <script>
-            $(document).on('click', '.add-to-favorites', function () {
-                var productId = $(this).data('product-id');
-                var button = $(this);
+        $(document).on('click', '.add-to-favorites', function () {
+            var button = $(this);
+            var productId = button.data('product-id');
+            var productName = button.data('product-name');
 
-                $.ajax({
-                    url: '/Home/AddToFavorites',
-                    type: 'POST',
-                    data: { productId: productId },
-                    success: function (response) {
-                        if (response.success) {
-                            alert('Đã thêm vào danh sách yêu thích!');
-                            button.text('Đã yêu thích'); // Cập nhật văn bản nút nếu cần
-                        }
+            $.ajax({
+                url: '/Home/AddToFavorites',
+                type: 'POST',
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.success) {
+                        button.find('i').toggleClass('fas fa-heart far fa-heart');
+                        button.addClass('liked');
+                        button.text('Đã yêu thích');
+                        alert(`Đã thêm ${productName} vào danh sách yêu thích!`);
+                    } else {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
                     }
-                });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Lỗi khi thêm vào yêu thích:', error);
+                    alert('Không thể thêm vào danh sách yêu thích. Vui lòng thử lại sau.');
+                }
             });
-            $(document).on('click', '.add-to-favorites', function () {
-                var productId = $(this).data('product-id');
-                var button = $(this);
-
-                $.ajax({
-                    url: '/Home/AddToFavorites',
-                    type: 'POST',
-                    data: { productId: productId },
-                    success: function (response) {
-                        if (response.success) {
-                            button.find('i').toggleClass('fas fa-heart far fa-heart'); // Đổi icon nếu cần
-                            alert('Đã thêm vào danh sách yêu thích!');
-                            button.addClass('liked'); // Thêm class để biểu thị trạng thái yêu thích
-                        }
-                    }
-                });
-            });
-
-        </script>
-
+        });
+    </script>
+</div>

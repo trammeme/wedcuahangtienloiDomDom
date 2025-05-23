@@ -17,7 +17,9 @@ namespace DD.Models
         public int MaKH { get; set; }
         public int Diem { get; set; }
         public string CapBac { get; set; }
-    
+        public Nullable<System.DateTime> NgayHetHan { get; set; }
+        public int? NguoiDungId { get; set; } 
+
         public virtual NguoiDung NguoiDung { get; set; }
     }
 }

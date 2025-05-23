@@ -14,12 +14,27 @@ namespace DD.Models
     
     public partial class BinhLuan
     {
-        public string MaBinhLuan { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public BinhLuan()
+        {
+            this.BinhLuan1 = new HashSet<BinhLuan>();
+        }
+
+        public string AdminID { get; set; }
+        public bool IsAdminReply { get; set; } // Thêm thu?c tính này
+        public int MaBinhLuan { get; set; }
         public int MaKH { get; set; }
         public int MaSanPham { get; set; }
         public string NoiDung { get; set; }
+        public Nullable<int> DanhGia { get; set; }
         public Nullable<System.DateTime> NgayBinhLuan { get; set; }
+        public string PhanHoi { get; set; }
+        public Nullable<System.DateTime> NgayPhanHoi { get; set; }
+        public Nullable<int> MaBinhLuanCha { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BinhLuan> BinhLuan1 { get; set; }
+        public virtual BinhLuan BinhLuan2 { get; set; }
         public virtual NguoiDung NguoiDung { get; set; }
         public virtual SanPham SanPham { get; set; }
     }

@@ -1,0 +1,215 @@
+﻿@model IEnumerable<DD.Models.LichSuTichDiem>
+
+@{
+    ViewBag.Title = "Lịch sử tích điểm - " + ViewBag.TenKH;
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Lịch sử tích điểm của @ViewBag.TenKH (Mã KH: @ViewBag.MaKH)</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<!-- Thông tin cấp bậc và lợi ích -->
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>Thông tin khách hàng</h5>
+        <p><strong>Tên khách hàng:</strong> @ViewBag.TenKH (Mã KH: @ViewBag.MaKH)</p>
+        <p><strong>Cấp bậc:</strong> <span id="capBac">Đang tải...</span></p>
+        <p><strong>Lợi ích:</strong> <span id="loiIch">Đang tải...</span></p>
+    </div>
+</div>
+
+<!-- Nút thưởng điểm sinh nhật và gửi nhắc nhở -->
+<div class="mb-3">
+    @if (ViewBag.ThangSinh == DateTime.Today.Month)
+    {
+        <button class="btn btn-success mr-2" onclick="awardBirthdayPoints(@ViewBag.MaKH)">Thưởng điểm sinh nhật</button>
+    }
+    @if (ViewBag.TichDiem != null && ViewBag.TichDiem.NgayHetHan <= DateTime.Today.AddDays(30) && ViewBag.TichDiem.NgayHetHan >= DateTime.Today)
+    {
+        <button class="btn btn-warning" onclick="sendExpiryReminder(@ViewBag.MaKH)">Gửi nhắc nhở điểm hết hạn</button>
+    }
+</div>
+
+<!-- Bộ lọc lịch sử giao dịch -->
+<div class="row mb-3">
+    <form method="get" action="@Url.Action("LichSuTichDiem", "QuanLyTichDiem", new { maKH = ViewBag.MaKH })" class="form-inline">
+        <div class="form-group mr-2">
+            <label class="mr-2">Từ ngày:</label>
+            <input type="date" name="tuNgay" class="form-control" value="@ViewBag.TuNgay" />
+        </div>
+        <div class="form-group mr-2">
+            <label class="mr-2">Đến ngày:</label>
+            <input type="date" name="denNgay" class="form-control" value="@ViewBag.DenNgay" />
+        </div>
+        <div class="form-group mr-2">
+            <label class="mr-2">Trạng thái:</label>
+            <select name="trangThai" class="form-control">
+                <option value="">Tất cả</option>
+                <option value="Còn hiệu lực" selected="@(ViewBag.TrangThai == "Còn hiệu lực")">Còn hiệu lực</option>
+                <option value="Đã sử dụng" selected="@(ViewBag.TrangThai == "Đã sử dụng")">Đã sử dụng</option>
+                <option value="Hết hạn" selected="@(ViewBag.TrangThai == "Hết hạn")">Hết hạn</option>
+            </select>
+        </div>
+        <div class="form-group mr-2">
+            <label class="mr-2">Lý do:</label>
+            <input type="text" name="lyDo" class="form-control" value="@ViewBag.LyDo" placeholder="Nhập từ khóa lý do" />
+        </div>
+        <button type="submit" class="btn btn-primary">Lọc</button>
+    </form>
+</div>
+
+<!-- Biểu đồ thống kê -->
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>Thống kê giao dịch điểm</h5>
+        <canvas id="transactionChart"></canvas>
+    </div>
+</div>
+
+<!-- Bảng lịch sử giao dịch -->
+@if (!Model.Any())
+{
+    <p>Không có lịch sử tích điểm cho khách hàng này.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Điểm thay đổi</th>
+                <th>Lý do</th>
+                <th>Ngày giao dịch</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DiemThayDoi</td>
+                    <td>@item.LyDo</td>
+                    <td>@(item.NgayGiaoDich.HasValue ? item.NgayGiaoDich.Value.ToString("dd/MM/yyyy HH:mm") : "")</td>
+                    <td>@item.TrangThaiDiem</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a href="@Url.Action("Index", "QuanLyTichDiem")" class="btn btn-primary">Quay lại danh sách</a>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Hiển thị thông tin cấp bậc và lợi ích
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GetTierBenefits", "QuanLyTichDiem")',
+                type: 'GET',
+                data: { maKH: @ViewBag.MaKH },
+                success: function (response) {
+                    if (response.success) {
+                        $('#capBac').text(response.capBac);
+                        $('#loiIch').text(response.benefits.join(', '));
+                    } else {
+                        $('#capBac').text('Không có cấp bậc');
+                        $('#loiIch').text('Không có lợi ích');
+                    }
+                },
+                error: function () {
+                    $('#capBac').text('Lỗi khi tải');
+                    $('#loiIch').text('Lỗi khi tải');
+                }
+            });
+
+            // Vẽ biểu đồ thống kê
+            $.ajax({
+                url: '@Url.Action("GetTransactionStats", "QuanLyTichDiem")',
+                type: 'GET',
+                data: { maKH: @ViewBag.MaKH },
+                success: function (response) {
+                    if (response.success) {
+                        var ctx = document.getElementById('transactionChart').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['Điểm tích lũy', 'Điểm sử dụng', 'Điểm hết hạn'],
+                                datasets: [{
+                                    label: 'Thống kê điểm',
+                                    data: [response.pointsAwarded, response.pointsUsed, response.pointsExpired],
+                                    backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                                    borderColor: ['#2E8BCE', '#E55773', '#E5B94C'],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        title: { display: true, text: 'Số điểm' }
+                                    }
+                                },
+                                plugins: {
+                                    legend: { display: true }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        // Thưởng điểm sinh nhật
+        function awardBirthdayPoints(maKH) {
+            if (confirm('Bạn có muốn thưởng điểm sinh nhật cho khách hàng này?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("AwardBirthdayPoints", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { maKH: maKH, __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Thưởng điểm sinh nhật thành công!');
+                            location.reload();
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+
+        // Gửi nhắc nhở điểm hết hạn
+        function sendExpiryReminder(maKH) {
+            if (confirm('Bạn có muốn gửi email nhắc nhở điểm hết hạn?')) {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '@Url.Action("SendExpiryReminders", "QuanLyTichDiem")',
+                    type: 'POST',
+                    data: { maKH: maKH, __RequestVerificationToken: token },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Gửi nhắc nhở thành công!');
+                        } else {
+                            alert('Lỗi: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            }
+        }
+    </script>
+}

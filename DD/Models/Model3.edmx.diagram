@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0da79c1d924641c0b10b249b97d36c6e" Name="Diagram1">
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.BinhLuan" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.CHITIETDATHANG" Width="1.5" PointX="8.25" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.CuaHang" Width="1.5" PointX="1.5" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.DONHANG" Width="1.5" PointX="6" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.KhuyenMai" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.LichSuKhuyenMai" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.LichSuTichDiem" Width="1.5" PointX="3" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.LichSuTonKho" Width="1.5" PointX="3.75" PointY="35.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.NguoiDung" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.QuanTriVien" Width="1.5" PointX="1.5" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.SanPham" Width="1.5" PointX="1.5" PointY="34.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.SanPhamKhuyenMai" Width="1.5" PointX="1.5" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.ThanhToan" Width="1.5" PointX="8.25" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.TichDiem" Width="1.5" PointX="3" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="sqlcuahangnghiepvuModel.TinhTrangGiaoHang" Width="1.5" PointX="3.75" PointY="14.25" IsExpanded="true" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__BinhLuan__MaBinh__4F47C5E3" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__BinhLuan__MaKH__4D5F7D71" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__BinhLuan__MaSanP__4E53A1AA" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__CHITIETDA__MaDon__5E8A0973" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__CHITIETDA__MaSan__5F7E2DAC" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__CuaHang__AdminID__2739D489" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__DONHANG__MaKH__540C7B00" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__DONHANG__TinhTra__55009F39" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__ThanhToan__MaDon__57DD0BE4" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__KhuyenMai__MaSan__395884C4" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__LichSuKhu__MaKhu__3D2915A8" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__LichSuKhuy__MaKH__3E1D39E1" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__LichSuTich__MaKH__489AC854" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__LichSuTon__MaSan__671F4F74" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__TichDiem__MaKH__43D61337" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.FK__SanPhamKh__MaSan__32AB8735" ManuallyRouted="false" />
+        <AssociationConnector Association="sqlcuahangnghiepvuModel.CuaHang_KhuyenMai" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

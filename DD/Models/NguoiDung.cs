@@ -18,6 +18,9 @@ namespace DD.Models
         public NguoiDung()
         {
             this.BinhLuans = new HashSet<BinhLuan>();
+            this.DONHANGs = new HashSet<DONHANG>();
+            this.LichSuKhuyenMais = new HashSet<LichSuKhuyenMai>();
+            this.LichSuTichDiems = new HashSet<LichSuTichDiem>();
         }
     
         public int MaKH { get; set; }
@@ -29,9 +32,18 @@ namespace DD.Models
         public string SoDienThoai { get; set; }
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
+        public Nullable<System.DateTime> NgayTao { get; set; }
     
-        public virtual TichDiem TichDiem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuan> BinhLuans { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DONHANG> DONHANGs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LichSuKhuyenMai> LichSuKhuyenMais { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LichSuTichDiem> LichSuTichDiems { get; set; }
+        public virtual TichDiem TichDiem { get; set; }
+        public bool IsActive { get; set; } //
+
     }
 }

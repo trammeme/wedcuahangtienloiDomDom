@@ -5,8 +5,7 @@ using System.Diagnostics;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Security.Claims;
-using System.Web.Mvc; // Giữ lại nếu bạn sử dụng ASP.NET MVC
-// using Microsoft.AspNetCore.Mvc; // Xóa nếu bạn không sử dụng ASP.NET Core
+using System.Web.Mvc;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
@@ -14,12 +13,15 @@ using System.Net.Mail;
 using System.Net;
 using QRCoder;
 using System.IO;
+using Hangfire;
+using System.Data.SqlClient;
+using System.Drawing.Imaging;
 
 namespace DD.Controllers
 {
-    public class HomeController : Controller // Đảm bảo kế thừa đúng từ Controller
+    public class HomeController : Controller
     {
-        private readonly camlyEntities1 db = new camlyEntities1();
+        private readonly sqlcuahangnghiepvuEntities1 db = new sqlcuahangnghiepvuEntities1();
         private List<GioHang> cartItems = new List<GioHang>();
         public DbSet<CHITIETDATHANG> CHITIETDATHANG { get; set; }
 
@@ -32,7 +34,6 @@ namespace DD.Controllers
                 SanPhams = danhSachSanPham,
                 KhuyenMais = khuyenMais
             };
-
             return View(model);
         }
 
@@ -40,46 +41,44 @@ namespace DD.Controllers
         {
             return View();
         }
+
         [ChildActionOnly]
         public ActionResult Footer()
         {
             return PartialView("_Footer");
         }
+
         public ActionResult sliderbar()
         {
             return View();
         }
+
         public ActionResult ProductDetail(int id)
         {
-            var product = db.SanPhams.FirstOrDefault(p => p.MaSanPham == id); // Lấy sản phẩm theo id
-
-            if (product == null)
-            {
-                return HttpNotFound(); // Nếu không tìm thấy sản phẩm, trả về lỗi 404
-            }
-
-            return View(product); // Trả về view với thông tin sản phẩm
-        }
-
-      public ActionResult Detail(int id)
-        {
-            var product = db.SanPhams
-                .Include(p => p.BinhLuans.Select(b => b.NguoiDung))
-                .FirstOrDefault(p => p.MaSanPham == id);
-
+            var product = db.SanPhams.FirstOrDefault(p => p.MaSanPham == id);
             if (product == null)
             {
                 return HttpNotFound();
             }
+            return View(product);
+        }
 
+        public ActionResult Detail(int id)
+        {
+            var product = db.SanPhams
+                .Include(p => p.BinhLuans.Select(b => b.NguoiDung))
+                .FirstOrDefault(p => p.MaSanPham == id);
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
             product.BinhLuans = product.BinhLuans
                 .Where(b => b.MaSanPham == id)
                 .OrderByDescending(b => b.NgayBinhLuan)
                 .ToList();
-
             return View(product);
         }
-        
+
         public ActionResult GetComments(int masanpham)
         {
             var comments = db.BinhLuans
@@ -87,11 +86,11 @@ namespace DD.Controllers
                 .OrderByDescending(b => b.NgayBinhLuan)
                 .Include(b => b.NguoiDung)
                 .ToList();
-
             return PartialView("BinhLuanPartial", comments);
         }
+
         [HttpPost]
-        public ActionResult AddComment(int masanpham, string noiDung)
+        public ActionResult AddComment(int masanpham, string noiDung, int danhGia)
         {
             try
             {
@@ -109,24 +108,31 @@ namespace DD.Controllers
                 {
                     return Json(new { success = false, message = "Sản phẩm không tồn tại" });
                 }
+                if (string.IsNullOrWhiteSpace(noiDung))
+                {
+                    return Json(new { success = false, message = "Nội dung bình luận không được để trống" });
+                }
+                if (danhGia < 1 || danhGia > 5)
+                {
+                    return Json(new { success = false, message = "Đánh giá phải từ 1 đến 5 sao" });
+                }
                 var comment = new BinhLuan
                 {
                     MaSanPham = masanpham,
                     NoiDung = noiDung,
                     MaKH = user.MaKH,
-                    MaBinhLuan = "BL" + user.MaKH + DateTime.Now.ToString("yyyyMMddHHmmss"), // Tạo mã dựa trên ID người dùng và thời gian
+                    DanhGia = danhGia,
                     NgayBinhLuan = DateTime.Now
                 };
                 db.BinhLuans.Add(comment);
                 db.SaveChanges();
-
-                // Trả về JSON response với thông báo thành công
                 return Json(new
                 {
                     success = true,
                     productId = masanpham,
                     authorName = user.TenKH,
                     content = noiDung,
+                    rating = danhGia,
                     date = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                     message = "Bình luận đã được thêm thành công"
                 });
@@ -136,11 +142,11 @@ namespace DD.Controllers
                 var errors = dbEx.EntityValidationErrors
                     .SelectMany(validationResult => validationResult.ValidationErrors)
                     .Select(validationError => validationError.ErrorMessage);
-                return Json(new { success = false, message = "Có lỗi xảy ra: " + string.Join(", ", errors) });
+                return Json(new { success = false, message = "Lỗi xác thực: " + string.Join(", ", errors) });
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error in AddComment method: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Lỗi trong AddComment: {ex.Message}");
                 return Json(new { success = false, message = "Có lỗi xảy ra, vui lòng thử lại sau." });
             }
         }
@@ -151,17 +157,14 @@ namespace DD.Controllers
             {
                 return RedirectToAction("Index");
             }
-
             var searchResults = db.SanPhams
                 .Where(p => p.TenSanPham.Contains(query) || p.MoTa.Contains(query))
                 .ToList();
-
             var model = new MyViewModel
             {
                 SanPhams = searchResults,
                 KhuyenMais = db.KhuyenMais.ToList()
             };
-
             return View("Index", model);
         }
 
@@ -169,13 +172,11 @@ namespace DD.Controllers
         public ActionResult AddToFavorites(int productId)
         {
             var favorites = Session["Favorites"] as List<int> ?? new List<int>();
-
             if (!favorites.Contains(productId))
             {
                 favorites.Add(productId);
                 Session["Favorites"] = favorites;
             }
-
             return Json(new { success = true });
         }
 
@@ -188,7 +189,6 @@ namespace DD.Controllers
                 favorites.Remove(productId);
                 Session["Favorites"] = favorites;
             }
-
             return Json(new { success = true });
         }
 
@@ -201,11 +201,9 @@ namespace DD.Controllers
         public ActionResult Favorites()
         {
             var favorites = Session["Favorites"] as List<int> ?? new List<int>();
-
             var favoriteProducts = db.SanPhams
                 .Where(p => favorites.Contains(p.MaSanPham))
                 .ToList();
-
             return View(favoriteProducts);
         }
 
@@ -220,55 +218,41 @@ namespace DD.Controllers
             return lstGioHang;
         }
 
-
         public ActionResult Detailsp(int id)
         {
-            var book = (from s in db.SanPhams where s.MaSanPham == id select s).SingleOrDefault();
-
+            var book = db.SanPhams.FirstOrDefault(s => s.MaSanPham == id);
             if (book == null)
             {
-                return HttpNotFound(); // Nếu không tìm thấy sách
+                return HttpNotFound();
             }
-
             return View(book);
         }
 
-        // Thêm đơn hàng
         public ActionResult ThemGioHang(int id, string url)
         {
-            // Lấy giỏ hàng từ Session nếu có, nếu không có tạo mới
-            List<GioHang> lstGioHang = Session["GioHang"] as List<GioHang> ?? new List<GioHang>();
-
-            // Tìm sản phẩm trong giỏ hàng
-            GioHang sanpham = lstGioHang.Find(n => n.iMaSanPham == id);
+            List<GioHang> lstGioHang = LayGioHang();
+            GioHang sanpham = lstGioHang.FirstOrDefault(n => n.iMaSanPham == id);
 
             if (sanpham == null)
             {
-                // Nếu sản phẩm chưa có trong giỏ hàng, tạo mới và thêm vào giỏ hàng
+                // Dùng constructor có sẵn để tự load dữ liệu sản phẩm
                 sanpham = new GioHang(id);
                 lstGioHang.Add(sanpham);
             }
             else
             {
-                // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
                 sanpham.iSoLuong++;
             }
 
-            // Lưu giỏ hàng vào Session
             Session["GioHang"] = lstGioHang;
 
-            // Kiểm tra giá trị của url và điều hướng
             if (string.IsNullOrEmpty(url))
-            {
-                // Nếu url không hợp lệ, chuyển hướng đến trang mặc định (thay "Index" và "Home" theo yêu cầu của bạn)
                 return RedirectToAction("Index", "Home");
-            }
-
-            // Nếu url hợp lệ, điều hướng tới url đó
-            return Redirect(url);
+            else
+                return Redirect(url);
         }
 
-        // Tính tổng số lượng và tổng tiền của đơn hàng
+
         private int TongSoLuong() => LayGioHang().Sum(n => n.iSoLuong);
         private decimal TongTien() => LayGioHang().Sum(n => n.dThanhTien);
 
@@ -277,28 +261,18 @@ namespace DD.Controllers
             var lstGioHang = LayGioHang();
             ViewBag.TongSoLuong = TongSoLuong();
             ViewBag.TongTien = TongTien();
-
             return View(lstGioHang);
         }
 
-        // Cập nhật thông tin đơn hàng
         public ActionResult CapNhatDonHang(int iMaSanPham, int txtSoLuong)
         {
-            var lstGioHang = LayGioHang(); // Lấy giỏ hàng từ session
-
+            var lstGioHang = LayGioHang();
             var productToUpdate = lstGioHang.FirstOrDefault(n => n.iMaSanPham == iMaSanPham);
             if (productToUpdate != null)
             {
-                // Cập nhật số lượng sản phẩm
                 productToUpdate.iSoLuong = txtSoLuong;
-
-                // Không cần gán dThanhTien, vì nó sẽ tự tính toán
             }
-
-            // Lưu lại giỏ hàng sau khi cập nhật
             Session["GioHang"] = lstGioHang;
-
-            // Quay lại trang giỏ hàng
             return RedirectToAction("GioHang");
         }
 
@@ -306,25 +280,15 @@ namespace DD.Controllers
         {
             if (iMaSanPham == null)
             {
-                // Nếu không có sản phẩm, quay về trang giỏ hàng
                 return RedirectToAction("Index");
             }
-
-            // Lấy giỏ hàng từ session
             var lstDonHang = LayGioHang();
-
-            // Tìm sản phẩm cần xóa
             var productToRemove = lstDonHang.FirstOrDefault(n => n.iMaSanPham == iMaSanPham);
             if (productToRemove != null)
             {
-                // Xóa sản phẩm khỏi giỏ hàng
                 lstDonHang.Remove(productToRemove);
             }
-
-            // Cập nhật lại giỏ hàng trong session
             Session["GioHang"] = lstDonHang;
-
-            // Quay lại trang giỏ hàng đã cập nhật
             return RedirectToAction("GioHang");
         }
 
@@ -337,41 +301,42 @@ namespace DD.Controllers
         [HttpGet]
         public ActionResult DatHang()
         {
-            // Kiểm tra đăng nhập chưa
             if (Session["user"] == null)
             {
                 return RedirectToAction("Login", "Account");
             }
-
-            // Lấy hàng từ Session
             List<GioHang> lstGioHang = LayGioHang();
             if (!lstGioHang.Any())
             {
-                return RedirectToAction("GioHang"); // Nếu không có hàng trong giỏ
+                return RedirectToAction("GioHang");
             }
-
             ViewBag.TongSoLuong = TongSoLuong();
             ViewBag.TongTien = TongTien();
-
             return View(lstGioHang);
         }
-
 
         [HttpPost]
         public ActionResult DatHang(string diaChi, string soDienThoai, DateTime? ngayGiao)
         {
             try
             {
-                // Kiểm tra người dùng đã đăng nhập
-                if (Session["user"] == null)
+                var user = Session["User"] as NguoiDung ?? Session["user"] as NguoiDung;
+                if (user == null)
                 {
+                    System.Diagnostics.Debug.WriteLine("Session['user'] là null");
                     return RedirectToAction("Login", "Account");
                 }
 
-                // Các validation checks hiện tại
+                System.Diagnostics.Debug.WriteLine($"diaChi: {diaChi}, soDienThoai: {soDienThoai}, ngayGiao: {ngayGiao}");
                 if (string.IsNullOrEmpty(diaChi) || string.IsNullOrEmpty(soDienThoai) || !ngayGiao.HasValue)
                 {
                     TempData["ErrorMessage"] = "Vui lòng điền đầy đủ thông tin";
+                    return RedirectToAction("DatHang");
+                }
+
+                if (!IsValidPhoneNumber(soDienThoai))
+                {
+                    TempData["ErrorMessage"] = "Số điện thoại không hợp lệ. Vui lòng nhập số 10 chữ số bắt đầu bằng 0.";
                     return RedirectToAction("DatHang");
                 }
 
@@ -382,36 +347,41 @@ namespace DD.Controllers
                     return RedirectToAction("DatHang");
                 }
 
-                // Lấy thông tin giỏ hàng và khách hàng
                 List<GioHang> lstGioHang = LayGioHang();
-                var khachHang = Session["user"] as NguoiDung;
-
-                if (!lstGioHang.Any() || khachHang == null || khachHang.MaKH <= 0)
+                if (!lstGioHang.Any() || user.MaKH <= 0)
                 {
+                    System.Diagnostics.Debug.WriteLine($"Giỏ hàng rỗng: {lstGioHang.Count}, MaKH: {user.MaKH}");
                     TempData["ErrorMessage"] = "Có lỗi với giỏ hàng hoặc thông tin khách hàng";
                     return RedirectToAction("DatHang");
+                }
+
+                foreach (var item in lstGioHang)
+                {
+                    var sanPham = db.SanPhams.Find(item.iMaSanPham);
+                    if (sanPham == null)
+                    {
+                        TempData["ErrorMessage"] = $"Sản phẩm {item.iMaSanPham} không tồn tại.";
+                        return RedirectToAction("DatHang");
+                    }
                 }
 
                 using (var transaction = db.Database.BeginTransaction())
                 {
                     try
                     {
-                        // Tạo đơn hàng mới
                         var donHang = new DONHANG
                         {
-                            HoTen = khachHang.TenKH,
-                            MaKH = khachHang.MaKH,
+                            HoTen = user.TenKH,
+                            MaKH = user.MaKH,
                             NgayDat = DateTime.Now,
                             NgayGiao = ngayGiao.Value,
                             DiaChi = diaChi,
                             DienThoai = soDienThoai.Trim(),
                             TinhTrangGiaoHang = 1
                         };
-
                         db.DONHANGs.Add(donHang);
                         db.SaveChanges();
 
-                        // Thêm chi tiết đơn hàng
                         decimal tongTienDonHang = 0;
                         foreach (var item in lstGioHang)
                         {
@@ -426,43 +396,63 @@ namespace DD.Controllers
                             tongTienDonHang += (decimal)item.dThanhTien;
                         }
 
-                        // Tính và cập nhật điểm tích lũy
-                        // Tính và cập nhật điểm tích lũy  
-                        var tichDiem = db.TichDiems.FirstOrDefault(t => t.MaKH == khachHang.MaKH);
+                        var tichDiem = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
                         if (tichDiem == null)
                         {
                             tichDiem = new TichDiem
                             {
-                                MaKH = khachHang.MaKH,
+                                MaKH = user.MaKH,
                                 Diem = 0,
-                                CapBac = "Thành viên mới"
+                                CapBac = "Không có cấp bậc",
+                                NgayHetHan = DateTime.Today.AddYears(1)
                             };
                             db.TichDiems.Add(tichDiem);
+                            db.SaveChanges();
                         }
 
-                        // Trước khi cập nhật điểm  
-                        // Tính điểm: cứ 100,000 VNĐ được 1 điểm  
-                        int diemThuong = (int)(tongTienDonHang / 10000);
+                        if (tichDiem.NgayHetHan != null && tichDiem.NgayHetHan < DateTime.Today)
+                        {
+                            db.LichSuTichDiems.Add(new LichSuTichDiem
+                            {
+                                MaKH = user.MaKH,
+                                DiemThayDoi = -tichDiem.Diem,
+                                LyDo = "Điểm hết hạn",
+                                NgayGiaoDich = DateTime.Now,
+                                TrangThaiDiem = "Hết hạn"
+                            });
+                            tichDiem.Diem = 0;
+                            tichDiem.NgayHetHan = null;
+                        }
+
+                        int diemThuong = (int)(tongTienDonHang / 100000);
                         tichDiem.Diem += diemThuong;
+                        tichDiem.NgayHetHan = DateTime.Today.AddYears(1);
 
-                        // Cập nhật cấp bậc
-                        tichDiem.CapBac = new QuanLyTichDiemController().CalculateCapBac(tichDiem.Diem);
+                        if (diemThuong > 0)
+                        {
+                            db.LichSuTichDiems.Add(new LichSuTichDiem
+                            {
+                                MaKH = user.MaKH,
+                                DiemThayDoi = diemThuong,
+                                LyDo = $"Tích điểm từ đơn hàng #{donHang.MaDonHang}",
+                                NgayGiaoDich = DateTime.Now,
+                                TrangThaiDiem = "Còn hiệu lực"
+                            });
+                        }
 
-                        // Lưu thay đổi vào cơ sở dữ liệu
-                        db.SaveChanges();
-
+                        var quanLyTichDiem = new QuanLyTichDiemController();
+                        tichDiem.CapBac = quanLyTichDiem.GetCapBac(user.MaKH) ?? "Không có cấp bậc";
 
                         db.SaveChanges();
                         transaction.Commit();
 
-                        // Gửi email xác nhận và thông báo điểm tích lũy
-                        if (!string.IsNullOrEmpty(khachHang.Email))
+                        if (!string.IsNullOrEmpty(user.Email) && IsValidEmail(user.Email))
                         {
                             try
                             {
                                 SendEmail(
-                                    khachHang.Email,
-                                    khachHang.TenKH,
+                                    user.Email,
+                                    user.TenKH,
                                     Convert.ToDouble(tongTienDonHang),
                                     TongSoLuong(),
                                     DateTime.Now.ToString("dd/MM/yyyy"),
@@ -471,20 +461,18 @@ namespace DD.Controllers
                             }
                             catch (Exception emailEx)
                             {
-                                // Log lỗi email nhưng không ảnh hưởng đến việc đặt hàng
                                 System.Diagnostics.Debug.WriteLine($"Lỗi gửi email: {emailEx.Message}");
                             }
                         }
 
-                        // Xóa giỏ hàng và thông báo thành công với điểm tích lũy hiện tại
                         Session["GioHang"] = null;
-                        TempData["SuccessMessage"] = $"Đặt hàng thành công! Bạn được cộng {diemThuong} điểm. Tổng điểm hiện tại của bạn là {tichDiem.Diem} điểm. Cấp bậc hiện tại: {tichDiem.CapBac}";
-
+                        TempData["SuccessMessage"] = $"Đặt hàng thành công! Bạn được cộng {diemThuong} điểm. Tổng điểm hiện tại: {tichDiem.Diem}. Cấp bậc: {tichDiem.CapBac}";
                         return RedirectToAction("XacNhanDonHang");
                     }
                     catch (Exception ex)
                     {
                         transaction.Rollback();
+                        System.Diagnostics.Debug.WriteLine($"Lỗi trong DatHang: {ex.Message}, Inner: {ex.InnerException?.Message}");
                         TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
                         return RedirectToAction("DatHang");
                     }
@@ -492,194 +480,91 @@ namespace DD.Controllers
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"Lỗi ngoài cùng trong DatHang: {ex.Message}");
                 TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
                 return RedirectToAction("DatHang");
             }
         }
 
-        // Helper method để validate số điện thoại
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         private bool IsValidPhoneNumber(string phone)
         {
             if (string.IsNullOrEmpty(phone)) return false;
-            // Kiểm tra số điện thoại VN (10 số, bắt đầu bằng 0)
             return System.Text.RegularExpressions.Regex.IsMatch(phone, @"^0\d{9}$");
         }
+
         public ActionResult XacNhanDonHang()
         {
-
             return View();
         }
-        private bool SendEmail(string toEmail, string tenkh, double tongtien, int tongsoluong, string ngaydat, string ngaygiao)
+
+        private void SendEmail(string email, string tenKH, double tongTien, int soLuong, string ngayDat, string ngayGiao)
         {
-            List<GioHang> lstCart = LayGioHang();
-            var fromEmail = "2224802010596@student.tdmu.edu.vn"; // Email của bạn  
-            var fromPassword = "lqci gzzj tvaq ocss"; // Mật khẩu của bạn  
+            var fromAddress = new MailAddress("moimoixanhla@gmail.com", "Tên cửa hàng của bạn");
+            var toAddress = new MailAddress(email, tenKH);
+            const string fromPassword = "hvyt bzxm qzti esuo";
+            string subject = "Xác nhận đơn hàng từ cửa hàng";
+            string body = $"Chào {tenKH},\n\nCảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi.\n" +
+                          $"Ngày đặt: {ngayDat}\nNgày giao dự kiến: {ngayGiao}\n" +
+                          $"Tổng số lượng: {soLuong} sản phẩm\nTổng tiền: {tongTien:#,##0} VNĐ\n\n" +
+                          $"Chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất có thể.\n\nTrân trọng!";
 
-            var body = $@"  
-    <html>  
-        <head>  
-            <style>  
-                body {{ font-family: Arial, sans-serif; }}  
-                .container {{ max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }}  
-                h4 {{ color: #4CAF50; }}  
-                table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}  
-                th, td {{ border: 1px solid #ddd; padding: 10px; text-align: center; }}  
-                th {{ background-color: #f2f2f2; }}  
-                .footer {{ margin-top: 20px; font-size: 12px; color: #666; }}  
-            </style>  
-        </head>  
-        <body>  
-            <div class='container'>  
-                <h4>Cảm ơn <strong>{tenkh}</strong> đã đặt sản phẩm tại cửa hàng <strong>DOMDOM</strong> của chúng tôi!</h4>  
-                <h4>Sau đây là thông tin đơn hàng bạn đã đặt:</h4>  
-                <h4>Ngày đặt: <strong>{ngaydat}</strong></h4>  
-                <h4>Ngày giao dự kiến: <strong>{ngaygiao}</strong></h4>  
-                <table>  
-                    <tr>  
-                        <th>Mã Sản Phẩm</th>  
-                        <th>Tên Sản Phẩm</th>  
-                        <th>Số Lượng</th>  
-                        <th>Đơn Giá</th>  
-                        <th>Thành Tiền</th>  
-                    </tr>";
-
-            foreach (var item in lstCart)
+            var smtp = new SmtpClient
             {
-                body += $@"  
-        <tr>  
-            <td><b>{item.iMaSanPham}</b></td>  
-            <td>{item.sTenSanPham}</td>  
-            <td>{item.iSoLuong}</td>  
-            <td>{item.dGia:#,##0} VND</td>  
-            <td>{item.dThanhTien:#,##0} VND</td>  
-        </tr>";
-            }
-
-            body += $@"  
-                </table>  
-                <h4>Tổng số lượng: <strong>{tongsoluong:#,##0}</strong></h4>  
-                <h4>Tổng tiền: <strong>{tongtien:#,##0} VND</strong></h4>  
-                <h4>Đơn hàng sẽ được nhanh chóng giao tới bạn! Xin cảm ơn!</h4>  
-                <div class='footer'>  
-                    <p> Xin chân thành cảm ơn! </p>  
-                    <p> Cửa hàng DOMDOM - Đội ngũ chăm sóc khách hàng. </p>  
-                </div>  
-            </div>  
-        </body>  
-    </html>";
-
-            var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
+                Host = "smtp.gmail.com",
                 Port = 587,
-                Credentials = new NetworkCredential(fromEmail, fromPassword),
-                EnableSsl = true
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
 
-            // Tạo và gửi email  
-            var mailMessage = new MailMessage
+            using (var message = new MailMessage(fromAddress, toAddress)
             {
-                From = new MailAddress(fromEmail),
-                Subject = "Xác nhận đơn hàng",
-                Body = body,
-                IsBodyHtml = true, // Gửi mail dạng HTML  
-            };
-
-            mailMessage.To.Add(toEmail);
-
-            // Gửi mail  
-            try
+                Subject = subject,
+                Body = body
+            })
             {
-                smtpClient.Send(mailMessage);
-                return true;
+                smtp.Send(message);
             }
-            catch (Exception ex)
-            {
-                // Xử lý lỗi nếu việc gửi mail thất bại  
-                ViewBag.Message = $"Đã xảy ra lỗi khi gửi email: {ex.Message}";
-                return false;
-            }
-       
         }
 
-
-
-        public ActionResult DoiDiem()
+        /*public ActionResult DoiDiem()
         {
             var user = Session["User"] as NguoiDung;
-
             if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
-
             var diemTichLuy = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
             if (diemTichLuy == null)
             {
-                return HttpNotFound(); // Không tìm thấy thông tin tích điểm của người dùng
-            }
-
-            // Tải danh sách sản phẩm khuyến mãi
-            ViewBag.PromotionalProducts = db.SanPhamKhuyenMais.ToList();
-
-            return View(diemTichLuy);
-        }
-        [HttpPost]
-        public ActionResult DoiDiem(int soDiem, string loaiDoiDiem, int? productId)
-        {
-            var user = Session["User"] as NguoiDung;
-
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var diemTichLuy = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
-            if (diemTichLuy == null)
-            {
-                return HttpNotFound(); // Nếu không tìm thấy thông tin tích điểm của người dùng
-            }
-
-            if (diemTichLuy.Diem < soDiem)
-            {
-                TempData["ErrorMessage"] = "Số điểm không đủ để thực hiện giao dịch."; // Thông báo nếu điểm không đủ
-                return RedirectToAction("DoiDiem");
-            }
-
-            // Giảm số điểm của người dùng
-            diemTichLuy.Diem -= soDiem;
-
-            if (loaiDoiDiem == "voucher")
-            {
-                var voucherCode = "VOUCHER" + new Random().Next(1000, 9999);
-
-                // Tạo mã QR cho voucher
-                var qrCodeImage = EmailHelper.GenerateQRCode(voucherCode); // Gọi đúng phương thức GenerateQRCode từ EmailHelper
-
-                // Chuyển đổi mã QR thành byte array
-                var qrCodeByteArray = EmailHelper.ConvertToByteArray(qrCodeImage); // Gọi đúng phương thức ConvertToByteArray từ EmailHelper
-
-                // Gửi email với mã voucher và mã QR
-                EmailHelper.SendEmailWithQRCode(user.Email, "Mã voucher của bạn", $"Mã voucher của bạn là: {voucherCode}", qrCodeByteArray);
-
-                TempData["SuccessMessage"] = "Đổi điểm thành công! Mã voucher đã được gửi về email của bạn.";
-            }
-            else if (loaiDoiDiem == "sanpham" && productId.HasValue)
-            {
-                var product = db.SanPhamKhuyenMais.FirstOrDefault(p => p.MaSanPham == productId);
-                if (product == null)
+                diemTichLuy = new TichDiem
                 {
-                    TempData["ErrorMessage"] = "Sản phẩm khuyến mãi không tồn tại.";
-                    return RedirectToAction("DoiDiem");
-                }
-
-                TempData["SuccessMessage"] = $"Đổi điểm thành công! Bạn đã nhận được sản phẩm khuyến mãi: {product.TenSanPham}.";
+                    MaKH = user.MaKH,
+                    Diem = 0,
+                    CapBac = "Không có cấp bậc",
+                    NgayHetHan = DateTime.Today.AddYears(1)
+                };
+                db.TichDiems.Add(diemTichLuy);
+                db.SaveChanges();
             }
+            ViewBag.PromotionalProducts = db.SanPhamKhuyenMais.ToList();
+            return View(diemTichLuy);
+        }*/
 
-            db.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
-
+        
         public static class EmailHelper
         {
             public static void SendEmailWithQRCode(string toEmail, string subject, string body, byte[] qrCodeImage)
@@ -689,29 +574,27 @@ namespace DD.Controllers
                     var smtpClient = new SmtpClient("smtp.gmail.com")
                     {
                         Port = 587,
-                        Credentials = new NetworkCredential("2224802010596@student.tdmu.edu.vn", "lqci gzzj tvaq ocss"),
+                        Credentials = new NetworkCredential("moimoixanhla@gmail.com", "hvyt bzxm qzti esuo"), // Sử dụng email thống nhất
                         EnableSsl = true,
                     };
-
                     var mailMessage = new MailMessage
                     {
-                        From = new MailAddress("2224802010596@student.tdmu.edu.vn"),
+                        From = new MailAddress("moimoixanhla@gmail.com"),
                         Subject = subject,
                         Body = body,
                         IsBodyHtml = true,
                     };
-
-                    var qrCodeAttachment = new Attachment(new MemoryStream(qrCodeImage), "voucherQRCode.png");
-                    mailMessage.Attachments.Add(qrCodeAttachment);
-
+                    if (qrCodeImage != null)
+                    {
+                        var qrCodeAttachment = new Attachment(new MemoryStream(qrCodeImage), "voucherQRCode.png");
+                        mailMessage.Attachments.Add(qrCodeAttachment);
+                    }
                     mailMessage.To.Add(toEmail);
-
                     smtpClient.Send(mailMessage);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Không thể gửi email: " + ex.Message);
-                    throw new Exception("Gửi email thất bại: " + ex.Message);
+                    System.Diagnostics.Debug.WriteLine($"Không thể gửi email: {ex.Message}");
                 }
             }
 
@@ -721,7 +604,7 @@ namespace DD.Controllers
                 {
                     var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
                     var qrCode = new QRCode(qrCodeData);
-                    return qrCode.GetGraphic(20); // Return an Image object
+                    return qrCode.GetGraphic(20);
                 }
             }
 
@@ -734,48 +617,250 @@ namespace DD.Controllers
                 }
             }
         }
-    
-        public static byte[] GenerateQRCode(string text)
-            {
-                using (var qrGenerator = new QRCodeGenerator())
-                {
-                    var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-                    var qrCode = new QRCode(qrCodeData);
 
-                    using (var ms = new MemoryStream())
-                    {
-                        qrCode.GetGraphic(20).Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                        return ms.ToArray();
-                    }
+        public static byte[] GenerateQRCode(string text)
+        {
+            using (var qrGenerator = new QRCodeGenerator())
+            {
+                var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+                var qrCode = new QRCode(qrCodeData);
+                using (var ms = new MemoryStream())
+                {
+                    qrCode.GetGraphic(20).Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    return ms.ToArray();
                 }
             }
+        }
 
-       
-        // Hàm kiểm tra xem người dùng có điểm tích lũy không
         public ActionResult GetUserPoints()
         {
             var user = Session["User"] as NguoiDung;
-
             if (user == null)
             {
                 return Json(new { success = false, message = "Vui lòng đăng nhập để kiểm tra điểm." }, JsonRequestBehavior.AllowGet);
             }
-
             var diemTichLuy = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
-
             if (diemTichLuy == null)
             {
                 return Json(new { success = false, message = "Không tìm thấy thông tin điểm của bạn." }, JsonRequestBehavior.AllowGet);
             }
-
-            return Json(new { success = true, points = diemTichLuy.Diem }, JsonRequestBehavior.AllowGet); // Trả về điểm tích lũy
+            return Json(new { success = true, points = diemTichLuy.Diem }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Getfooter()
+      
+            public ActionResult DoiDiem()
+            {
+                // Kiểm tra tất cả các key session có thể có
+                var user = Session["User"] as NguoiDung ?? Session["user"] as NguoiDung;
+                string tenDangNhap = Session["TenDangNhap"] as string;
+
+                // Nếu không có user object, thử tìm bằng TenDangNhap
+                if (user == null && !string.IsNullOrEmpty(tenDangNhap))
+                {
+                    user = db.NguoiDungs.FirstOrDefault(n => n.TenDangNhap == tenDangNhap);
+                }
+
+                // Nếu vẫn không có user, redirect về login
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var tichDiem = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
+
+                // Nếu chưa có record tích điểm, tạo mới
+                if (tichDiem == null)
+                {
+                    tichDiem = new TichDiem
+                    {
+                        MaKH = user.MaKH,
+                        Diem = 0,
+                        CapBac = "Không có cấp bậc",
+                        NgayHetHan = DateTime.Today.AddYears(1)
+                    };
+                    db.TichDiems.Add(tichDiem);
+                    db.SaveChanges();
+                }
+
+                return View(tichDiem);
+            }
+
+            [HttpPost]
+            public JsonResult DoiDiem(int soDiem)
+            {
+                try
+                {
+                    var user = Session["User"] as NguoiDung ?? Session["user"] as NguoiDung;
+                    string tenDangNhap = Session["TenDangNhap"] as string;
+
+                    if (user == null && !string.IsNullOrEmpty(tenDangNhap))
+                    {
+                        user = db.NguoiDungs.FirstOrDefault(n => n.TenDangNhap == tenDangNhap);
+                    }
+
+                    if (user == null)
+                    {
+                        return Json(new { success = false, message = "Phiên đăng nhập đã hết. Vui lòng đăng nhập lại." });
+                    }
+
+                    var tichDiem = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
+
+                    if (tichDiem == null)
+                    {
+                        return Json(new { success = false, message = "Không có điểm tích lũy." });
+                    }
+
+                    if (soDiem <= 0 || soDiem > tichDiem.Diem)
+                    {
+                        return Json(new { success = false, message = "Số điểm không hợp lệ." });
+                    }
+
+                    // Kiểm tra điểm hết hạn
+                    if (tichDiem.NgayHetHan != null && tichDiem.NgayHetHan < DateTime.Today)
+                    {
+                        db.LichSuTichDiems.Add(new LichSuTichDiem
+                        {
+                            MaKH = user.MaKH,
+                            DiemThayDoi = -tichDiem.Diem,
+                            LyDo = "Điểm hết hạn",
+                            NgayGiaoDich = DateTime.Now,
+                            TrangThaiDiem = "Hết hạn"
+                        });
+                        tichDiem.Diem = 0;
+                        tichDiem.NgayHetHan = null;
+                        db.SaveChanges();
+                        return Json(new { success = false, message = "Điểm đã hết hạn." });
+                    }
+
+                    // Trừ điểm
+                    var oldCapBac = tichDiem.CapBac;
+                    tichDiem.Diem -= soDiem;
+                    tichDiem.NgayHetHan = DateTime.Today.AddYears(1); // Gia hạn 1 năm
+
+                    // Ghi lịch sử giao dịch
+                    db.LichSuTichDiems.Add(new LichSuTichDiem
+                    {
+                        MaKH = user.MaKH,
+                        DiemThayDoi = -soDiem,
+                        LyDo = "Đổi điểm",
+                        NgayGiaoDich = DateTime.Now,
+                        TrangThaiDiem = "Đã sử dụng"
+                    });
+
+                    // Cập nhật cấp bậc
+                    db.Database.ExecuteSqlCommand("EXEC CapNhatCapBacTichDiem @MaKH", new SqlParameter("@MaKH", user.MaKH));
+                    db.SaveChanges();
+
+                    // Tải lại thông tin tích điểm để đảm bảo dữ liệu mới nhất
+                    var updatedTichDiem = db.TichDiems.FirstOrDefault(t => t.MaKH == user.MaKH);
+
+                    // Gửi email thông báo
+                    string qrCodeText = $"MaKH: {user.MaKH} - SoDiemDoi: {soDiem} - Ngay: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+                    string qrImage = GenerateQrCode(qrCodeText);
+
+                    string message = $@"
+                    Bạn đã đổi <strong>{soDiem}</strong> điểm thành công.<br>
+                    Tổng điểm hiện tại: <strong>{updatedTichDiem.Diem}</strong>.<br>
+                    Đây là mã QR xác nhận của bạn:<br>
+                    <img src='{qrImage}' alt='Mã QR' style='max-width: 200px;' /><br>
+                    Vui lòng lưu mã QR này để sử dụng.";
+
+                    SendEmailNotification(user.Email, message);
+
+                    // Cập nhật cấp bậc nếu thay đổi
+                    if (oldCapBac != updatedTichDiem.CapBac)
+                    {
+                        SendEmailNotification(user.Email, $"Cấp bậc mới: {updatedTichDiem.CapBac} (Sử dụng {soDiem} điểm)");
+                    }
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Đổi điểm thành công!",
+                        points = updatedTichDiem.Diem,
+                        capBac = updatedTichDiem.CapBac
+                    });
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Lỗi trong DoiDiem: {ex.Message}");
+                    return Json(new { success = false, message = $"Có lỗi xảy ra: {ex.Message}" });
+                }
+            }
+
+            public string GenerateQrCode(string text)
+            {
+                using (var qrGenerator = new QRCodeGenerator())
+                {
+                    var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+                    using (var qrCode = new QRCode(qrCodeData))
+                    {
+                        using (var bitmap = qrCode.GetGraphic(20))
+                        {
+                            using (var stream = new MemoryStream())
+                            {
+                                bitmap.Save(stream, ImageFormat.Png);
+                                var base64 = Convert.ToBase64String(stream.ToArray());
+                                return "data:image/png;base64," + base64;
+                            }
+                        }
+                    }
+                }
+            }
+
+            private void SendEmailNotification(string toEmail, string message)
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(toEmail)) return;
+
+                    var fromEmail = new MailAddress("moimoixanhla@gmail.com", "Quản lý Tích Điểm DOMDOM");
+                    var toAddress = new MailAddress(toEmail);
+                    var subject = "Thông báo mã QR đổi điểm";
+                    var body = $@"<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset='utf-8' />
+                    </head>
+                    <body>
+                        <h3>Chào bạn,</h3>
+                        <p>{message}</p>
+                        <p>Cảm ơn bạn đã tham gia chương trình tích điểm của DOMDOM!</p>
+                        <p>Trân trọng,<br>Đội ngũ DOMDOM</p>
+                    </body>
+                    </html>";
+
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        Credentials = new NetworkCredential("moimoixanhla@gmail.com", "hvyt bzxm qzti esuo"),
+                        EnableSsl = true
+                    };
+
+                    using (var mailMessage = new MailMessage(fromEmail, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true,
+                        BodyEncoding = System.Text.Encoding.UTF8,
+                        SubjectEncoding = System.Text.Encoding.UTF8
+                    })
+                    {
+                        smtp.Send(mailMessage);
+                        System.Diagnostics.Debug.WriteLine($"Email sent to {toEmail} at {DateTime.Now}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error sending email to {toEmail} at {DateTime.Now}: {ex.Message}");
+                }
+            }
+
+            // Other actions remain unchanged...
+        
+    public ActionResult Getfooter()
         {
             return PartialView("_footer");
         }
-
     }
 }
-
-    
